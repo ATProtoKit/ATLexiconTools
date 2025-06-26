@@ -37,7 +37,14 @@ public enum ATLexiconReferenceVariant: Codable {
     }
 
     public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
 
+        switch self {
+            case .reference(let value):
+                try container.encode(value)
+            case .union(let value):
+                try container.encode(value)
+        }
     }
 
     enum CodingKeys: String, CodingKey {
