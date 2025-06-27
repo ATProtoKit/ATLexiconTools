@@ -44,4 +44,18 @@ public enum LexiconParser {
 
         return lexiconResults
     }
+
+    /// Determines whether the lexicon JSON is valid.
+    ///
+    /// - Parameter lexicon: The lexicon JSON to validate.
+    /// - Returns: `true` if the lexicon is valid, or `false` if not.
+    public static func isLexiconValid(_ lexicon: String) -> Bool {
+        do {
+            _ = try Self.parseLexicon(lexicon)
+
+            return true
+        } catch {
+            return false
+        }
+    }
 }
