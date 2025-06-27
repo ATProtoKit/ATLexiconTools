@@ -28,6 +28,40 @@ public struct Lexicon: Codable {
     /// A dictionary of definitions within the lexicon.
     public let definitions: [String: LexiconDefinition]
 
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.lexicon = try container.decode(Int.self, forKey: .lexicon)
+        self.id = try container.decode(String.self, forKey: .id)
+
+        guard NSIDValidator.isValid(self.id) else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .id,
+                in: container,
+                debugDescription: "The NSID provided is invalid."
+            )
+        }
+
+        self.revision = try container.decodeIfPresent(Int.self, forKey: .revision)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.definitions = try container.decode([String: LexiconDefinition].self, forKey: .definitions)
+
+        for (key, definition) in definitions {
+            switch definition {
+                case .record, .query, .procedure, .subscription:
+                    if key != "main" {
+                        throw DecodingError.dataCorruptedError(
+                            forKey: .definitions,
+                            in: container,
+                            debugDescription: "Records, procedures, queries, and subscriptions must be in the 'main' definition (found '\(key)' instead)."
+                        )
+                    }
+                default:
+                    continue
+            }
+        }
+    }
+
     enum CodingKeys: String, CodingKey {
         case lexicon
         case id
