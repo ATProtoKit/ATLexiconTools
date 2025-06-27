@@ -18,12 +18,27 @@ public enum LexiconToolsError: Error, LocalizedError, CustomStringConvertible {
     /// - Parameter anchor: The anchor that was expected to be found.
     case uriResolutionFailedDueToLackOfAnchor(anchor: String)
 
+    /// An error occured when attempting to validate a lexicon.
+    case validationFailed
+
+    /// The lexicon provided was invalid.
+    case invalidLexicon
+
+    /// The definition for the lexicon was not found.
+    case lexiconDefinitionNotFound
+
     public var errorDescription: String? {
         switch self {
             case .multipleHashSegmentsInURI:
                 return "URI can only contain one hash segment."
             case .uriResolutionFailedDueToLackOfAnchor(let anchor):
                 return "Unable to resolve URI without anchor: \(anchor)."
+            case .validationFailed:
+                return "Failed to validate lexicon."
+            case .invalidLexicon:
+                return "The lexicon is invalid."
+            case .lexiconDefinitionNotFound:
+                return "The lexicon definition was not found."
         }
     }
 
