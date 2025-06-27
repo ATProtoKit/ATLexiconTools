@@ -54,7 +54,27 @@ public enum LexiconDefinition: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decode(String.self, forKey: .type)
+
+        // Check if 'type' exists at all.
+        guard container.contains(.type) else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .type,
+                in: container,
+                debugDescription: "Must have a type."
+            )
+        }
+
+        // Check if 'type' is a String object.
+        let type: String
+        do {
+            type = try container.decode(String.self, forKey: .type)
+        } catch {
+            throw DecodingError.dataCorruptedError(
+                forKey: .type,
+                in: container,
+                debugDescription: "Type property must be a string."
+            )
+        }
 
         switch type {
             case "record":
@@ -86,9 +106,14 @@ public enum LexiconDefinition: Codable {
             case "unknown":
                 self = .unknown(try ATUnknownType(from: decoder))
             default:
+                let knownTypes = [
+                    "record", "query", "procedure", "subscription", "blob", "array", "token", "object",
+                    "boolean", "integer", "string", "bytes", "cid-link", "unknown"
+                ].joined(separator: ", ")
+
                 throw DecodingError.typeMismatch(
                     LexiconDefinition.self, DecodingError.Context(
-                        codingPath: decoder.codingPath, debugDescription: "Unknown LexiconDefinition type"))
+                        codingPath: decoder.codingPath, debugDescription: "Invalid type: \(type). Must be one of: \(knownTypes)."))
         }
     }
 
