@@ -46,3 +46,35 @@ public enum LexiconToolsError: Error, LocalizedError, CustomStringConvertible {
         return errorDescription ?? String(describing: self)
     }
 }
+
+/// Errors that can occur with blob reference conversions.
+public enum BlobReferenceConversionError: Error, LocalizedError, CustomStringConvertible {
+
+    /// The structure of the blob reference is invalid.
+    case invalidStructure
+
+    /// The blob reference provided has a missing or invalid field.
+    ///
+    /// - Parameter field: The missing or invalid field.
+    case missingOrInvalidField(field: String)
+
+    /// The CID is invalid.
+    ///
+    /// - Parameter cidString: The invalid CID.
+    case invalidCID(cidString: String)
+
+    public var errorDescription: String? {
+        switch self {
+            case .invalidStructure:
+                return "The blob reference provided is invalid."
+            case .missingOrInvalidField(let field):
+                return "The blob reference provided has a missing or invalid field: \(field)."
+            case .invalidCID(let cidString):
+                return "IThe blob reference provided contains an invalid CID: \(cidString)"
+        }
+    }
+
+    public var description: String {
+        return errorDescription ?? String(describing: self)
+    }
+}

@@ -106,6 +106,53 @@ public struct BlobReference: Codable {
         self.size = size
     }
 
+    /// Initializes a `BlobReference` from an `IPLD.IPLDValue`.
+    ///
+    /// - Parameter ipldValue: An `IPLD.IPLDValue` that must match the blob schema.
+    /// 
+    /// - Throws: A `BlobReferenceConversionError` if the structure is invalid.
+    public init(from ipldValue: IPLD.IPLDValue) throws {
+        // Ensure it's a dictionary.
+        guard case let .dictionary(dictionary) = ipldValue else {
+            throw BlobReferenceConversionError.invalidStructure
+        }
+
+        // Validate "$type" == "blob."
+        guard
+            let type = dictionary["$type"],
+            case let .jsonValue(.string(typeValue)) = type,
+            typeValue == "blob" else {
+            throw BlobReferenceConversionError.missingOrInvalidField(field: "$type")
+        }
+
+        // Get the "ref" field and extract "$link."
+        guard let reference = dictionary["ref"],
+              case let .dictionary(referenceDictionary) = reference,
+              let linkValue = referenceDictionary["$link"],
+              case let .jsonValue(.string(linkType)) = linkValue else {
+            throw BlobReferenceConversionError.missingOrInvalidField(field: "ref.$link")
+        }
+
+        // Decode CID.
+        guard let cid = try? CID(string: linkType) else {
+            throw BlobReferenceConversionError.invalidCID(cidString: linkType)
+        }
+
+        // Get "mimeType."
+        guard let mime = dictionary["mimeType"],
+              case let .jsonValue(.string(mimeType)) = mime else {
+            throw BlobReferenceConversionError.missingOrInvalidField(field: "mimeType")
+        }
+
+        // Get "size."
+        guard let size = dictionary["size"],
+              case let .jsonValue(.number(sizeValue)) = size else {
+            throw BlobReferenceConversionError.missingOrInvalidField(field: "size")
+        }
+
+        self.init(reference: cid, mimeType: mimeType, size: sizeValue)
+    }
+
     /// Converts a `JSONBlobReference` (either typed or untyped) into a `BlobReference`.
     ///
     /// - Parameter jsonReference: The `JSONBlobReference` value to convert.
@@ -136,6 +183,7 @@ public struct BlobReference: Codable {
     /// - Throws: An error if the `CID` cannot be converted to its canonical string.
     public func toIPLDRepresentation() throws -> EncodableBlobReference {
         let blobLink = try BlobLink(self.reference)
+
         return EncodableBlobReference(
             reference: blobLink,
             mimeType: self.mimeType,
