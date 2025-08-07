@@ -78,3 +78,15 @@ public enum BlobReferenceConversionError: Error, LocalizedError, CustomStringCon
         return errorDescription ?? String(describing: self)
     }
 }
+
+/// Errors that can occur during lexicon validation.
+public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertible {
+
+    // TODO: Complete the Swift implementation of "Validator.validateBlob()".
+/////
+//    case pathIsNotBlobReference(path: String)
+
+    public var description: String {
+        return errorDescription ?? String(describing: self)
+    }
+}
