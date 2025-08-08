@@ -86,6 +86,71 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
 /////
 //    case pathIsNotBlobReference(path: String)
 
+    /// The date and time provided is invalid.
+    ///
+    /// The date and time must be a valid AT Protocol datetime
+    ///
+    /// - Parameter path: The object the datetime is coming from.
+    case notAValidDateTime(path: String)
+
+    /// The URI provided is invalid.
+    ///
+    /// - Parameter path: The object the URI is coming from.
+    case notAValidURI(path: String)
+
+    /// The AT URI provided is invalid.
+    ///
+    /// - Parameter path: The object the AT URI is coming from.
+    case notAValidATURI(path: String)
+
+    /// The decentralized identifier (DID) provided is invalid.
+    ///
+    /// - Parameter path: The object the decentralized identifier (DID) is coming from.
+    case notAValidDID(path: String)
+
+    /// The handle provided is invalid.
+    ///
+    /// - Parameter path: The object the handle is coming from.
+    case notAValidHandle(path: String)
+
+    /// The BCP 47 language tag provided is invalid.
+    ///
+    /// - Parameter path: The object the BCP 47 language tag is coming from.
+    case notAValidBCP47LanguageTag(path: String)
+
+    /// The Timestamp Identifier (TID) provided is invalid.
+    ///
+    /// - Parameter path: The object the Timestamp Identifier (TID) is coming from.
+    case notAValidTID(path: String)
+
+    /// The Record Key provided is invalid.
+    ///
+    /// - Parameter path: The object the Record Key is coming from.
+    case notAValidRecordKey(path: String)
+
+    public var errorDescription: String? {
+        switch self {
+//            case .pathIsNotBlobReference(let path):
+//                return "The blob reference provided is invalid."
+            case .notAValidDateTime(let path):
+                return "Path ('\(path)') must be a valid AT Protocol datetime (either RFC-3339 or ISO-8601)."
+            case .notAValidURI(let path):
+                return "Path ('\(path)') must be a valid URI."
+            case .notAValidATURI(let path):
+                return "Path ('\(path)') must be a valid AT URI."
+            case .notAValidDID(let path):
+                return "Path ('\(path)') must be a valid DID."
+            case .notAValidHandle(path: let path):
+                return "Path ('\(path)') must be a valid handle."
+            case .notAValidBCP47LanguageTag(let path):
+                return "Path ('\(path)') must be a valid BCP 47 language tag."
+            case .notAValidTID(let path):
+                return "Path ('\(path)') must be a valid Timestamp Identifier (TID)."
+            case .notAValidRecordKey(path: let path):
+                return "Path ('\(path)') must be a valid Record Key."
+        }
+    }
+
     public var description: String {
         return errorDescription ?? String(describing: self)
     }
