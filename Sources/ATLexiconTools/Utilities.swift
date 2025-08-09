@@ -16,7 +16,7 @@ public enum LexiconToolsUtilities {
     ///   - string: *to be added*
     ///   - baseURI: The URI of the *to be completed*. Optional. Defaults to `nil`.
     /// - Returns: A `String` object
-    public func convertToLexiconURI(from string: String, resolvedAgainst baseURI: String? = nil) throws -> String {
+    public static func toLexiconURI(from string: String, resolvedAgainst baseURI: String? = nil) throws -> String {
         guard string.split(separator: "#").count < 2 else {
             throw LexiconToolsError.multipleHashSegmentsInURI
         }

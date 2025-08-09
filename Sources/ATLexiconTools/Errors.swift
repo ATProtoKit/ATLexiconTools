@@ -155,3 +155,61 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
         return errorDescription ?? String(describing: self)
     }
 }
+
+/// Errors that occur while interacting with ``LexiconRegistry``.
+public enum LexiconRegistryError: Error, LocalizedError, CustomStringConvertible {
+
+    /// The lexicon has already been registered to the `LexiconRegistry` instance.
+    ///
+    /// - Parameter nsid: The Namespaced Identifier (NSID) associated with the lexion.
+    case lexiconAlreadyRegistered(nsid: String)
+
+    /// The lexicon given can't removed since it doesn't exist.
+    ///
+    /// - Parameter uri: The URI of the lexicon.
+    case cannotRemoveLexiconAsItDoesNotExist(uri: String)
+
+    /// The lexicon was not found.
+    ///
+    /// - Parameter uri: The URI of the lexicon.
+    case lexiconNotFound(uri: String)
+
+    /// The lexicon URI provided does not contain the type needed.
+    ///
+    /// - Parameters:
+    ///   - expected: An array of expected types.
+    ///   - actual: The type that was actually found.
+    ///   - uri: The lexicon's URI.
+    case notOfType(expected: [String], actual: String, uri: String)
+
+    /// The type is not a string object.
+    case typeIsNotAString
+
+    /// The type provided is invalid.
+    ///
+    /// - Parameters:
+    ///   - expectedValue: The type that's expected to be found.
+    ///   - actualValue: The actual type that was found.
+    case invalidType(expectedValue: String, actualValue: String)
+
+    public var errorDescription: String? {
+        switch self {
+            case .lexiconAlreadyRegistered(let nsid):
+                return "Lexicon not found for NSID: '\(nsid)'."
+            case .cannotRemoveLexiconAsItDoesNotExist(uri: let uri):
+                return "Could not remove the lexicon '\(uri)': Lexicon not found."
+            case .lexiconNotFound(let uri):
+                return "Lexicon not found for URI: '\(uri)'."
+            case .notOfType(let expected, let actual, let uri):
+                return "Not a \(expected.joined(separator: " or ")) lexicon '\(uri)' (found: \(actual))."
+            case .typeIsNotAString:
+                return "The type of the lexicon must be a string."
+            case .invalidType(let expectedValue, let actualValue):
+                return "The type of the lexicon must be '\(expectedValue)', but was '\(actualValue)' instead."
+        }
+    }
+
+    public var description: String {
+        return errorDescription ?? String(describing: self)
+    }
+}
