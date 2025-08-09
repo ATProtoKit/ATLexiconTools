@@ -42,7 +42,7 @@ public enum LexiconToolsUtilities {
     /// - Parameters:
     ///   - object: *to be added*.
     ///   - context: *to be added*.
-    public func validateRequiredProperties<ObjectType: ObjectTypeProtocol>(in object: ObjectType, context: inout RefinementContext) {
+    public static func validateRequiredProperties<ObjectType: ObjectTypeProtocol>(in object: ObjectType, context: inout RefinementContext) {
         guard let requiredObjects = object.required else { return }
 
         guard let objectProperties = object.properties else {
