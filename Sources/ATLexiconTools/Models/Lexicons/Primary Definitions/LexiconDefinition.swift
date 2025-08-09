@@ -155,4 +155,38 @@ public enum LexiconDefinition: Codable {
     enum CodingKeys: String, CodingKey {
         case type = "$type"
     }
+
+    /// Returns the `$type` value of the definition.
+    public var type: String {
+        switch self {
+            case .record(let value):
+                return value.type
+            case .query(let value):
+                return value.type
+            case .procedure(let value):
+                return value.type
+            case .subscription(let value):
+                return value.type
+            case .blob(let value):
+                return value.type
+            case .array(let value):
+                return value.type
+            case .token(let value):
+                return value.type
+            case .object(let value):
+                return value.type
+            case .boolean(let value):
+                return value.type
+            case .integer(let value):
+                return value.type
+            case .string(let value):
+                return value.type
+            case .bytes(let value):
+                return value.type
+            case .cidLink(let value):
+                return value.type
+            case .unknown(let value):
+                return value.type
+        }
+    }
 }
