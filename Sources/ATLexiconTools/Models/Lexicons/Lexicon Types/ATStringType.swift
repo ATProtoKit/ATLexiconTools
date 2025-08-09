@@ -9,7 +9,7 @@
 /// A `string` type.
 ///
 /// In Swift, this would be the equivalent to the `String` type.
-public struct ATStringType: Codable {
+public struct ATStringType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

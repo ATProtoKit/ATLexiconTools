@@ -8,7 +8,7 @@
 import Foundation
 
 /// A `cid-link` type.
-public struct ATCIDLinkType: Codable {
+public struct ATCIDLinkType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

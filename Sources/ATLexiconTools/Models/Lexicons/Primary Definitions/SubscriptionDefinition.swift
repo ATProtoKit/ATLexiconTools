@@ -8,7 +8,7 @@
 import Foundation
 
 /// A primary `subscription` type definition.
-public struct SubscriptionDefinition: Codable {
+public struct SubscriptionDefinition: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

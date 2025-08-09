@@ -8,7 +8,7 @@
 import Foundation
 
 /// A primary `procedure` type definition.
-public struct ProcedureDefinition: Codable {
+public struct ProcedureDefinition: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

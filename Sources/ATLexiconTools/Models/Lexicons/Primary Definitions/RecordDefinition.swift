@@ -8,7 +8,7 @@
 import Foundation
 
 /// A primary `record` type definition.
-public struct RecordDefinition: Codable {
+public struct RecordDefinition: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

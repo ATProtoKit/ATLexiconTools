@@ -10,7 +10,7 @@ import Foundation
 /// A `integer` type.
 ///
 /// In Swift, this would be the equivalent to the `Int` type.
-public struct ATIntegerType: Codable {
+public struct ATIntegerType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

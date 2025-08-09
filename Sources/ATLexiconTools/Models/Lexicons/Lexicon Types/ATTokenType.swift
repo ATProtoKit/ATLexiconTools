@@ -10,7 +10,7 @@ import Foundation
 /// A `token` type.
 ///
 /// In Swift, this would be the equivalent to an `enum` `case`.
-public struct ATTokenType: Codable {
+public struct ATTokenType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

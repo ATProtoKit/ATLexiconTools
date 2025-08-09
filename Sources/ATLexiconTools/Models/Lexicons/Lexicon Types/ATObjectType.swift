@@ -12,7 +12,7 @@ import Foundation
 /// This is a generic object schema that can be referenced inside other definitions.
 ///
 /// In Swift, this would be the equivalent to a `struct` or `class`.
-public struct ATObjectType: Codable {
+public struct ATObjectType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

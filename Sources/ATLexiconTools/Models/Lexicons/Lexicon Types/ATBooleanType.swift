@@ -10,7 +10,7 @@ import Foundation
 /// A `boolean` type.
 ///
 /// In Swift, this would be the equivalent to the `Bool` type.
-public struct ATBooleanType: Codable {
+public struct ATBooleanType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

@@ -10,7 +10,7 @@ import Foundation
 /// A `blob` type.
 ///
 /// /// In Swift, this would be the equivalent to the `Data` type.
-public struct ATBlobType: Codable {
+public struct ATBlobType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

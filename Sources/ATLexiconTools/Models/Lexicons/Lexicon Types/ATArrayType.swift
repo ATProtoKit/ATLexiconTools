@@ -10,7 +10,7 @@ import Foundation
 /// An `array` type.
 ///
 /// In Swift, this would be the equivalent to the `Array` type.
-public struct ATArrayType: Codable {
+public struct ATArrayType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

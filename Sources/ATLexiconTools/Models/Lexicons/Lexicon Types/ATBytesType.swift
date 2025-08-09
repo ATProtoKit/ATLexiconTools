@@ -8,7 +8,7 @@
 import Foundation
 
 /// A `bytes` type.
-public struct ATBytesType: Codable {
+public struct ATBytesType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

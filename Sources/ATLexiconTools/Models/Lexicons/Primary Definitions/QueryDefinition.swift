@@ -8,7 +8,7 @@
 import Foundation
 
 /// A primary `query` type definition.
-public struct QueryDefinition: Codable {
+public struct QueryDefinition: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///

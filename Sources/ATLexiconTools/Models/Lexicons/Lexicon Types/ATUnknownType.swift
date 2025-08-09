@@ -8,7 +8,7 @@
 import Foundation
 
 /// An `unknown` type.
-public struct ATUnknownType: Codable {
+public struct ATUnknownType: ATLexiconObjectProtocol {
 
     /// The type value of the object.
     ///
