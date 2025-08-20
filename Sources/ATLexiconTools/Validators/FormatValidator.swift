@@ -111,7 +111,7 @@ extension Validator {
     ///   - path: The object the Namespaced Identifier (NSID) is coming from.
     ///   - nsidValue: The actual Namespaced Identifier (NSID) value.
     ///
-    /// - Throws: An error if the Namespaced Identifier (NSID)  is not conforming to the
+    /// - Throws: An error if the Namespaced Identifier (NSID) is not conforming to the
     /// AT Protocol specifications.
     public static func validateNSID(path: String, nsidValue: String) throws {
         guard NSIDValidator.isValid(nsidValue) == true else {
@@ -158,7 +158,7 @@ extension Validator {
     ///
     /// - Parameters:
     ///   - path: The object the Timestamp Identifier (TID) is coming from.
-    ///   - tidValue: The actual Timestamp Identifier (TID value.
+    ///   - tidValue: The actual Timestamp Identifier (TID) value.
     ///
     /// - Throws: An error if the Timestamp Identifier (TID) is not conforming to the AT Protocol specifications.
     public static func validateTID(path: String, tidValue: String) throws {

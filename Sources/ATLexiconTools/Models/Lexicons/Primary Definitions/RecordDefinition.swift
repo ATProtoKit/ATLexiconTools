@@ -24,7 +24,7 @@ public struct RecordDefinition: ATLexiconObjectProtocol {
     /// A schema definition, which specifies this type of record.
     public let record: ATObjectType
 
-    /// A key that ames and references an individual record within a collection of an
+    /// A key that names and references an individual record within a collection of an
     /// AT Protocol repository.
     public enum RecordKeyType: String, Codable {
 
