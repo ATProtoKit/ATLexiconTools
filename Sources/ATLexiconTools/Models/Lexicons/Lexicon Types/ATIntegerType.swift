@@ -27,7 +27,7 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
     public let maximum: Int?
 
     /// A closed set of allowed values. Optional.
-    public let enumValue: [Int]?
+    public let enumValues: [Int]?
 
     /// A default value for the field. Optional.
     public let defaultValue: Int?
@@ -39,7 +39,7 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
         case description
         case minimum
         case maximum
-        case enumValue = "enum"
+        case enumValues = "enum"
         case defaultValue = "default"
         case constant = "const"
     }
