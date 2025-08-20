@@ -156,6 +156,26 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
     }
 }
 
+/// Errors that occur while validating the lexicon schema.
+public enum LexiconSchemaValidatorError: Error, LocalizedError, CustomStringConvertible {
+
+    /// The schema provided is invalid.
+    ///
+    /// - Parameter reason: A string that explains why the schema was invalid.
+    case invalidSchema(reason: String)
+
+    public var errorDescription: String? {
+        switch self {
+            case .invalidSchema(let reason):
+                return "Schema validation failed. Reason: \(reason)"
+        }
+    }
+
+    public var description: String {
+        return errorDescription ?? String(describing: self)
+    }
+}
+    
 /// Errors that occur while interacting with ``LexiconRegistry``.
 public enum LexiconRegistryError: Error, LocalizedError, CustomStringConvertible {
 
