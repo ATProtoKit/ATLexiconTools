@@ -15,7 +15,6 @@ extension Validator.Schema {
     ///
     /// - Throws: `LexiconSchemaValidatorError.invalidSchema` if the schema is invalid.
     public static func validateInteger(integerSchema: ATIntegerType) throws {
-
         // Check to make sure the minimum number is lower than the maximum number (if they exist).
         if let minimumValue = integerSchema.minimum, let maximumValue = integerSchema.maximum {
             guard minimumValue <= maximumValue else {
@@ -55,7 +54,6 @@ extension Validator.Schema {
     ///
     /// - Throws: `LexiconSchemaValidatorError.invalidSchema` if the schema is invalid.
     public static func validateString(stringSchema: ATStringType) throws {
-
         // Check to make sure the minimum number is lower than the maximum number (if they exist).
         if let minimumGraphemes = stringSchema.minimumGraphemes, let maximumGraphemes = stringSchema.maximumGraphemes {
             if minimumGraphemes > maximumGraphemes {
@@ -105,7 +103,6 @@ extension Validator.Schema {
     ///
     /// - Throws: `LexiconSchemaValidatorError.invalidSchema` if the schema is invalid.
     public static func validateBytes(bytesSchema: ATBytesType) throws {
-
         // Check to make sure the minimum number is lower than the maximum number (if they exist).
         if let minimumLength = bytesSchema.minimumLength, let maximumLength = bytesSchema.maximumLength {
             guard minimumLength <= maximumLength else {
