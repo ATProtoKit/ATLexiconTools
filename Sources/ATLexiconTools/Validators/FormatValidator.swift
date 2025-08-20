@@ -104,6 +104,26 @@ extension Validator {
         }
     }
 
+    /// Validates the AT Identifier that's consistent to the AT Protocol's requirements.
+    ///
+    /// - Parameters:
+    ///   - path: The object the AT Identifier is coming from.
+    ///   - atIdentifier: The actual AT Identifier value.
+    ///
+    /// - Throws: An error if the AT Identifier is not conforming to the AT Protocol specifications.
+    public static func validateATIdentifier(path: String, atIdentifier: String) throws {
+        if atIdentifier.starts(with: "did:") {
+            try validateDID(path: path, didValue: atIdentifier)
+            return
+        }
+
+        do {
+            try validateHandle(path: path, handleValue: atIdentifier)
+        } catch {
+            throw LexiconValidatorError.notAValidATIdentifier(path: path)
+        }
+    }
+
     /// Validates the Namespaced Identifier (NSID) that's consistent to the
     /// AT Protocol specifications.
     ///
