@@ -34,10 +34,10 @@ public struct ATStringType: ATLexiconObjectProtocol {
     /// The minimum number of grapheme characters in the field. Optional.
     public let minimumGraphemes: Int?
 
-    /// Suggested or common values for this field. Optional.
+    /// An array of suggested or common values for this field. Optional.
     public let knownValues: [String]?
 
-    /// A closed set of allowed values. Optional.
+    /// An array of allowed values. Optional.
     public let enumValues: [String]?
 
     /// The default value for this field. Optional.
@@ -45,6 +45,73 @@ public struct ATStringType: ATLexiconObjectProtocol {
 
     /// A fixed value for the object. Optional.
     public let constantValue: String?
+
+    /// Creates an instance of `ATIntegerType`.
+    ///
+    /// - Parameters:
+    ///   - description: A short description of the object. Optional.
+    ///   - format: The string format restriction. Optional.
+    ///   - maximumLength: The maximum number of characters allowed in the field. Optional.
+    ///   - minimumLength: The minimum number of characters allowed in the field. Optional.
+    ///   - maximumGraphemes: The maximum number of grapheme characters in the field. Optional.
+    ///   - minimumGraphemes: The minimum number of grapheme characters in the field. Optional.
+    ///   - knownValues: An array of suggested or common values for this field. Optional.
+    ///   - enumValues: An array of allowed values. Optional.
+    ///   - defaultValue: The default value for this field. Optional.
+    ///   - constantValue: A fixed value for the object. Optional.
+    public init(
+        description: String?,
+        format: Format?,
+        maximumLength: Int?,
+        minimumLength: Int?,
+        maximumGraphemes: Int?,
+        minimumGraphemes: Int?,
+        knownValues: [String]?,
+        enumValues: [String]?,
+        defaultValue: String?,
+        constantValue: String?
+    ) {
+        self.description = description
+        self.format = format
+        self.maximumLength = maximumLength
+        self.minimumLength = minimumLength
+        self.maximumGraphemes = maximumGraphemes
+        self.minimumGraphemes = minimumGraphemes
+        self.knownValues = knownValues
+        self.enumValues = enumValues
+        self.defaultValue = defaultValue
+        self.constantValue = constantValue
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.format = try container.decodeIfPresent(Format.self, forKey: .format)
+        self.maximumLength = try container.decodeIfPresent(Int.self, forKey: .maximumLength)
+        self.minimumLength = try container.decodeIfPresent(Int.self, forKey: .minimumLength)
+        self.maximumGraphemes = try container.decodeIfPresent(Int.self, forKey: .maximumGraphemes)
+        self.minimumGraphemes = try container.decodeIfPresent(Int.self, forKey: .minimumGraphemes)
+        self.knownValues = try container.decodeIfPresent([String].self, forKey: .knownValues)
+        self.enumValues = try container.decodeIfPresent([String].self, forKey: .enumValues)
+        self.defaultValue = try container.decodeIfPresent(String.self, forKey: .defaultValue)
+        self.constantValue = try container.decodeIfPresent(String.self, forKey: .constantValue)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encodeIfPresent(self.description, forKey: .description)
+        try container.encodeIfPresent(self.format, forKey: .format)
+        try container.encodeIfPresent(self.maximumLength, forKey: .maximumLength)
+        try container.encodeIfPresent(self.minimumLength, forKey: .minimumLength)
+        try container.encodeIfPresent(self.maximumGraphemes, forKey: .maximumGraphemes)
+        try container.encodeIfPresent(self.minimumGraphemes, forKey: .minimumGraphemes)
+        try container.encodeIfPresent(self.knownValues, forKey: .knownValues)
+        try container.encodeIfPresent(self.enumValues, forKey: .enumValues)
+        try container.encodeIfPresent(self.defaultValue, forKey: .defaultValue)
+        try container.encodeIfPresent(self.constantValue, forKey: .constantValue)
+    }
 
     enum CodingKeys: String, CodingKey {
         case description
