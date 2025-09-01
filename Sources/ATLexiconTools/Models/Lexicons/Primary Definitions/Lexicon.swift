@@ -11,6 +11,11 @@ import ATSyntaxTools
 /// A structure representing the lexicon.
 public struct Lexicon: Codable {
 
+    /// The NSID type for compatibility with publishing lexicons. Optional.
+    ///
+    /// By default, the value will be "`com.atproto.lexicon.schema`".
+    public let type: String? = "com.atproto.lexicon.schema"
+
     /// The Lexicon Language version number.
     ///
     /// At this time, the value will be `1`.
