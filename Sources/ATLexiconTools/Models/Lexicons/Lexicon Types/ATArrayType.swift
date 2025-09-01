@@ -21,7 +21,7 @@ public struct ATArrayType: ATLexiconObjectProtocol {
     public let description: String?
 
     /// A container of an array of properties.
-    public let items: Items?
+    public let items: Item
 
     /// The minimum length a `string` object can have. Optional.
     public let minimumLength: Int?
@@ -37,7 +37,7 @@ public struct ATArrayType: ATLexiconObjectProtocol {
     }
 
     /// An enumeration referencing a specific property.
-    public enum Items: Codable {
+    public enum Item: Codable {
 
         /// A `boolean` property.
         case boolean(ATBooleanType)
