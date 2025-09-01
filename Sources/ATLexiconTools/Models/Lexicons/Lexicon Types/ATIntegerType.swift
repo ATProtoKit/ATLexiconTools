@@ -83,4 +83,61 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
         case defaultValue = "default"
         case constant = "const"
     }
+
+    // Validators
+    /// Validates a lexicon integer definition.
+    ///
+    /// - Parameters:
+    ///   - minimum: The minimum number. Optional.
+    ///   - maximum: The maximum number. Optional.
+    ///   - enumValues: An array of allowed values. Optional.
+    ///   - defaultValue: A default value for the field. Optional.
+    ///   - constant: A fixed value for the field. Optional.
+    public static func validate(minimum: Int?, maximum: Int?, enumValues: [Int]?, defaultValue: Int?, constant: Int?) throws {
+
+        // Minimum and Maximum
+        if let constant = constant {
+            if let maximum = maximum {
+                try LexiconToolsUtilities.require(
+                    constant <= maximum,
+                    or: .intConstantGreaterThanMaximum(constant: constant, maximumLength: maximum)
+                )
+            }
+
+            if let minimum = minimum {
+                try LexiconToolsUtilities.require(
+                    constant >= minimum,
+                    or: .intConstantLessThanMinimum(constant: constant, minimumLength: minimum)
+                )
+            }
+        }
+
+        if let defaultValue = defaultValue {
+            if let maximum = maximum {
+                try LexiconToolsUtilities.require(
+                    defaultValue <= maximum,
+                    or: .intDefaultValueGreaterThanMaximum(defaultValue: defaultValue, maximumLength: maximum)
+                )
+            }
+            
+            if let minimum = minimum {
+                try LexiconToolsUtilities.require(
+                    defaultValue >= minimum,
+                    or: .intDefaultValueLessThanMinimum(defaultValue: defaultValue, minimumLength: minimum)
+                )
+            }
+        }
+
+        // enumValues
+        if let values = enumValues, !values.isEmpty,
+           let minimum, let maximum,
+           let outOfRange = values.first(where: { $0 < minimum || $0 > maximum })
+        {
+            throw LexiconValidatorError.intEnumValueOutsideRange(
+                enumValue: outOfRange,
+                minimumValue: minimum,
+                maximumValue: maximum
+            )
+        }
+    }
 }
