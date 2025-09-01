@@ -26,6 +26,34 @@ public struct ATBooleanType: ATLexiconObjectProtocol {
     /// A fixed value for the field. Optional.
     public let constant: Bool?
 
+    /// Creates an instance of `ATBooleanType`.
+    ///
+    /// - Parameters:
+    ///   - description: A short description of the object. Optional.
+    ///   - defaultValue: A default value for the field. Optional.
+    ///   - constant: A fixed value for the field. Optional.
+    public init(description: String?, defaultValue: Bool?, constant: Bool?) {
+        self.description = description
+        self.defaultValue = defaultValue
+        self.constant = constant
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.defaultValue = try container.decodeIfPresent(Bool.self, forKey: .defaultValue)
+        self.constant = try container.decodeIfPresent(Bool.self, forKey: .constant)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encodeIfPresent(self.description, forKey: .description)
+        try container.encodeIfPresent(self.defaultValue, forKey: .defaultValue)
+        try container.encodeIfPresent(self.constant, forKey: .constant)
+    }
+
     enum CodingKeys: String, CodingKey {
         case description
         case defaultValue = "default"
