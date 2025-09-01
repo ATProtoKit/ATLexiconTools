@@ -60,6 +60,26 @@ public enum LexiconToolsUtilities {
         }
     }
 
+    /// Enforces a preconditioned requirement check.
+    ///
+    /// This is a shorthanded version of writing several if statements to make the code easier to read.
+    ///
+    /// Example:
+    /// ```swift
+    /// LexiconToolsUtilities.try Self.require(
+    ///     value <= max, or: .intDefaultValueGreaterThanMaximum(
+    ///         defaultValue: value,
+    ///         maximumLength: max
+    /// ))
+    @inline(__always)
+    public static func require(_ condition: @autoclosure () -> Bool,
+                                or error: @autoclosure () -> LexiconValidatorError) throws {
+        // If the condition fails, throw the lazily-built error
+        guard condition() else {
+            throw error()
+        }
+    }
+
     ///
     public protocol ObjectTypeProtocol {
 
