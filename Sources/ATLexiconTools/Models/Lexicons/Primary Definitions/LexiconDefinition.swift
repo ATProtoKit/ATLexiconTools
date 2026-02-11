@@ -22,6 +22,9 @@ public enum LexiconDefinition: Codable {
     /// Describes a Websocket query.
     case subscription(SubscriptionDefinition)
 
+    /// Describes a permission set query.
+    case permissionSet(PermissionSetDefinition)
+
     /// An `blob` object.
     case blob(ATBlobType)
 
@@ -85,6 +88,8 @@ public enum LexiconDefinition: Codable {
                 self = .procedure(try ProcedureDefinition(from: decoder))
             case "subscription":
                 self = .subscription(try SubscriptionDefinition(from: decoder))
+            case "permission-set":
+                self = .permissionSet(try PermissionSetDefinition(from: decoder))
             case "blob":
                 self = .blob(try ATBlobType(from: decoder))
             case "array":
@@ -129,6 +134,8 @@ public enum LexiconDefinition: Codable {
                 try container.encode(value)
             case .subscription(let value):
                 try container.encode(value)
+            case .permissionSet(let value):
+                try container.encode(value)
             case .blob(let value):
                 try container.encode(value)
             case .array(let value):
@@ -166,6 +173,8 @@ public enum LexiconDefinition: Codable {
             case .procedure(let value):
                 return value.type
             case .subscription(let value):
+                return value.type
+            case .permissionSet(let value):
                 return value.type
             case .blob(let value):
                 return value.type
