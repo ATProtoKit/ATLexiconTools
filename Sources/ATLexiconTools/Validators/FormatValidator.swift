@@ -9,7 +9,7 @@ import Foundation
 import ATSyntaxTools
 import MultiformatsKit
 
-extension Validator {
+extension Validator.Format {
 
     /// Validates the date and time that's consistent to the AT Protocol's requirements.
     ///
