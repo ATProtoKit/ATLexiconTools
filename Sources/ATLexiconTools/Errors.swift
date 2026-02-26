@@ -82,10 +82,6 @@ public enum BlobReferenceConversionError: Error, LocalizedError, CustomStringCon
 /// Errors that can occur during lexicon validation.
 public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertible {
 
-    // TODO: Complete the Swift implementation of "Validator.validateBlob()".
-/////
-//    case pathIsNotBlobReference(path: String)
-
     /// The date and time provided is invalid.
     ///
     /// The date and time must be a valid AT Protocol datetime
@@ -113,6 +109,11 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
     /// - Parameter path: The object the handle is coming from.
     case notAValidHandle(path: String)
 
+    /// The AT Identifier provided is invalid.
+    ///
+    /// - Parameter path: The object the handle is coming from.
+    case notAValidATIdentifier(path: String)
+
     /// The BCP 47 language tag provided is invalid.
     ///
     /// - Parameter path: The object the BCP 47 language tag is coming from.
@@ -128,10 +129,94 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
     /// - Parameter path: The object the Record Key is coming from.
     case notAValidRecordKey(path: String)
 
+    /// The path provided has an invalid type.
+    ///
+    /// - Parameters:
+    ///   - value: The value itself.
+    ///   - expectedType: The type that was expected to be used.
+    case invalidType(value: String, expectedType: String)
+
+    /// The type of the lexicon is not one of the valid lexicon types.
+    ///
+    /// - Parameter type: The name of the lexicon type.
+    case unexpectedLexiconType(type: String)
+
+    /// The constant integer is greater than the maximum.
+    ///
+    /// - Parameters:
+    ///   - constant: The value's constant.
+    ///   - maximumLength: The maximum number that should not exceed.
+    case intConstantGreaterThanMaximum(constant: Int, maximumLength: Int)
+
+    /// The constant integer is less than the minimum.
+    ///
+    /// - Parameters:
+    ///   - constant: The value's constant.
+    ///   - minimumLength: The minimum number that should be matched or exceeded.
+    case intConstantLessThanMinimum(constant: Int, minimumLength: Int)
+
+    /// The default value integer is greater than the maximum.
+    ///
+    /// - Parameters:
+    ///   - defaultValue: The default value.
+    ///   - maximumLength: The maximum number that should not exceed.
+    case intDefaultValueGreaterThanMaximum(defaultValue: Int, maximumLength: Int)
+
+    /// The default value integer is less than the minimum.
+    ///
+    /// - Parameters:
+    ///   - defaultValue: The default value.
+    ///   - maximumLength: The maximum number that should not exceed.
+    case intDefaultValueLessThanMinimum(defaultValue: Int, minimumLength: Int)
+
+    /// An enum integer value is either less than the minimum, or greater than the maximum.
+    ///
+    /// - Parameters:
+    ///   - enumValue: The default value.
+    ///   - minimumValue: The minimum value to not exceed.
+    ///   - maximumValue: The maximum value to not exceed.
+    case intEnumValueOutsideRange(enumValue: Int, minimumValue: Int, maximumValue: Int)
+
+    /// The constant string is greater than the maximum length (Unicode scalars).
+    ///
+    /// - Parameters:
+    ///   - constant: The value's constant.
+    ///   - maximumLength: The maximum number that should not exceed.
+    case stringConstantGreaterThanMaximumLength(constant: String, maximumLength: Int)
+
+    /// The constant string as less than the minimum length (Unicode scalars).
+    ///
+    /// - Parameters:
+    ///   - constant: The value's constant.
+    ///   - minimumLength: The minimum number that should be matched or exceeded.
+    case stringConstantLessThanMinimumLength(constant: String, minimumLength: Int)
+
+    /// The constant string as less than the maximum graphemes.
+    ///
+    /// - Parameters:
+    ///   - constant: The value's constant.
+    ///   - minimumGraphemes: The minimum number that should be matched or exceeded.
+    case stringConstantGreaterThanMaximumGraphemes(constant: String, maximumLength: Int)
+
+    /// The constant string as less than the minimum graphemes.
+    ///
+    /// - Parameters:
+    ///   - constant: The value's constant.
+    ///   - minimumGraphemes: The minimum number that should be matched or exceeded.
+    case stringConstantLessThanMinimumGraphemes(constant: String, maximumLength: Int)
+
+    /// The constant bytes is greater than the maximum length.
+    ///
+    /// - Parameters:
+    ///   - constant: The value's constant.
+    ///   - maximumLength: The maximum number that should not exceed.
+    case bytesConstantGreaterThankMaximumLength(constant: Data, maximumLength: Int)
+
+    /// The provided path is a an invalid blob reference.
+    case invalidBlobReferencePath(path: String)
+
     public var errorDescription: String? {
         switch self {
-//            case .pathIsNotBlobReference(let path):
-//                return "The blob reference provided is invalid."
             case .notAValidDateTime(let path):
                 return "Path ('\(path)') must be a valid AT Protocol datetime (either RFC-3339 or ISO-8601)."
             case .notAValidURI(let path):
@@ -142,12 +227,40 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
                 return "Path ('\(path)') must be a valid DID."
             case .notAValidHandle(path: let path):
                 return "Path ('\(path)') must be a valid handle."
+            case .notAValidATIdentifier(let path):
+                return "Path ('\(path)') must be a valid DID or handle."
             case .notAValidBCP47LanguageTag(let path):
                 return "Path ('\(path)') must be a valid BCP 47 language tag."
             case .notAValidTID(let path):
                 return "Path ('\(path)') must be a valid Timestamp Identifier (TID)."
             case .notAValidRecordKey(path: let path):
                 return "Path ('\(path)') must be a valid Record Key."
+            case .invalidType(let value, let expectedType):
+                return "Value ('\(value)') must be of type '\(expectedType)'."
+            case .unexpectedLexiconType(let type):
+                return "Unexpected lexicon type: '\(type)'."
+            case .intConstantGreaterThanMaximum(let constant, let maximumLength):
+                return "Constant '\(constant)' cannot be greater than the maximum '\(maximumLength)'."
+            case .intConstantLessThanMinimum(let constant, let minimumLength):
+                return "Constant '\(constant)' cannot be less than the minimum '\(minimumLength)'."
+            case .intDefaultValueGreaterThanMaximum(let defaultValue, let maximumLength):
+                return "Default value '\(defaultValue)' cannot be greater than the maximum '\(maximumLength)'."
+            case .intDefaultValueLessThanMinimum(let defaultValue, let minimumLength):
+                return "Default value '\(defaultValue)' cannot be less than the minimum '\(minimumLength)'."
+            case .intEnumValueOutsideRange(let enumValue, let minimumValue, let maximumValue):
+                return "Enum value '\(enumValue)' must be between '\(minimumValue)' and '\(maximumValue)'."
+            case .stringConstantGreaterThanMaximumLength(let constant, let maximumLength):
+                return "Constant '\(constant)' cannot be greater than the maximum '\(maximumLength)' Unicode scalar count."
+            case .stringConstantLessThanMinimumLength(let constant, let minimumLength):
+                return "Constant '\(constant)' cannot be less than the minimum '\(minimumLength)' Unicode scalar count."
+            case .stringConstantGreaterThanMaximumGraphemes(let constant, let maximumLength):
+                return "Constant '\(constant)' cannot be greater than the maximum '\(maximumLength)' graphme count."
+            case .stringConstantLessThanMinimumGraphemes(let constant, let maximumLength):
+                return "Constant '\(constant)' cannot be less than the minimum '\(maximumLength)' graphme count."
+            case .bytesConstantGreaterThankMaximumLength(constant: let constant, maximumLength: let maximumLength):
+                return "Constant '\(constant)' cannot be greater than the maximum '\(maximumLength)' bytes."
+            case .invalidBlobReferencePath(let path):
+                return "Invalid blob reference path: \(path)"
         }
     }
 
