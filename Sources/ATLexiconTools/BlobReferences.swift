@@ -105,7 +105,7 @@ public struct BlobReference: Codable, Sendable {
     /// The blob's size.
     public let size: Int
 
-    /// Original JSON blob representation used to preserve source encoding details.
+    /// Original JSON blob representation used to preserve source encoding details. Optional.
     public let originalJSONReference: JSONBlobReference?
 
     /// Initializes an instance of `BlobReference`.
