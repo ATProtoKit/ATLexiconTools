@@ -71,6 +71,17 @@ public enum JSONBlobReference: Codable, Sendable {
         }
     }
 
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        
+        switch self {
+            case .typed(let value):
+                try container.encode(value)
+            case .untyped(let value):
+                try container.encode(value)
+        }
+    }
+
     enum CodingKeys: String, CodingKey {
         case typed
         case untyped
