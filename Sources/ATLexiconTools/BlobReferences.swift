@@ -89,7 +89,7 @@ public enum JSONBlobReference: Codable, Sendable {
 }
 
 /// A structure representing a blob reference.
-public struct BlobReference: Codable {
+public struct BlobReference: Codable, Sendable {
 
     /// The reference type.
     ///
@@ -105,16 +105,24 @@ public struct BlobReference: Codable {
     /// The blob's size.
     public let size: Int
 
+    /// Original JSON blob representation used to preserve source encoding details.
+    public let originalJSONReference: JSONBlobReference?
+
     /// Initializes an instance of `BlobReference`.
     ///
     /// - Parameters:
     ///   - reference: The `CID` of the blob.
     ///   - mimeType: The MIME type of the blob.
     ///   - size: The size of the blob, in bytes.
-    public init(reference: CID, mimeType: String, size: Int) {
+    public init(reference: CID, mimeType: String, size: Int, originalJSONReference: JSONBlobReference? = nil) {
         self.reference = reference
         self.mimeType = mimeType
         self.size = size
+        self.originalJSONReference = originalJSONReference ?? .typed(TypedJSONBlobReference(
+            reference: reference,
+            mimeType: mimeType,
+            size: size)
+        )
     }
 
     /// Initializes a `BlobReference` from an `IPLD.IPLDValue`.
@@ -232,6 +240,7 @@ public struct BlobReference: Codable {
         case reference = "ref"
         case mimeType
         case size
+        case originalJSONReference = "original"
     }
 }
 
