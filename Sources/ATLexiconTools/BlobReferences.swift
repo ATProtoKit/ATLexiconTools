@@ -12,7 +12,7 @@ import ATCommonWeb
 /// A typed version of the blob reference JSON.
 ///
 /// This version includes a size property, as well as a `CID` object.
-public struct TypedJSONBlobReference: Codable {
+public struct TypedJSONBlobReference: Codable, Sendable {
 
     /// The reference type.
     ///
@@ -39,7 +39,7 @@ public struct TypedJSONBlobReference: Codable {
 /// An untyped version of the blob reference JSON.
 ///
 /// This version lacks a size property, as well as a CID in its string representation.
-public struct UntypedJSONBlobReference: Codable {
+public struct UntypedJSONBlobReference: Codable, Sendable {
 
     /// The CID of the blob.
     public let cid: String
@@ -49,7 +49,7 @@ public struct UntypedJSONBlobReference: Codable {
 }
 
 /// An enumeration that can represent either a typed or untyped JSON blob reference.
-public enum JSONBlobReference: Codable {
+public enum JSONBlobReference: Codable, Sendable {
 
     /// A typed blob reference.
     case typed(TypedJSONBlobReference)
