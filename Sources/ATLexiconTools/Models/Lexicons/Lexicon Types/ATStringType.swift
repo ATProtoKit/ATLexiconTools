@@ -163,4 +163,31 @@ public struct ATStringType: ATLexiconObjectProtocol {
         /// Indicates the format is a language code.
         case language
     }
+    /// Validates the string value based on their format.
+    private static func validateFormat(format: Format, value: String) throws {
+        switch format {
+            case .atIdentifier:
+                try Validator.Format.validateATIdentifier(path: "", atIdentifier: value)
+            case .atURI:
+                try Validator.Format.validateATURI(path: "", atURIValue: value)
+            case .cid:
+                try Validator.Format.validateCID(path: "", cidValue: value)
+            case .dateTime:
+                try Validator.Format.validateDateTime(path: "", dateTimeValue: value)
+            case .did:
+                try Validator.Format.validateDID(path: "", didValue: value)
+            case .handle:
+                try Validator.Format.validateHandle(path: "", handleValue: value)
+            case .nsid:
+                try Validator.Format.validateNSID(path: "", nsidValue: value)
+            case .tid:
+                try Validator.Format.validateTID(path: "", tidValue: value)
+            case .recordKey:
+                try Validator.Format.validateRecordKey(path: "", recordKeyValue: value)
+            case .uri:
+                try Validator.Format.validateURI(path: "", uriValue: value)
+            case .language:
+                try Validator.Format.validateLanguage(path: "", languageValue: value)
+        }
+    }
 }
