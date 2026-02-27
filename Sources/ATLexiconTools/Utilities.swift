@@ -104,7 +104,7 @@ public enum LexiconToolsUtilities {
     /// or `false` if not.
     ///
     /// - Throws: An error if the provided `type` cannot be converted to a valid lexicon URI.
-    internal func refencesContainType(references: [String], type: String) throws -> Bool {
+    internal static func refencesContainType(references: [String], type: String) throws -> Bool {
         let lexURI = try Self.toLexiconURI(from: type)
 
         if references.contains(lexURI) {
