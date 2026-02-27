@@ -69,7 +69,7 @@ public struct ATArrayType: ATLexiconObjectProtocol {
     }
 
     /// An enumeration referencing a specific property.
-    public enum Item: Codable {
+    public enum Item: Codable, Sendable {
 
         /// A `boolean` property.
         case boolean(ATBooleanType)
