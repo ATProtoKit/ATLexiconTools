@@ -33,7 +33,7 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
     public let defaultValue: Int?
 
     /// A fixed value for the field. Optional.
-    public let constant: Int?
+    public let constantValue: Int?
 
     /// Creates an instance of `ATIntegerType`.
     ///
@@ -43,14 +43,14 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
     ///   - maximum: The maximum number. Optional.
     ///   - enumValues: An array of allowed values. Optional.
     ///   - defaultValue: A default value for the field. Optional.
-    ///   - constant: A fixed value for the field. Optional.
-    public init(description: String?, minimum: Int?, maximum: Int?, enumValues: [Int]?, defaultValue: Int?, constant: Int?) throws {
+    ///   - constantValue: A fixed value for the field. Optional.
+    public init(description: String?, minimum: Int?, maximum: Int?, enumValues: [Int]?, defaultValue: Int?, constantValue: Int?) throws {
         self.description = description
         self.minimum = minimum
         self.maximum = maximum
         self.enumValues = enumValues
         self.defaultValue = defaultValue
-        self.constant = constant
+        self.constantValue = constantValue
     }
 
     public init(from decoder: any Decoder) throws {
@@ -61,7 +61,7 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
         self.maximum = try container.decodeIfPresent(Int.self, forKey: .maximum)
         self.enumValues = try container.decodeIfPresent([Int].self, forKey: .enumValues)
         self.defaultValue = try container.decodeIfPresent(Int.self, forKey: .defaultValue)
-        self.constant = try container.decodeIfPresent(Int.self, forKey: .constant)
+        self.constantValue = try container.decodeIfPresent(Int.self, forKey: .constantValue)
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -72,7 +72,7 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
         try container.encodeIfPresent(self.maximum, forKey: .maximum)
         try container.encodeIfPresent(self.enumValues, forKey: .enumValues)
         try container.encodeIfPresent(self.defaultValue, forKey: .defaultValue)
-        try container.encodeIfPresent(self.constant, forKey: .constant)
+        try container.encodeIfPresent(self.constantValue, forKey: .constantValue)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -81,7 +81,7 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
         case maximum
         case enumValues = "enum"
         case defaultValue = "default"
-        case constant = "const"
+        case constantValue = "const"
     }
 
     // Validators

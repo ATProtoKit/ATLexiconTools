@@ -136,83 +136,119 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
     ///   - expectedType: The type that was expected to be used.
     case invalidType(value: String, expectedType: String)
 
+    /// The path provided isn't the specific constant value.
+    ///
+    /// - Parameters:
+    ///   - path: The path provided.
+    ///   - constantValue: The value that should match.
+    case pathIsNotValue(path: String, constantValue: String)
+
     /// The type of the lexicon is not one of the valid lexicon types.
     ///
     /// - Parameter type: The name of the lexicon type.
     case unexpectedLexiconType(type: String)
 
+    /// The path provided isn't one of the valid values.
+    ///
+    /// - Parameters:
+    ///   - path: The name of the path.
+    ///   - values: A list of valid values.
+    case pathIsNotOneOfSeveralValues(path: String, values: String)
+
     /// The constant integer is greater than the maximum.
     ///
     /// - Parameters:
     ///   - constant: The value's constant.
+    ///   - path: The name of the path. Optional.
     ///   - maximumLength: The maximum number that should not exceed.
-    case intConstantGreaterThanMaximum(constant: Int, maximumLength: Int)
+    case intConstantGreaterThanMaximum(constant: Int, path: String? = nil, maximumLength: Int)
 
     /// The constant integer is less than the minimum.
     ///
     /// - Parameters:
     ///   - constant: The value's constant.
+    ///   -  path: The name of the path. Optional.
     ///   - minimumLength: The minimum number that should be matched or exceeded.
-    case intConstantLessThanMinimum(constant: Int, minimumLength: Int)
+    case intConstantLessThanMinimum(constant: Int, path: String? = nil, minimumLength: Int)
 
     /// The default value integer is greater than the maximum.
     ///
     /// - Parameters:
     ///   - defaultValue: The default value.
-    ///   - maximumLength: The maximum number that should not exceed.
+    ///   - maximumLength: The maximum numberthat should not be exceeded.
     case intDefaultValueGreaterThanMaximum(defaultValue: Int, maximumLength: Int)
 
     /// The default value integer is less than the minimum.
     ///
     /// - Parameters:
     ///   - defaultValue: The default value.
-    ///   - maximumLength: The maximum number that should not exceed.
+    ///   - maximumLength: The maximum number that should not be exceeded.
     case intDefaultValueLessThanMinimum(defaultValue: Int, minimumLength: Int)
 
     /// An enum integer value is either less than the minimum, or greater than the maximum.
     ///
     /// - Parameters:
     ///   - enumValue: The default value.
-    ///   - minimumValue: The minimum value to not exceed.
-    ///   - maximumValue: The maximum value to not exceed.
+    ///   - minimumValue: The minimum value that should not be exceeded.
+    ///   - maximumValue: The maximum value that should not be exceeded.
     case intEnumValueOutsideRange(enumValue: Int, minimumValue: Int, maximumValue: Int)
 
     /// The constant string is greater than the maximum length (Unicode scalars).
     ///
     /// - Parameters:
-    ///   - constant: The value's constant.
-    ///   - maximumLength: The maximum number that should not exceed.
-    case stringConstantGreaterThanMaximumLength(constant: String, maximumLength: Int)
+    ///   - value: The value's constant.
+    ///   - path: The name of the path.
+    ///   - maximumLength: The maximum number that should not be exceeded.
+    case stringValueGreaterThanMaximumLength(value: String, path: String, maximumLength: Int)
 
-    /// The constant string as less than the minimum length (Unicode scalars).
+    /// The constant string is less than the minimum length (Unicode scalars).
     ///
     /// - Parameters:
-    ///   - constant: The value's constant.
-    ///   - minimumLength: The minimum number that should be matched or exceeded.
-    case stringConstantLessThanMinimumLength(constant: String, minimumLength: Int)
+    ///   - value: The string value.
+    ///   - path: The name of the path.
+    ///   - minimumLength: The minimum number that should not be exceeded.
+    case stringValueLessThanMinimumLength(value: String, path: String, minimumLength: Int)
 
-    /// The constant string as less than the maximum graphemes.
+    /// The string value is less than the maximum graphemes.
     ///
     /// - Parameters:
-    ///   - constant: The value's constant.
-    ///   - minimumGraphemes: The minimum number that should be matched or exceeded.
-    case stringConstantGreaterThanMaximumGraphemes(constant: String, maximumLength: Int)
+    ///   - value: The string value
+    ///   - path: The name of the path.
+    ///   - maximumGraphemes: The minimum number that should not be exceeded.
+    case stringValueGreaterThanMaximumGraphemes(value: String, path: String, maximumGraphemes: Int)
 
-    /// The constant string as less than the minimum graphemes.
+    /// The string value is less than the minimum graphemes.
     ///
     /// - Parameters:
-    ///   - constant: The value's constant.
-    ///   - minimumGraphemes: The minimum number that should be matched or exceeded.
-    case stringConstantLessThanMinimumGraphemes(constant: String, maximumLength: Int)
+    ///   - constant: The string value.
+    ///   - minimumGraphemes: The minimum number that should not be exceeded.
+    case stringValueLessThanMinimumGraphemes(value: String, path: String, minimumGraphemes: Int)
 
-    /// The constant bytes is greater than the maximum length.
+    /// The bytes value is greater than the maximum length.
     ///
     /// - Parameters:
-    ///   - constant: The value's constant.
-    ///   - maximumLength: The maximum number that should not exceed.
-    case bytesConstantGreaterThankMaximumLength(constant: Data, maximumLength: Int)
+    ///   - value: The byte value.
+    ///   - maximumLength: The maximum number that should not be exceeded.
+    case bytesValueGreaterThankMaximumLength(value: Data, path: String, maximumLength: Int)
+
+    /// The bytes value is less than the minimum length.
+    ///
+    /// - Parameters:
+    ///   - value: The byte value.
+    ///   - path: The name of the path.
+    ///   - maximumLength: The minimum number that should not be exceeded.
+    case bytesValueLessThanMinimumLength(value: Data, path: String, minimumLength: Int)
+
+    /// The value is not an object.
+    ///
+    /// - Parameters:
+    ///   - path: The name of the path.
+    ///   - value: The unknown value.
+    case unknownValueIsNotAnObject(path: String, value: PrimitiveValue)
 
     /// The provided path is a an invalid blob reference.
+    ///
+    /// - Parameter path: The name of the path.
     case invalidBlobReferencePath(path: String)
 
     public var errorDescription: String? {
@@ -237,28 +273,48 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
                 return "Path ('\(path)') must be a valid Record Key."
             case .invalidType(let value, let expectedType):
                 return "Value ('\(value)') must be of type '\(expectedType)'."
+            case .pathIsNotValue(let path, let constantValue):
+                return "\(path) must be '\(constantValue)'."
             case .unexpectedLexiconType(let type):
                 return "Unexpected lexicon type: '\(type)'."
-            case .intConstantGreaterThanMaximum(let constant, let maximumLength):
-                return "Constant '\(constant)' cannot be greater than the maximum '\(maximumLength)'."
-            case .intConstantLessThanMinimum(let constant, let minimumLength):
-                return "Constant '\(constant)' cannot be less than the minimum '\(minimumLength)'."
+            case .pathIsNotOneOfSeveralValues(let path, let values):
+                return "\(path) must be one of the following values: \(values)."
+            case .intConstantGreaterThanMaximum(let constant, let path, let maximumLength):
+                var pathValue: String = ""
+
+                if let path = path {
+                    pathValue = "in \(path) "
+                }
+
+                return "Constant '\(constant)' \(pathValue)cannot be greater than the maximum '\(maximumLength)'."
+            case .intConstantLessThanMinimum(let constant, let path, let minimumLength):
+                var pathValue: String = ""
+
+                if let path = path {
+                    pathValue = "in \(path) "
+                }
+
+                return "Constant '\(constant)' \(pathValue)cannot be less than the minimum '\(minimumLength)'."
             case .intDefaultValueGreaterThanMaximum(let defaultValue, let maximumLength):
                 return "Default value '\(defaultValue)' cannot be greater than the maximum '\(maximumLength)'."
             case .intDefaultValueLessThanMinimum(let defaultValue, let minimumLength):
                 return "Default value '\(defaultValue)' cannot be less than the minimum '\(minimumLength)'."
             case .intEnumValueOutsideRange(let enumValue, let minimumValue, let maximumValue):
                 return "Enum value '\(enumValue)' must be between '\(minimumValue)' and '\(maximumValue)'."
-            case .stringConstantGreaterThanMaximumLength(let constant, let maximumLength):
-                return "Constant '\(constant)' cannot be greater than the maximum '\(maximumLength)' Unicode scalar count."
-            case .stringConstantLessThanMinimumLength(let constant, let minimumLength):
-                return "Constant '\(constant)' cannot be less than the minimum '\(minimumLength)' Unicode scalar count."
-            case .stringConstantGreaterThanMaximumGraphemes(let constant, let maximumLength):
-                return "Constant '\(constant)' cannot be greater than the maximum '\(maximumLength)' graphme count."
-            case .stringConstantLessThanMinimumGraphemes(let constant, let maximumLength):
-                return "Constant '\(constant)' cannot be less than the minimum '\(maximumLength)' graphme count."
-            case .bytesConstantGreaterThankMaximumLength(constant: let constant, maximumLength: let maximumLength):
-                return "Constant '\(constant)' cannot be greater than the maximum '\(maximumLength)' bytes."
+            case .stringValueGreaterThanMaximumLength(let value, let path, let maximumLength):
+                return "Constant '\(value)' in path '\(path)' cannot be greater than the maximum '\(maximumLength)' Unicode scalar count."
+            case .stringValueLessThanMinimumLength(let value, let path, let minimumLength):
+                return "String value '\(value)' in path '\(path)' cannot be less than the minimum '\(minimumLength)' Unicode scalar count."
+            case .stringValueGreaterThanMaximumGraphemes(let value, let path, let maximumGraphemes):
+                return "String value '\(value)' in path '\(path)' cannot be greater than the maximum '\(maximumGraphemes)' graphme count."
+            case .stringValueLessThanMinimumGraphemes(let value, let path, let minimumGraphemes):
+                return "String value '\(value)' in path '\(path)' cannot be less than the minimum '\(minimumGraphemes)' graphme count."
+            case .bytesValueGreaterThankMaximumLength(let value, let path, let maximumLength):
+                return "String value '\(value)' in path '\(path)' cannot be greater than the maximum '\(maximumLength)' bytes."
+            case .bytesValueLessThanMinimumLength(let value, let path, let minimumLength):
+                return "String value '\(value)' in path '\(path)' cannot be less than the minimum '\(minimumLength)' bytes."
+            case .unknownValueIsNotAnObject(let path, let value):
+                return "\(value) in path '\(path)' must be an object."
             case .invalidBlobReferencePath(let path):
                 return "Invalid blob reference path: \(path)"
         }
