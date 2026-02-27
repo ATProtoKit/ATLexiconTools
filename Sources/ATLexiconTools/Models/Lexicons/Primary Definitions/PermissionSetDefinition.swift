@@ -32,7 +32,7 @@ public struct PermissionSetDefinition: ATLexiconObjectProtocol {
     public let detailLanguage: [String: String]?
 
     /// An array of permissions.
-    public let permissions: [String]
+    public let permissions: [ATPermissionType]
 
 
     enum CodingKeys: String, CodingKey {
