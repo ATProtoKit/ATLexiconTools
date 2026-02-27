@@ -55,6 +55,9 @@ public enum LexiconDefinition: Codable, Sendable {
     /// A `unknown` object.
     case unknown(ATUnknownType)
 
+    /// A `union` object.
+    case union(ATUnionType)
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -110,6 +113,8 @@ public enum LexiconDefinition: Codable, Sendable {
                 self = .cidLink(try ATCIDLinkType(from: decoder))
             case "unknown":
                 self = .unknown(try ATUnknownType(from: decoder))
+            case "union":
+                self = .union(try ATUnionType(from: decoder))
             default:
                 let knownTypes = [
                     "record", "query", "procedure", "subscription", "blob", "array", "token", "object",
@@ -156,6 +161,8 @@ public enum LexiconDefinition: Codable, Sendable {
                 try container.encode(value)
             case .unknown(let value):
                 try container.encode(value)
+            case .union(let value):
+                try container.encode(value)
         }
     }
 
@@ -195,6 +202,8 @@ public enum LexiconDefinition: Codable, Sendable {
             case .cidLink(let value):
                 return value.type
             case .unknown(let value):
+                return value.type
+            case .union(let value):
                 return value.type
         }
     }
