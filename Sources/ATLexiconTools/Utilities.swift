@@ -36,7 +36,6 @@ public enum LexiconToolsUtilities {
         return "lex:\(string)"
     }
 
-
     /// Validates that all required property keys exist in the properties dictionary.
     ///
     /// - Parameters:
@@ -58,6 +57,65 @@ public enum LexiconToolsUtilities {
                 context.addIssue("Required field '\(field)' not defined.")
             }
         }
+    }
+
+    /// Determines whether the runtime value is an object primitive.
+    ///
+    /// - Parameter value: The primitive value to inspect.
+    /// - Returns: `true` if the value is an object value, or `false` if not.
+    public static func isObject(_ value: PrimitiveValue) -> Bool {
+        if case .dictionary = value {
+            return true
+        }
+
+        return false
+    }
+
+    /// Determines whether a dictionary has a specific key.
+    ///
+    /// - Parameters:
+    ///   - dictionary: Dictionary to inspect.
+    ///   - property: The key to check.
+    /// - Returns: `true` if the key exists, or `false` if not.
+    public static func hasProperty(_ dictionary: [String: PrimitiveValue], property: String) -> Bool {
+        dictionary[property] != nil
+    }
+
+    /// Determines whether the runtime value has a string `$type` field.
+    ///
+    ///
+    /// - Parameter value: The primitive value to inspect.
+    /// - Returns: `true` if a string `$type` field is present, or `false` if it's not.
+    public static func isDiscriminatedObject(_ value: PrimitiveValue) -> Bool {
+        guard case .dictionary(let dictionary) = value,
+              case .string(let type)? = dictionary["$type"] else {
+            return false
+        }
+
+        return !type.isEmpty
+    }
+
+    /// Checks whether a list of lexicon reference URIs contains a given type.
+    ///
+    /// - Parameters:
+    ///   - references: An array of lexicon reference URIs to search.
+    ///   - type: A type identifier that will be converted to a lexicon URI.
+    /// - Returns: `true` if the normalized type is found in `ref`,
+    /// or `false` if not.
+    ///
+    /// - Throws: An error if the provided `type` cannot be converted to a valid lexicon URI.
+    internal func refencesContainType(references: [String], type: String) throws -> Bool {
+        let lexURI = try Self.toLexiconURI(from: type)
+
+        if references.contains(lexURI) {
+            return true
+        }
+
+        if lexURI.hasSuffix("#main") {
+            return references.contains(lexURI.replacingOccurrences(of: "#main", with: ""))
+        }
+
+        return references.contains("\(lexURI)#main")
     }
 
     /// Enforces a preconditioned requirement check.
