@@ -10,7 +10,7 @@ import Foundation
 /// A group of primitives that might be used in a union.
 ///
 /// - Important: This may be removed in the future.
-public enum ATLexiconPrimitive: Codable {
+public enum ATLexiconPrimitive: Codable, Sendable {
 
     /// The primitive is a boolean.
     case boolean(ATBooleanType)

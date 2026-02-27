@@ -32,7 +32,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
     public let nullable: [String]?
 
     /// An enumeration referencing a specific property.
-    public enum Property: Codable {
+    public enum Property: Codable, Sendable {
 
         /// A `boolean` property.
         case boolean(ATBooleanType)

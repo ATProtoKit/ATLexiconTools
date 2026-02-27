@@ -11,7 +11,7 @@ import Foundation
 ///
 /// In Swift, this would typicaly be the equivalent of assigning a property or `case` to a
 /// `struct`, `class`, or `enum`.
-public struct ATReferenceType: Codable {
+public struct ATReferenceType: Codable, Sendable {
 
     /// The type value of the object.
     ///

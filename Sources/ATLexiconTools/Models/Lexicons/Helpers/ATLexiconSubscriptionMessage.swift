@@ -8,7 +8,7 @@
 import Foundation
 
 /// Specifices what messages in a subscription can be sent
-public struct ATLexiconSubscriptionMessage: Codable {
+public struct ATLexiconSubscriptionMessage: Codable, Sendable {
 
     /// A short description of the object. Optional.
     public let description: String?
@@ -17,7 +17,7 @@ public struct ATLexiconSubscriptionMessage: Codable {
     public let schema: Schema?
 
     /// An array of union objects related to the schema for the WebSocket event.
-    public enum Schema: Codable {
+    public enum Schema: Codable, Sendable {
 
         /// A group of reference variants.
         case referenceVariant(ATLexiconReferenceVariant)

@@ -8,7 +8,7 @@
 import Foundation
 
 /// An enumeration representing the primary lexicon definitions.
-public enum LexiconDefinition: Codable {
+public enum LexiconDefinition: Codable, Sendable {
 
     /// Describes an object to be stored in a repository record.
     case record(RecordDefinition)
