@@ -17,4 +17,26 @@ public struct ATCIDLinkType: ATLexiconObjectProtocol {
 
     /// A short description of the object. Optional.
     public let description: String?
+
+    /// Creates an instance of `ATCIDLinkType`.
+    ///
+    /// - Parameter description: A short description of the object. Optional. Defaults to `nil`.
+    public init(description: String? = nil) {
+        self.description = description
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(self.description, forKey: .description)
+    }
+
+    enum CodingKeys: CodingKey {
+        case description
+    }
 }

@@ -38,13 +38,19 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
     /// Creates an instance of `ATIntegerType`.
     ///
     /// - Parameters:
-    ///   - description: A short description of the object. Optional.
-    ///   - minimum: The minimum number. Optional.
-    ///   - maximum: The maximum number. Optional.
-    ///   - enumValues: An array of allowed values. Optional.
-    ///   - defaultValue: A default value for the field. Optional.
-    ///   - constantValue: A fixed value for the field. Optional.
-    public init(description: String?, minimum: Int?, maximum: Int?, enumValues: [Int]?, defaultValue: Int?, constantValue: Int?) throws {
+    ///   - description: A short description of the object. Optional. Defaults to `nil`.
+    ///   - minimum: The minimum number. Optional. Defaults to `nil`.
+    ///   - maximum: The maximum number. Optional. Defaults to `nil`.
+    ///   - enumValues: An array of allowed values. Optional. Defaults to `nil`.
+    ///   - defaultValue: A default value for the field. Optional. Defaults to `nil`.
+    ///   - constantValue: A fixed value for the field. Optional. Defaults to `nil`.
+    public init(description: String? = nil,
+                minimum: Int? = nil,
+                maximum: Int? = nil,
+                enumValues: [Int]? = nil,
+                defaultValue: Int? = nil,
+                constantValue: Int? = nil
+    ) throws {
         self.description = description
         self.minimum = minimum
         self.maximum = maximum

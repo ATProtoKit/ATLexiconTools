@@ -49,27 +49,31 @@ public struct ATStringType: ATLexiconObjectProtocol {
     /// Creates an instance of `ATIntegerType`.
     ///
     /// - Parameters:
-    ///   - description: A short description of the object. Optional.
-    ///   - format: The string format restriction. Optional.
+    ///   - description: A short description of the object. Optional. Defaults to `nil`.
+    ///   - format: The string format restriction. Optional. Defaults to `nil`.
     ///   - maximumLength: The maximum number of characters allowed in the field. Optional.
+    ///   Defaults to `nil`.
     ///   - minimumLength: The minimum number of characters allowed in the field. Optional.
+    ///   Defaults to `nil`.
     ///   - maximumGraphemes: The maximum number of grapheme characters in the field. Optional.
+    ///   Defaults to `nil`.
     ///   - minimumGraphemes: The minimum number of grapheme characters in the field. Optional.
-    ///   - knownValues: An array of suggested or common values for this field. Optional.
-    ///   - enumValues: An array of allowed values. Optional.
-    ///   - defaultValue: The default value for this field. Optional.
-    ///   - constantValue: A fixed value for the object. Optional.
+    ///   Defaults to `nil`.
+    ///   - knownValues: An array of suggested or common values for this field. Optional. Defaults to `nil`.
+    ///   - enumValues: An array of allowed values. Optional. Defaults to `nil`.
+    ///   - defaultValue: The default value for this field. Optional. Defaults to `nil`.
+    ///   - constantValue: A fixed value for the object. Optional. Defaults to `nil`.
     public init(
-        description: String?,
-        format: Format?,
-        maximumLength: Int?,
-        minimumLength: Int?,
-        maximumGraphemes: Int?,
-        minimumGraphemes: Int?,
-        knownValues: [String]?,
-        enumValues: [String]?,
-        defaultValue: String?,
-        constantValue: String?
+        description: String? = nil,
+        format: Format? = nil,
+        maximumLength: Int? = nil,
+        minimumLength: Int? = nil,
+        maximumGraphemes: Int? = nil,
+        minimumGraphemes: Int? = nil,
+        knownValues: [String]? = nil,
+        enumValues: [String]? = nil,
+        defaultValue: String? = nil,
+        constantValue: String? = nil
     ) {
         self.description = description
         self.format = format

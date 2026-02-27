@@ -31,8 +31,9 @@ public struct ATBlobType: ATLexiconObjectProtocol {
     /// - Parameters:
     ///   - description: A short description of the object. Optional.
     ///   - accept: An array of MIME types in a glob pattern (example: `image/jpeg`, `*/*`, etc.). Optional.
+    ///   Defaults to `nil`.
     ///   - maximumSize: The maximum size of the blob in bytes. Optional.
-    public init(description: String?, accept: [String]?, maximumSize: Int?) {
+    public init(description: String? = nil, accept: [String]? = nil, maximumSize: Int? = nil) {
         self.description = description
         self.accept = accept
         self.maximumSize = maximumSize

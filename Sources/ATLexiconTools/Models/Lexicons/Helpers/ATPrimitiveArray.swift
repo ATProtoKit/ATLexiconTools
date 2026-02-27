@@ -18,7 +18,7 @@ public struct ATPrimitiveArray: Codable, Sendable {
     /// A short description of the object. Optional.
     public let description: String?
 
-    /// A container of an array of properties.
+    /// A container of an array of properties. Optional.
     public let items: ATLexiconPrimitive?
 
     /// The minimum length a `string` object can have. Optional.
@@ -26,6 +26,20 @@ public struct ATPrimitiveArray: Codable, Sendable {
 
     /// The maximum length a `string` object can have. Optional.
     public let maximumLength: Int?
+
+    /// Creates an instance of `ATPrimitiveArray`.
+    ///
+    /// - Parameters:
+    ///   - description: A short description of the object. Optional. Defaults to `nil`.
+    ///   - items: A container of an array of properties. Optional. Defaults to `nil`.
+    ///   - minimumLength: The minimum length a `string` object can have. Optional. Defaults to `nil`.
+    ///   - maximumLength: The maximum length a `string` object can have. Optional. Defaults to `nil`.
+    public init(description: String? = nil, items: ATLexiconPrimitive? = nil, minimumLength: Int? = nil, maximumLength: Int? = nil) {
+        self.description = description
+        self.items = items
+        self.minimumLength = minimumLength
+        self.maximumLength = maximumLength
+    }
 
     enum CodingKeys: String, CodingKey {
         case description

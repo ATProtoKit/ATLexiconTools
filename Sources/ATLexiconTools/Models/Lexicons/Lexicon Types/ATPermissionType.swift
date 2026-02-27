@@ -21,8 +21,36 @@ public struct ATPermissionType: Codable, Sendable {
     /// Public repository write permissions. Optional.
     public let repository: Repository?
 
-    /// Remote API calls via proxying or service token generation.
+    /// Remote API calls via proxying or service token generation. Optional.
     public let rpc: RPC?
+
+    /// Creates an instance of `ATPermissionType`.
+    ///
+    /// - Parameters:
+    ///   - resource: Indicates the resource type which access is being granted to.
+    ///   - repository: Public repository write permissions. Optional. Defaults to `nil`.
+    ///   - rpc: Remote API calls via proxying or service token generation. Optional. Defaults to `nil`.
+    public init(resource: String, repository: Repository? = nil, rpc: RPC? = nil) {
+        self.resource = resource
+        self.repository = repository
+        self.rpc = rpc
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.resource = try container.decode(String.self, forKey: .resource)
+        self.repository = try container.decodeIfPresent(ATPermissionType.Repository.self, forKey: .repository)
+        self.rpc = try container.decodeIfPresent(ATPermissionType.RPC.self, forKey: .rpc)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.resource, forKey: .resource)
+        try container.encodeIfPresent(self.repository, forKey: .repository)
+        try container.encodeIfPresent(self.rpc, forKey: .rpc)
+    }
 
     enum CodingKeys: String, CodingKey {
         case resource

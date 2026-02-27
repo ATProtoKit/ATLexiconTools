@@ -26,6 +26,38 @@ public struct ATParamsType: Codable, Sendable {
     /// A dictionary of properties with their own schemas.
     public let properties: [String: Property]
 
+    /// Creates an instance of `ATParamsType`.
+    ///
+    /// - Parameters:
+    ///   - description: A short description of the object. Optional. Defaults to `nil`.
+    ///   - required: An array of properties that are required in the lexicon. Optional. Defaults to `nil`.
+    ///   - properties: A dictionary of properties with their own schemas.
+    public init(description: String? = nil, required: [String]? = nil, properties: [String : Property]) {
+        self.description = description
+        self.required = required
+        self.properties = properties
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.required = try container.decodeIfPresent([String].self, forKey: .required)
+        self.properties = try container.decode([String : ATParamsType.Property].self, forKey: .properties)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(self.description, forKey: .description)
+        try container.encodeIfPresent(self.required, forKey: .required)
+        try container.encode(self.properties, forKey: .properties)
+    }
+
+    enum CodingKeys: CodingKey {
+        case description
+        case required
+        case properties
+    }
+
     /// A specific property.
     public enum Property: Codable, Sendable {
 

@@ -29,10 +29,10 @@ public struct ATBooleanType: ATLexiconObjectProtocol {
     /// Creates an instance of `ATBooleanType`.
     ///
     /// - Parameters:
-    ///   - description: A short description of the object. Optional.
-    ///   - defaultValue: A default value for the field. Optional.
-    ///   - constant: A fixed value for the field. Optional.
-    public init(description: String?, defaultValue: Bool?, constant: Bool?) {
+    ///   - description: A short description of the object. Optional. Defaults to `nil`.
+    ///   - defaultValue: A default value for the field. Optional. Defaults to `nil`.
+    ///   - constant: A fixed value for the field. Optional. Defaults to `nil`.
+    public init(description: String? = nil, defaultValue: Bool? = nil, constant: Bool? = nil) {
         self.description = description
         self.defaultValue = defaultValue
         self.constant = constant
