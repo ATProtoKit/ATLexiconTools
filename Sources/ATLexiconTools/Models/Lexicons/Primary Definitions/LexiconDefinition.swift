@@ -58,6 +58,9 @@ public enum LexiconDefinition: Codable, Sendable {
     /// A `union` object.
     case union(ATUnionType)
 
+    /// A `ref` object.
+    case reference(ATReferenceType)
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -115,6 +118,8 @@ public enum LexiconDefinition: Codable, Sendable {
                 self = .unknown(try ATUnknownType(from: decoder))
             case "union":
                 self = .union(try ATUnionType(from: decoder))
+            case "ref":
+                self = .reference(try ATReferenceType(from: decoder))
             default:
                 let knownTypes = [
                     "record", "query", "procedure", "subscription", "blob", "array", "token", "object",
@@ -163,6 +168,8 @@ public enum LexiconDefinition: Codable, Sendable {
                 try container.encode(value)
             case .union(let value):
                 try container.encode(value)
+            case .reference(let value):
+                try container.encode(value)
         }
     }
 
@@ -204,6 +211,8 @@ public enum LexiconDefinition: Codable, Sendable {
             case .unknown(let value):
                 return value.type
             case .union(let value):
+                return value.type
+            case .reference(let value):
                 return value.type
         }
     }
