@@ -8,7 +8,7 @@
 import Foundation
 
 /// A `permission` type.
-public struct ATPermissionType: Codable {
+public struct ATPermissionType: Codable, Sendable {
 
     /// The type value of the object.
     ///
@@ -31,7 +31,7 @@ public struct ATPermissionType: Codable {
     }
 
     /// Public repository write permissions.
-    public struct Repository: Codable {
+    public struct Repository: Codable, Sendable {
 
         /// An array of record types in the Namespaced Identifier (NSID) format.
         public let collection: Set<String>
@@ -40,7 +40,7 @@ public struct ATPermissionType: Codable {
         public let action: Set<Action>
 
         /// Record operation actions.
-        public enum Action: Codable {
+        public enum Action: Codable, Sendable {
 
             /// Indicates the "create" operation.
             case create
@@ -54,7 +54,7 @@ public struct ATPermissionType: Codable {
     }
 
     /// Remote API calls via proxying or service token generation.
-    public struct RPC: Codable {
+    public struct RPC: Codable, Sendable {
 
         /// An array of lexicons related to the RPC.
         ///

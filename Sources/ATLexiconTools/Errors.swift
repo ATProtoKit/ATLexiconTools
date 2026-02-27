@@ -251,6 +251,37 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
     /// - Parameter path: The name of the path.
     case invalidBlobReferencePath(path: String)
 
+    /// The value is not an array.
+    ///
+    /// - Parameter path: The name of the path.
+    case valueIsNotArray(path: String)
+
+    /// The number of elements in the array is greater than the maximum amount.
+    ///
+    /// - Parameters:
+    ///   - path: The name of the path.
+    ///   - arrayElementNumber: The maximum number of elements that should not be exceeded.
+    case arrayElementsGreaterThanMaximumLength(path: String, arrayElementNumber: Int)
+
+    /// The number of elements in the array is fewer than the minimum amount.
+    ///
+    /// - Parameters:
+    ///   - path: The name of the path.
+    ///   - arrayElementNumber: The minimum number of elements that should not be exceeded.
+    case arrayElementsFewerThanMinimumLength(path: String, arrayElementNumber: Int)
+
+    /// The object value doesn't include a `$type` property.
+    ///
+    /// - Parameter path: The name of the path.
+    case objectMustInclude$typeProperty(path: String)
+
+    /// The `$type` value of rhe union object doesn't appear within the reference array.
+    ///
+    /// - Parameters:
+    ///   - path: The name of the path.
+    ///   - references: A list of references that should have been used.
+    case unionObject$typeValueNotFound(path: String, references: String)
+
     public var errorDescription: String? {
         switch self {
             case .notAValidDateTime(let path):
@@ -317,6 +348,16 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
                 return "\(value) in path '\(path)' must be an object."
             case .invalidBlobReferencePath(let path):
                 return "Invalid blob reference path: \(path)"
+            case .valueIsNotArray(let path):
+                return "\(path) must be an array."
+            case .arrayElementsGreaterThanMaximumLength(let path, let arrayElementNumber):
+                return "\(path) must not have more than \(arrayElementNumber) element(s)."
+            case .arrayElementsFewerThanMinimumLength(let path, let arrayElementNumber):
+                return "\(path) must not have fewer than \(arrayElementNumber) element(s)."
+            case .objectMustInclude$typeProperty(let path):
+                return "\(path) must be an object which includes the \"$type\" property."
+            case .unionObject$typeValueNotFound(path: let path, references: let references):
+                return "\(path) $type must be one of the following references: \(references)"
         }
     }
 

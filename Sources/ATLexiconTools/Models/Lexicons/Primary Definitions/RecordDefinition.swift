@@ -26,7 +26,7 @@ public struct RecordDefinition: ATLexiconObjectProtocol {
 
     /// A key that names and references an individual record within a collection of an
     /// AT Protocol repository.
-    public enum RecordKeyType: String, Codable {
+    public enum RecordKeyType: String, Codable, Sendable {
 
         /// Indicates the Record Key type is in the Timespaced Identifier (TID) format.
         case tid
