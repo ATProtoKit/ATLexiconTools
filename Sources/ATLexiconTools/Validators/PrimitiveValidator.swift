@@ -221,7 +221,7 @@ extension Validator.Primitive {
         definition: ATCIDLinkType,
         value: PrimitiveValue?
     ) throws {
-        guard let value, case .cid(let _) = value else {
+        guard let value, case .cid(_) = value else {
             throw LexiconValidatorError.invalidType(value: path, expectedType: "cid-link")
         }
     }
@@ -240,7 +240,7 @@ extension Validator.Primitive {
         value: PrimitiveValue?
     ) throws {
         guard let value,
-              case .dictionary(let dictionaryValue) = value else {
+              case .dictionary(_) = value else {
             throw LexiconValidatorError.invalidType(value: path, expectedType: "object")
         }
     }
