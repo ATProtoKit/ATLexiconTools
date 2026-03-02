@@ -29,7 +29,7 @@ public enum LexiconDefinition: Codable, Sendable {
     case blob(ATBlobType)
 
     /// An `array` object.
-    case array(ATArrayType)
+    indirect case array(ATArrayType)
 
     /// A `token` object.
     case token(ATTokenType)
