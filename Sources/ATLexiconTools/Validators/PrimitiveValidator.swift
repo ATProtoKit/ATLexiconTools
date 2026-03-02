@@ -17,27 +17,26 @@ extension Validator.Primitive {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
-    /// - Returns: The valid value.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match the constant value.
     public static func validate(
         path: String,
         definition: LexiconDefinition,
         value: PrimitiveValue?
-    ) throws -> PrimitiveValue {
+    ) throws {
         switch definition {
             case .boolean(let booleanType):
-                return try validateBoolean(path: path, definition: booleanType, value: value)
+                try validateBoolean(path: path, definition: booleanType, value: value)
             case .integer(let integerType):
-                return try validateInteger(path: path, definition: integerType, value: value)
+                try validateInteger(path: path, definition: integerType, value: value)
             case .string(let stringType):
-                return try validateString(path: path, definition: stringType, value: value)
+                try validateString(path: path, definition: stringType, value: value)
             case .bytes(let bytesType):
-                return try validateBytes(path: path, definition: bytesType, value: value)
+                try validateBytes(path: path, definition: bytesType, value: value)
             case .cidLink(let cidLinkType):
-                return try validateCID(path: path, definition: cidLinkType, value: value)
+                try validateCID(path: path, definition: cidLinkType, value: value)
             case .unknown(let objectType):
-                return try validateUnknown(path: path, definition: objectType, value: value)
+                try validateUnknown(path: path, definition: objectType, value: value)
             default:
                 throw LexiconValidatorError.unexpectedLexiconType(type: definition.type)
         }
@@ -50,19 +49,14 @@ extension Validator.Primitive {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
-    /// - Returns: The valid value.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match the constant value.
     private static func validateBoolean(
         path: String,
         definition: ATBooleanType,
         value: PrimitiveValue?
-    ) throws -> PrimitiveValue {
+    ) throws {
         guard let value else {
-            if let defaultValue = definition.defaultValue {
-                return .bool(defaultValue)
-            }
-
             throw LexiconValidatorError.invalidType(value: path, expectedType: "boolean")
         }
 
@@ -73,8 +67,6 @@ extension Validator.Primitive {
         if let constantValue = definition.constant, boolValue != constantValue {
             throw LexiconValidatorError.pathIsNotValue(path: path, constantValue: constantValue.description)
         }
-
-        return .bool(boolValue)
     }
 
     /// Validates an `Int` value.
@@ -83,19 +75,14 @@ extension Validator.Primitive {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
-    /// - Returns: The valid value.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match an expected value.
     private static func validateInteger(
         path: String,
         definition: ATIntegerType,
         value: PrimitiveValue?
-    ) throws -> PrimitiveValue {
+    ) throws {
         guard let value else {
-            if let defaultValue = definition.defaultValue {
-                return .int(defaultValue)
-            }
-
             throw LexiconValidatorError.invalidType(value: path, expectedType: "integer")
         }
 
@@ -118,8 +105,6 @@ extension Validator.Primitive {
         if let minimum = definition.minimum, intValue < minimum {
             throw LexiconValidatorError.intConstantLessThanMinimum(constant: intValue, path: path, minimumLength: minimum)
         }
-
-        return .int(intValue)
     }
 
     /// Validates a `String` value.
@@ -128,19 +113,14 @@ extension Validator.Primitive {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
-    /// - Returns: The valid value.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match an expected value.
     private static func validateString(
         path: String,
         definition: ATStringType,
         value: PrimitiveValue?
-    ) throws -> PrimitiveValue {
+    ) throws {
         guard let value else {
-            if let defaultValue = definition.defaultValue {
-                return .string(defaultValue)
-            }
-
             throw LexiconValidatorError.invalidType(value: path, expectedType: "string")
         }
 
@@ -173,32 +153,32 @@ extension Validator.Primitive {
         }
 
         guard let format = definition.format else {
-            return .string(stringValue)
+            return
         }
 
         switch format {
             case .atIdentifier:
-                return try Validator.Format.validateATIdentifier(path: path, atIdentifier: stringValue)
+                try Validator.Format.validateATIdentifier(path: path, atIdentifier: stringValue)
             case .atURI:
-                return try Validator.Format.validateATURI(path: path, atURIValue: stringValue)
+                try Validator.Format.validateATURI(path: path, atURIValue: stringValue)
             case .cid:
-                return try Validator.Format.validateCID(path: path, cidValue: stringValue)
+                try Validator.Format.validateCID(path: path, cidValue: stringValue)
             case .dateTime:
-                return try Validator.Format.validateDateTime(path: path, dateTimeValue: stringValue)
+                try Validator.Format.validateDateTime(path: path, dateTimeValue: stringValue)
             case .did:
-                return try Validator.Format.validateDID(path: path, didValue: stringValue)
+                try Validator.Format.validateDID(path: path, didValue: stringValue)
             case .handle:
-                return try Validator.Format.validateHandle(path: path, handleValue: stringValue)
+                try Validator.Format.validateHandle(path: path, handleValue: stringValue)
             case .nsid:
-                return try Validator.Format.validateNSID(path: path, nsidValue: stringValue)
+                try Validator.Format.validateNSID(path: path, nsidValue: stringValue)
             case .tid:
-                return try Validator.Format.validateTID(path: path, tidValue: stringValue)
+                try Validator.Format.validateTID(path: path, tidValue: stringValue)
             case .recordKey:
-                return try Validator.Format.validateRecordKey(path: path, recordKeyValue: stringValue)
+                try Validator.Format.validateRecordKey(path: path, recordKeyValue: stringValue)
             case .uri:
-                return try Validator.Format.validateURI(path: path, uriValue: stringValue)
+                try Validator.Format.validateURI(path: path, uriValue: stringValue)
             case .language:
-                return try Validator.Format.validateLanguage(path: path, languageValue: stringValue)
+                try Validator.Format.validateLanguage(path: path, languageValue: stringValue)
         }
     }
 
@@ -208,14 +188,13 @@ extension Validator.Primitive {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
-    /// - Returns: The valid value.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match an expected value.
     private static func validateBytes(
         path: String,
         definition: ATBytesType,
         value: PrimitiveValue?
-    ) throws -> PrimitiveValue {
+    ) throws {
         guard let value, case .bytes(let dataValue) = value else {
             throw LexiconValidatorError.invalidType(value: path, expectedType: "bytes")
         }
@@ -227,8 +206,6 @@ extension Validator.Primitive {
         if let minimumLength = definition.minimumLength, dataValue.count < minimumLength {
             throw LexiconValidatorError.bytesValueLessThanMinimumLength(value: dataValue, path: path, minimumLength: minimumLength)
         }
-
-        return .bytes(dataValue)
     }
 
     /// Validates a `CID` value.
@@ -237,19 +214,16 @@ extension Validator.Primitive {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
-    /// - Returns: The valid value.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match an expected value.
     private static func validateCID(
         path: String,
         definition: ATCIDLinkType,
         value: PrimitiveValue?
-    ) throws -> PrimitiveValue {
-        guard let value, case .cid(let cidValue) = value else {
+    ) throws {
+        guard let value, case .cid(let _) = value else {
             throw LexiconValidatorError.invalidType(value: path, expectedType: "cid-link")
         }
-
-        return .cid(cidValue)
     }
 
     /// Validates a unknown value.
@@ -258,19 +232,16 @@ extension Validator.Primitive {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
-    /// - Returns: The valid value.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match an expected value.
     private static func validateUnknown(
         path: String,
         definition: ATUnknownType,
         value: PrimitiveValue?
-    ) throws -> PrimitiveValue {
+    ) throws {
         guard let value,
               case .dictionary(let dictionaryValue) = value else {
             throw LexiconValidatorError.invalidType(value: path, expectedType: "object")
         }
-
-        return .dictionary(dictionaryValue)
     }
 }
