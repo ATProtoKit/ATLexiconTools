@@ -282,6 +282,18 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
     ///   - references: A list of references that should have been used.
     case unionObject$typeValueNotFound(path: String, references: String)
 
+    /// The value is not an object.
+    ///
+    /// - Parameter path: The name of the path.
+    case valueIsNotObject(path: String)
+
+    /// The object value doesn't have the required value.
+    ///
+    /// - Parameters:
+    ///   - path: The name of the path.
+    ///   - requiredKey: The required property value.
+    case objectRequiredPropertyNotFound(path: String, requiredKey: String)
+
     public var errorDescription: String? {
         switch self {
             case .notAValidDateTime(let path):
@@ -356,8 +368,12 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
                 return "\(path) must not have fewer than \(arrayElementNumber) element(s)."
             case .objectMustInclude$typeProperty(let path):
                 return "\(path) must be an object which includes the \"$type\" property."
-            case .unionObject$typeValueNotFound(path: let path, references: let references):
+            case .unionObject$typeValueNotFound(let path, let references):
                 return "\(path) $type must be one of the following references: \(references)"
+            case .valueIsNotObject(let path):
+                return "\(path) must be an object."
+            case .objectRequiredPropertyNotFound(let path, let requiredKey):
+                return "\(path) must have the value '\(requiredKey)"
         }
     }
 
