@@ -21,7 +21,7 @@ public struct ATArrayType: ATLexiconObjectProtocol {
     public let description: String?
 
     /// A container of an array of properties.
-    public let items: Item
+    public let items: LexiconDefinition
 
     /// The minimum length a `string` object can have. Optional.
     public let minimumLength: Int?
@@ -36,7 +36,7 @@ public struct ATArrayType: ATLexiconObjectProtocol {
     ///   - items: A container of an array of properties.
     ///   - minimumLength: The minimum length a `string` object can have. Optional. Defaults to `nil`.
     ///   - maximumLength: The maximum length a `string` object can have. Optional. Defaults to `nil`.
-    public init(description: String? = nil, items: Item, minimumLength: Int? = nil, maximumLength: Int? = nil) {
+    public init(description: String? = nil, items: LexiconDefinition, minimumLength: Int? = nil, maximumLength: Int? = nil) {
         self.description = description
         self.items = items
         self.minimumLength = minimumLength
@@ -47,7 +47,7 @@ public struct ATArrayType: ATLexiconObjectProtocol {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.items = try container.decode(ATArrayType.Item.self, forKey: .items)
+        self.items = try container.decode(LexiconDefinition.self, forKey: .items)
         self.minimumLength = try container.decodeIfPresent(Int.self, forKey: .minimumLength)
         self.maximumLength = try container.decodeIfPresent(Int.self, forKey: .maximumLength)
     }
