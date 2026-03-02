@@ -105,17 +105,44 @@ public enum LexiconToolsUtilities {
     ///
     /// - Throws: An error if the provided `type` cannot be converted to a valid lexicon URI.
     internal static func refencesContainType(references: [String], type: String) throws -> Bool {
-        let lexURI = try Self.toLexiconURI(from: type)
+        let lexiconURI = try Self.toLexiconURI(from: type)
 
-        if references.contains(lexURI) {
+        if references.contains(lexiconURI) {
             return true
         }
 
-        if lexURI.hasSuffix("#main") {
-            return references.contains(lexURI.replacingOccurrences(of: "#main", with: ""))
+        if lexiconURI.hasSuffix("#main") {
+            return references.contains(lexiconURI.replacingOccurrences(of: "#main", with: ""))
         }
 
-        return references.contains("\(lexURI)#main")
+        return references.contains("\(lexiconURI)#main")
+    }
+
+    /// Converts a polymorphic or protocol-oriented type representation into one or more concrete Swift
+    /// types, using the supplied lexicon sources and an optional definition context to resolve symbols.
+    ///
+    /// - Parameters:
+    ///   - lexicons: An ordered collection of type lexicons or symbol tables used to resolve names
+    ///   and aliases.
+    ///   - definition: A definition that provides additional symbol resolution, generic bindings, or
+    ///   visibility rules.
+    /// - Returns: An array of concrete type descriptors representing the best-known concrete forms of
+    /// the input.
+    ///
+    /// - Throws: An error if the resolution fails.
+    internal static func toConcreteTypes(lexicons: LexiconRegistry, definition: LexiconDefinition) throws -> [LexiconDefinition] {
+        switch definition {
+            case .reference(let reference):
+                return [try lexicons.getDefinition(by: reference.reference)]
+
+            case .union(let unionReference):
+                return try unionReference.references.map { ref in
+                    try lexicons.getDefinition(by: ref)
+                }
+
+            default:
+                return [definition]
+        }
     }
 
     /// Enforces a preconditioned requirement check.
