@@ -19,7 +19,4 @@ public enum Validator {
 
     /// Functions for validating primitive-related JSON inputs and outputs.
     public enum Primitive {}
-
-    /// Functions for validating schema-related JSON inputs and outputs.
-    public enum Schema {}
 }
