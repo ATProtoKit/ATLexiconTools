@@ -22,8 +22,8 @@ public struct ATObjectType: ATLexiconObjectProtocol {
     /// A short description of the object. Optional.
     public let description: String?
 
-    /// A dictionary of properties with their own schemas. Optional.
-    public let properties: [String: Property]?
+    /// A dictionary of properties with their own schemas.
+    public let properties: [String: LexiconDefinition]
 
     /// An array of properties that are required in the lexicon. Optional.
     public let required: [String]?
@@ -35,11 +35,11 @@ public struct ATObjectType: ATLexiconObjectProtocol {
     ///
     /// - Parameters:
     ///   - description: A short description of the object. Optional. Defaults to `nil`.
-    ///   - properties: A dictionary of properties with their own schemas. Optional. Defaults to `nil`.
+    ///   - properties: A dictionary of properties with their own schemas.
     ///   - required: An array of properties that are required in the lexicon. Optional. Defaults to `nil`.
     ///   - nullable: An array of properties that can be receive the value of `nil`. Optional.
     ///   Defaults to `nil`.
-    public init(description: String? = nil, properties: [String : Property]? = nil, required: [String]? = nil, nullable: [String]? = nil) {
+    public init(description: String? = nil, properties: [String : LexiconDefinition], required: [String]? = nil, nullable: [String]? = nil) {
         self.description = description
         self.properties = properties
         self.required = required
@@ -50,7 +50,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.properties = try container.decodeIfPresent([String : ATObjectType.Property].self, forKey: .properties)
+        self.properties = try container.decode([String : LexiconDefinition].self, forKey: .properties)
         self.required = try container.decodeIfPresent([String].self, forKey: .required)
         self.nullable = try container.decodeIfPresent([String].self, forKey: .nullable)
     }
@@ -59,7 +59,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encodeIfPresent(self.description, forKey: .description)
-        try container.encodeIfPresent(self.properties, forKey: .properties)
+        try container.encode(self.properties, forKey: .properties)
         try container.encodeIfPresent(self.required, forKey: .required)
         try container.encodeIfPresent(self.nullable, forKey: .nullable)
     }
