@@ -9,7 +9,7 @@ import Foundation
 import MultiformatsKit
 
 /// An enumeration representing a primitive value.
-public enum PrimitiveValue: Codable, Sendable {
+public enum PrimitiveValue: Codable, Sendable, Equatable {
 
     /// A `nil` value.
     case `nil`
@@ -161,6 +161,39 @@ public enum PrimitiveValue: Codable, Sendable {
                 try container.encode(value)
             case .dictionary(let value):
                 try container.encode(value)
+        }
+    }
+
+    public static func == (lhs: PrimitiveValue, rhs: PrimitiveValue) -> Bool {
+        switch (lhs, rhs) {
+            case (.nil, .nil):
+                return true
+            case let (.bool(left), .bool(right)):
+                return left == right
+            case let (.int(left), .int(right)):
+                return left == right
+            case let (.double(left), .double(right)):
+                return left == right
+            case let (.string(left), .string(right)):
+                return left == right
+            case let (.bytes(left), .bytes(right)):
+                return left == right
+            case let (.cid(left), .cid(right)):
+                return left == right
+            case let (.array(left), .array(right)):
+                return left.count == right.count && zip(left, right).allSatisfy(==)
+            case let (.dictionary(left), .dictionary(right)):
+                guard left.count == right.count else {
+                    return false
+                }
+                for (key, leftValue) in left {
+                    guard leftValue == right[key] else {
+                        return false
+                    }
+                }
+                return true
+            default:
+                return false
         }
     }
 }
