@@ -239,12 +239,19 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
     ///   - maximumLength: The minimum number that should not be exceeded.
     case bytesValueLessThanMinimumLength(value: Data, path: String, minimumLength: Int)
 
-    /// The value is not an object.
+    /// The unknown value is not an object.
     ///
     /// - Parameters:
     ///   - path: The name of the path.
     ///   - value: The unknown value.
     case unknownValueIsNotAnObject(path: String, value: PrimitiveValue)
+
+    /// The value is not an object.
+    ///
+    /// - Parameters:
+    ///   - path: The name of the path.
+    ///   - value: The unknown value.
+    case valueIsNotAnObject(path: String, value: PrimitiveValue)
 
     /// The provided path is a an invalid blob reference.
     ///
@@ -357,6 +364,8 @@ public enum LexiconValidatorError: Error, LocalizedError, CustomStringConvertibl
             case .bytesValueLessThanMinimumLength(let value, let path, let minimumLength):
                 return "String value '\(value)' in path '\(path)' cannot be less than the minimum '\(minimumLength)' bytes."
             case .unknownValueIsNotAnObject(let path, let value):
+                return "Unknown value '\(value)' in path '\(path)' must be an object."
+            case .valueIsNotAnObject(let path, let value):
                 return "\(value) in path '\(path)' must be an object."
             case .invalidBlobReferencePath(let path):
                 return "Invalid blob reference path: \(path)"

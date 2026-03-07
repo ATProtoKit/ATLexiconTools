@@ -19,4 +19,7 @@ public enum Validator {
 
     /// Functions for validating primitive-related JSON inputs and outputs.
     public enum Primitive {}
+
+    /// Functions for validating XRPC-related JSON inputs and outputs.
+    public enum XRPC {}
 }
