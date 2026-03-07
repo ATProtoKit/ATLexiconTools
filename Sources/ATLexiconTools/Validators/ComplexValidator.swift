@@ -107,7 +107,7 @@ extension Validator.Complex {
                 let rawRequiredValue = objectValue[requiredKey]
 
                 if rawRequiredValue == nil, let propertyDefinition = definition.properties[requiredKey] {
-                    if Self.hasPrimitiveDefault(propertyDefinition) {
+                    if LexiconToolsUtilities.hasPrimitiveDefault(propertyDefinition) {
                         continue
                     }
 
@@ -124,7 +124,7 @@ extension Validator.Complex {
             }
 
             if rawPropertyValue == nil, !requiredProperties.contains(key) {
-                if !Self.hasPrimitiveDefault(propertyDefinition) {
+                if !LexiconToolsUtilities.hasPrimitiveDefault(propertyDefinition) {
                     continue
                 }
             }
@@ -222,27 +222,6 @@ extension Validator.Complex {
                 } catch {
                     throw error
                 }
-        }
-    }
-
-    /// Determines whether the given lexicon definition represents a primitive type that provides a
-    /// default value.
-    ///
-    /// The primitive types that the method will look for are booleans, integers, and strings.
-    ///
-    /// - Parameter definition: The lexicon definition to inspect.
-    ///
-    /// - Returns: `true` if the definition type has a non-`nil` default value, or `false` if it doesn't.
-    internal static func hasPrimitiveDefault(_ definition: LexiconDefinition) -> Bool {
-        switch definition {
-            case .boolean(let booleanDefinition):
-                return booleanDefinition.defaultValue != nil
-            case .integer(let integerDefinition):
-                return integerDefinition.defaultValue != nil
-            case .string(let stringDefinition):
-                return stringDefinition.defaultValue != nil
-            default:
-                return false
         }
     }
 }

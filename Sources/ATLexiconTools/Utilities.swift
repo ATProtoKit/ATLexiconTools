@@ -145,6 +145,27 @@ public enum LexiconToolsUtilities {
         }
     }
 
+    /// Determines whether the given lexicon definition represents a primitive type that provides a
+    /// default value.
+    ///
+    /// The primitive types that the method will look for are booleans, integers, and strings.
+    ///
+    /// - Parameter definition: The lexicon definition to inspect.
+    ///
+    /// - Returns: `true` if the definition type has a non-`nil` default value, or `false` if it doesn't.
+    internal static func hasPrimitiveDefault(_ definition: LexiconDefinition) -> Bool {
+        switch definition {
+            case .boolean(let booleanDefinition):
+                return booleanDefinition.defaultValue != nil
+            case .integer(let integerDefinition):
+                return integerDefinition.defaultValue != nil
+            case .string(let stringDefinition):
+                return stringDefinition.defaultValue != nil
+            default:
+                return false
+        }
+    }
+
     /// Enforces a preconditioned requirement check.
     ///
     /// This is a shorthanded version of writing several if statements to make the code easier to read.
