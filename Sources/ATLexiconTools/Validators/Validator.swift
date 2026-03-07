@@ -146,7 +146,7 @@ extension Validator {
         definition: LexiconDefinition,
         value: PrimitiveValue?
     ) throws {
-        guard case .subscription(let subscriptionDefinition) = definition else {
+        guard case .subscription(_) = definition else {
             return
         }
 
