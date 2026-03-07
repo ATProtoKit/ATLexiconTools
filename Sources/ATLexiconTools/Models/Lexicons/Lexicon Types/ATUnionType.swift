@@ -21,7 +21,7 @@ public struct ATUnionType: Codable, Sendable {
     public let description: String?
 
     /// An array of references. Optional.
-    public let references: [String]
+    public let references: [String]?
 
     /// Indicates whether the union is closed. Optional.
     public var isClosed: Bool?
@@ -32,7 +32,7 @@ public struct ATUnionType: Codable, Sendable {
     ///   - description: A short description of the object. Optional. Defaults to `nil`.
     ///   - references: An array of references. Optional. Defaults to `nil`.
     ///   - isClosed: Indicates whether the union is closed. Optional. Defaults to `false`.
-    public init(description: String?, references: [String], isClosed: Bool? = false) {
+    public init(description: String? = nil, references: [String]? = nil, isClosed: Bool? = false) {
         self.description = description
         self.references = references
         self.isClosed = isClosed
