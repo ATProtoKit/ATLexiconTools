@@ -36,29 +36,6 @@ public enum LexiconToolsUtilities {
         return "lex:\(string)"
     }
 
-    /// Validates that all required property keys exist in the properties dictionary.
-    ///
-    /// - Parameters:
-    ///   - object: *to be added*.
-    ///   - context: *to be added*.
-    public static func validateRequiredProperties<ObjectType: ObjectTypeProtocol>(in object: ObjectType, context: inout RefinementContext) {
-        guard let requiredObjects = object.required else { return }
-
-        guard let objectProperties = object.properties else {
-            if requiredObjects.count > 0 {
-                context.addIssue("Required fields defined but no properties defined.")
-            }
-
-            return
-        }
-
-        for field in requiredObjects {
-            if objectProperties[field] == nil {
-                context.addIssue("Required field '\(field)' not defined.")
-            }
-        }
-    }
-
     /// Determines whether the runtime value is an object primitive.
     ///
     /// - Parameter value: The primitive value to inspect.
@@ -185,35 +162,11 @@ public enum LexiconToolsUtilities {
     ///         maximumLength: max
     /// ))
     @inline(__always)
-    public static func require(_ condition: @autoclosure () -> Bool,
+    internal static func require(_ condition: @autoclosure () -> Bool,
                                 or error: @autoclosure () -> LexiconValidatorError) throws {
         // If the condition fails, throw the lazily-built error
         guard condition() else {
             throw error()
-        }
-    }
-
-    ///
-    public protocol ObjectTypeProtocol {
-
-        ///
-        var required: [String]? { get }
-
-        ///
-        var properties: [String: Any]? { get }
-    }
-
-    ///
-    public struct RefinementContext {
-
-        /// An array of issues.
-        public var issues: [String] = []
-
-        /// Adds an issue.
-        ///
-        /// - Parameter issue: *to be added.*
-        public mutating func addIssue(_ issue: String) {
-            issues.append(issue)
         }
     }
 }
