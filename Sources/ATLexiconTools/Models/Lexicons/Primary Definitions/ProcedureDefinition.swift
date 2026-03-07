@@ -19,7 +19,7 @@ public struct ProcedureDefinition: ATLexiconObjectProtocol {
     public let description: String?
 
     /// A dictionary of query parameters for the HTTP request. Optional.
-    public let parameters: [String: ATParamsType]?
+    public let parameters: ATParamsType?
 
     /// The body that is returned from the server as a result of the request. Optional.
     public let output: LexiconHTTPBody?
@@ -39,7 +39,7 @@ public struct ProcedureDefinition: ATLexiconObjectProtocol {
     ///   Defaults to `nil`.
     ///   - input: The request body that is sent to the server. Optional. Defaults to `nil`.
     ///   - errors: An array of errors that might be returned. Optional. Defaults to `nil`.
-    public init(description: String? = nil, parameters: [String : ATParamsType]? = nil, output: LexiconHTTPBody? = nil,
+    public init(description: String? = nil, parameters: ATParamsType? = nil, output: LexiconHTTPBody? = nil,
                 input: LexiconHTTPBody? = nil, errors: [ATErrorsType]? = nil) {
         self.description = description
         self.parameters = parameters
@@ -53,7 +53,7 @@ public struct ProcedureDefinition: ATLexiconObjectProtocol {
 
         self.type = try container.decode(String.self, forKey: .type)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.parameters = try container.decodeIfPresent([String : ATParamsType].self, forKey: .parameters)
+        self.parameters = try container.decodeIfPresent(ATParamsType.self, forKey: .parameters)
         self.output = try container.decodeIfPresent(LexiconHTTPBody.self, forKey: .output)
         self.input = try container.decodeIfPresent(LexiconHTTPBody.self, forKey: .input)
         self.errors = try container.decodeIfPresent([ATErrorsType].self, forKey: .errors)

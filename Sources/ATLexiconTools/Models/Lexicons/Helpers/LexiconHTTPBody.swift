@@ -19,7 +19,7 @@ public struct LexiconHTTPBody: Codable, Sendable {
     public let encoding: String
 
     /// A description of an `object` type. Optional.
-    public let schema: ATObjectType?
+    public let schema: ATReferenceType?
 
     /// Creates an instance of `LexiconHTTPBody`.
     ///
@@ -27,7 +27,7 @@ public struct LexiconHTTPBody: Codable, Sendable {
     ///   - description: A short description about the input or output. Optional. Defauts to `nil`.
     ///   - encoding: The MIME type for body contents.
     ///   - schema: A description of an `object` type. Optional. Defaults to `nil`.
-    public init(description: String? = nil, encoding: String, schema: ATObjectType? = nil) {
+    public init(description: String? = nil, encoding: String, schema: ATReferenceType? = nil) {
         self.description = description
         self.encoding = encoding
         self.schema = schema
@@ -38,7 +38,7 @@ public struct LexiconHTTPBody: Codable, Sendable {
 
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.encoding = try container.decode(String.self, forKey: .encoding)
-        self.schema = try container.decodeIfPresent(ATObjectType.self, forKey: .schema)
+        self.schema = try container.decodeIfPresent(ATReferenceType.self, forKey: .schema)
     }
 
     public func encode(to encoder: any Encoder) throws {
