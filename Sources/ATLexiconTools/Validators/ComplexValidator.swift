@@ -180,15 +180,16 @@ extension Validator.Complex {
 
         switch definition {
             case .union(let unionType):
-                guard let value,
+                guard let unionTypeReference = unionType.references,
+                      let value,
                       case .dictionary(let discriminated) = value,
                       case .string(let type)? = discriminated["$type"] else {
                     throw LexiconValidatorError.objectMustInclude$typeProperty(path: path)
                       }
 
-                if try !LexiconToolsUtilities.refencesContainType(references: unionType.references, type: definition.type) {
+                if try !LexiconToolsUtilities.refencesContainType(references: unionTypeReference, type: definition.type) {
                     if unionType.isClosed == true {
-                        throw LexiconValidatorError.unionObject$typeValueNotFound(path: path, references: unionType.references.joined(separator: ", "))
+                        throw LexiconValidatorError.unionObject$typeValueNotFound(path: path, references: unionTypeReference.joined(separator: ", "))
                     }
 
                     return
