@@ -50,7 +50,7 @@ public struct ATIntegerType: ATLexiconObjectProtocol {
                 enumValues: [Int]? = nil,
                 defaultValue: Int? = nil,
                 constantValue: Int? = nil
-    ) throws {
+    ) {
         self.description = description
         self.minimum = minimum
         self.maximum = maximum
