@@ -9,7 +9,7 @@ import Foundation
 import ATSyntaxTools
 
 /// A structure representing the lexicon.
-public struct Lexicon: Codable {
+public struct Lexicon: Codable, Sendable {
 
     /// The NSID type for compatibility with publishing lexicons. Optional.
     ///
