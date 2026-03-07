@@ -59,7 +59,7 @@ extension Validator.XRPC {
             let rawPropertyValue = parameterValue[key]
 
             switch propertyDefinition {
-                case .array(let arrayDefinition):
+                case .array(_):
                     continue
                 default:
                     try Validator.Primitive.validate(path: key, definition: propertyDefinition, value: rawPropertyValue)

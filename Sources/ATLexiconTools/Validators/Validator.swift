@@ -150,7 +150,7 @@ extension Validator {
             return
         }
 
-        let schema = subscriptionDefinition.message?.schema
+//        let schema = subscriptionDefinition.message?.schema
 
         try Validator.Complex.validateOneOf(
             lexicons: lexicons,
