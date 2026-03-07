@@ -23,8 +23,8 @@ public struct ATUnionType: Codable, Sendable {
     /// An array of references. Optional.
     public let references: [String]
 
-    /// Indicates whether the union is closed. Optional. Defaults to `false`.
-    public var isClosed: Bool? = false
+    /// Indicates whether the union is closed. Optional.
+    public var isClosed: Bool?
 
     /// Creates an instance of `ATUnionType`.
     ///

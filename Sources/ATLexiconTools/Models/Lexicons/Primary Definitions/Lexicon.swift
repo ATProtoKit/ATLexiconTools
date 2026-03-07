@@ -33,6 +33,22 @@ public struct Lexicon: Codable, Sendable {
     /// A dictionary of definitions within the lexicon.
     public let definitions: [String: LexiconDefinition]
 
+    /// Creates an instance of `Lexicon`.
+    ///
+    /// - Parameters:
+    ///   - lexicon: The Lexicon Language version number.
+    ///   - id: The Namespaced Identifier (NSID) of the lexicon.
+    ///   - revision: The revision number of the lexicon to denote changes. Optional. Defaults to `nil`.
+    ///   - description: A short description of the lexicon. Optional. Defaults to `nil`.
+    ///   - definitions: A dictionary of definitions within the lexicon.
+    public init(lexicon: Int, id: String, revision: Int? = nil, description: String? = nil, definitions: [String : LexiconDefinition]) {
+        self.lexicon = lexicon
+        self.id = id
+        self.revision = revision
+        self.description = description
+        self.definitions = definitions
+    }
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 

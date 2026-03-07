@@ -30,7 +30,7 @@ public struct ATBytesType: ATLexiconObjectProtocol {
     ///   - description: A short description of the object. Optional. Defaults to `nil`.
     ///   - minimumLength: The minimum size of un-encoded raw bytes. Optional. Defaults to `nil`.
     ///   - maximumLength: The maximum size of un-encoded raw bytes. Optional. Defaults to `nil`.
-    public init(description: String?, minimumLength: Int?, maximumLength: Int?) {
+    public init(description: String? = nil, minimumLength: Int? = nil, maximumLength: Int? = nil) {
         self.description = description
         self.minimumLength = minimumLength
         self.maximumLength = maximumLength

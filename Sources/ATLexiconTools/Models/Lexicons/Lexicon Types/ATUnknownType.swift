@@ -21,7 +21,7 @@ public struct ATUnknownType: ATLexiconObjectProtocol {
     /// Creates an instance of `ATUnknownType`.
     ///
     /// - Parameter description: A short description of the object. Optional. Defaults to `nil`.
-    public init(description: String?) {
+    public init(description: String? = nil) {
         self.description = description
     }
 
