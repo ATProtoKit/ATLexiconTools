@@ -7,7 +7,16 @@
 
 extension Validator.Complex {
 
-    private static func validate(
+    /// Validates the appropriate primitive value.
+    ///
+    /// - Parameters:
+    ///   - lexicons: A registry containing an array of lexicons.
+    ///   - path: The name of the path.
+    ///   - definition: The definition container.
+    ///   - value: The specific value to validate. Optional.
+    ///
+    /// - Throws: An error if the value isn't available, or if the value doesn't match the constant value.
+    public static func validate(
         lexicons: LexiconRegistry,
         path: String,
         definition: LexiconDefinition,
