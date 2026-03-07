@@ -118,8 +118,8 @@ public enum LexiconToolsUtilities {
         return references.contains("\(lexiconURI)#main")
     }
 
-    /// Converts a polymorphic or protocol-oriented type representation into one or more concrete Swift
-    /// types, using the supplied lexicon sources and an optional definition context to resolve symbols.
+    /// Converts a polymorphic or protocol-oriented type into one or more concrete Swift types using the
+    /// provided lexicons and optional context.
     ///
     /// - Parameters:
     ///   - lexicons: An ordered collection of type lexicons or symbol tables used to resolve names
@@ -133,12 +133,19 @@ public enum LexiconToolsUtilities {
     internal static func toConcreteTypes(lexicons: LexiconRegistry, definition: LexiconDefinition) throws -> [LexiconDefinition] {
         switch definition {
             case .reference(let reference):
-                return [try lexicons.getDefinition(by: reference.reference)]
+                let resolved = try lexicons.getDefinition(by: reference.reference)
+                return [resolved]
 
             case .union(let unionReference):
-                return try unionReference.references.map { ref in
-                    try lexicons.getDefinition(by: ref)
+                var results: [LexiconDefinition] = []
+                guard let references = unionReference.references, !references.isEmpty else {
+                    return results
                 }
+                for reference in references {
+                    let resolved = try lexicons.getDefinition(by: reference)
+                    results.append(resolved)
+                }
+                return results
 
             default:
                 return [definition]
