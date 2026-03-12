@@ -20,7 +20,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/ATProtoKit/ATSyntaxTools.git", from: "0.1.0"),
-        .package(url: "https://github.com/ATProtoKit/ATCommonTools.git", from: "0.0.10")
+        .package(url: "https://github.com/ATProtoKit/ATCommonTools.git", from: "0.0.10"),
+        .package(url: "https://github.com/ATProtoKit/MultiformatsKit.git", from: "0.3.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -34,7 +35,10 @@ let package = Package(
         ),
         .testTarget(
             name: "ATLexiconToolsTests",
-            dependencies: ["ATLexiconTools"]
+            dependencies: [
+                "ATLexiconTools",
+                .product(name: "MultiformatsKit", package: "multiformatskit")
+            ]
         ),
     ]
 )
