@@ -17,11 +17,13 @@ public final class LexiconRegistry: Sequence {
     /// Initializes an instance of `LexiconRegistry` by extravting the definitions from the `Lexicon` array.
     ///
     /// - Parameter lexicons: An array of `Lexicon` objects. Optional. Defaults to `nil`.
-    public init(lexicons: [Lexicon]? = nil) {
-        if let lexicons = lexicons {
-            for lexicon in lexicons {
-                self.lexicons[lexicon.id] = lexicon
-            }
+    public init(lexicons: [Lexicon]? = nil) throws {
+        guard let lexicons else {
+            return
+        }
+
+        for lexicon in lexicons {
+            try self.add(lexicon: lexicon)
         }
     }
 
