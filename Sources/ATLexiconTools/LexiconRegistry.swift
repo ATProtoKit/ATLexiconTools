@@ -173,7 +173,7 @@ public final class LexiconRegistry: Sequence {
         var result: [(String, LexiconDefinition?)] = []
 
         for (definitionID, _) in lexicon.definitions {
-            result.append(("lexicon:\(lexicon.id)#\(definitionID)", lexicon.definitions[definitionID]))
+            result.append(("lex:\(lexicon.id)#\(definitionID)", lexicon.definitions[definitionID]))
 
             if definitionID == "main" {
                 result.append(("lex:\(lexicon.id)", lexicon.definitions[definitionID]))
