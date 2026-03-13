@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// An error definition.
+/// An error type.
 public struct ATErrorsType: Codable, Sendable {
 
     /// The type value of the object.
