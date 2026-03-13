@@ -24,7 +24,7 @@ struct LexiconCollectionTests {
         let firstLexicon = lexicons[0]
 
         let uri = try LexiconToolsUtilities.toLexiconURI(from: firstLexicon.id)
-        #expect(throws: LexiconRegistryError.lexiconAlreadyRegistered(nsid: uri)) {
+        #expect(throws: LexiconRegistryError.lexiconAlreadyRegistered(nsid: uri), "\"\(uri)\" should be a duplicate.") {
             try lexiconRegistry.add(lexicon: firstLexicon)
         }
     }
