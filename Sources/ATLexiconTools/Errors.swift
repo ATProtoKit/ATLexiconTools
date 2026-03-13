@@ -412,7 +412,7 @@ public enum LexiconSchemaValidatorError: Error, LocalizedError, CustomStringConv
 }
     
 /// Errors that occur while interacting with ``LexiconRegistry``.
-public enum LexiconRegistryError: Error, LocalizedError, CustomStringConvertible {
+public enum LexiconRegistryError: Error, LocalizedError, CustomStringConvertible, Equatable {
 
     /// The lexicon has already been registered to the `LexiconRegistry` instance.
     ///
