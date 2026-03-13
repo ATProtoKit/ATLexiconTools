@@ -11,5 +11,5 @@ import MultiformatsKit
 @testable import ATLexiconTools
 
 public func makeLexicons() throws -> LexiconRegistry {
-    return LexiconRegistry(lexicons: lexicons)
+    return try LexiconRegistry(lexicons: lexicons)
 }
