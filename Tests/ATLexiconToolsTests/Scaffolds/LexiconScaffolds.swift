@@ -502,7 +502,7 @@ let lexicons: [Lexicon] = [
                 RecordDefinition(
                     record: ATObjectType(
                         properties: [
-                            "bytes" : .bytes(ATBytesType(minimumLength: 4, maximumLength: 2))
+                            "bytes" : .bytes(ATBytesType(minimumLength: 2, maximumLength: 4))
                         ]
                     )
                 )
