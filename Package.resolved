@@ -1,5 +1,5 @@
 {
-  "originHash" : "68407bb6b5237f946678641b2ff5748dab0ac87e1bd978f7cca30fe0b9bc9439",
+  "originHash" : "eaa4cf8907a9aaf493d07023e07d92d3e3f5a571d45e73e312d9e1667935f228",
   "pins" : [
     {
       "identity" : "atcommontools",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ATProtoKit/ATSyntaxTools.git",
       "state" : {
-        "revision" : "29153f761126c35e703a1a0570e8941e2208080d",
-        "version" : "0.1.2"
+        "revision" : "74bd591da773c1640c43f946d6c81c2c27a6fd5e",
+        "version" : "0.1.3"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-asn1.git",
       "state" : {
-        "revision" : "40d25bbb2fc5b557a9aa8512210bded327c0f60d",
-        "version" : "1.5.0"
+        "revision" : "810496cf121e525d660cd0ea89a758740476b85f",
+        "version" : "1.5.1"
       }
     },
     {
