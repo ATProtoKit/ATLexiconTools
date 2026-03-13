@@ -28,4 +28,37 @@ struct LexiconCollectionTests {
             try lexiconRegistry.add(lexicon: firstLexicon)
         }
     }
+
+    @Test
+    func `Correctly references all definitions`() async throws {
+        try #require(
+            lexiconRegistry.getDefinition(by: "com.example.kitchenSink").type == lexicons[0].definitions["main"]?.type,
+            "\"com.example.kitchenSink\" not found in lexicon registry."
+        )
+
+        try #require(
+            lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink").type == lexicons[0].definitions["main"]?.type,
+            "\"lex:com.example.kitchenSink\" not found in lexicon registry."
+        )
+
+        try #require(
+            lexiconRegistry.getDefinition(by: "com.example.kitchenSink#main").type == lexicons[0].definitions["main"]?.type,
+            "\"com.example.kitchenSink#main\" not found in lexicon registry."
+        )
+
+        try #require(
+            lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink#main").type == lexicons[0].definitions["main"]?.type,
+            "\"lex:com.example.kitchenSink#main\" not found in lexicon registry."
+        )
+
+        try #require(
+            lexiconRegistry.getDefinition(by: "com.example.kitchenSink#object").type == lexicons[0].definitions["object"]?.type,
+            "\"com.example.kitchenSink#object\" not found in lexicon registry."
+        )
+
+        try #require(
+            lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink#object").type == lexicons[0].definitions["object"]?.type,
+            "\"lex:com.example.kitchenSink#object\" not found in lexicon registry."
+        )
+    }
 }
