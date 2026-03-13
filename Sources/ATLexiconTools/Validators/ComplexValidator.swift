@@ -94,7 +94,7 @@ extension Validator.Complex {
         value: PrimitiveValue?
     ) throws {
         guard let value,
-              case .dictionary(let objectValue) = value else {
+              case .object(let objectValue) = value else {
             throw LexiconValidatorError.valueIsNotObject(path: path)
         }
 
@@ -182,7 +182,7 @@ extension Validator.Complex {
             case .union(let unionType):
                 guard let unionTypeReference = unionType.references,
                       let value,
-                      case .dictionary(let discriminated) = value,
+                      case .object(let discriminated) = value,
                       case .string(let type)? = discriminated["$type"] else {
                     throw LexiconValidatorError.objectMustInclude$typeProperty(path: path)
                       }

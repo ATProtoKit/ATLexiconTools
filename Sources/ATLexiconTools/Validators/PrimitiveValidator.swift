@@ -240,7 +240,7 @@ extension Validator.Primitive {
         value: PrimitiveValue?
     ) throws {
         guard let value,
-              case .dictionary(_) = value else {
+              case .object(_) = value else {
             throw LexiconValidatorError.invalidType(value: path, expectedType: "object")
         }
     }

@@ -39,11 +39,11 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
     case array([PrimitiveValue])
 
     /// A dictionary value.
-    case dictionary([String: PrimitiveValue])
+    case object([String: PrimitiveValue])
 
     /// Returns the wrapped object value.
     public var dictionaryValue: [String: PrimitiveValue]? {
-        guard case .dictionary(let value) = self else {
+        guard case .object(let value) = self else {
             return nil
         }
         return value
@@ -127,7 +127,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         } else if let value = try? container.decode([PrimitiveValue].self) {
             self = .array(value)
         } else if let value = try? container.decode([String: PrimitiveValue].self) {
-            self = .dictionary(value)
+            self = .object(value)
         } else {
             throw DecodingError.typeMismatch(
                 CodableValue.self,
@@ -159,7 +159,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
                 try container.encode(value)
             case .array(let value):
                 try container.encode(value)
-            case .dictionary(let value):
+            case .object(let value):
                 try container.encode(value)
         }
     }
@@ -182,7 +182,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
                 return left == right
             case let (.array(left), .array(right)):
                 return left.count == right.count && zip(left, right).allSatisfy(==)
-            case let (.dictionary(left), .dictionary(right)):
+            case let (.object(left), .object(right)):
                 guard left.count == right.count else {
                     return false
                 }
@@ -231,6 +231,6 @@ extension PrimitiveValue: ExpressibleByNilLiteral, ExpressibleByBooleanLiteral, 
         for (key, value) in elements {
             dictionary[key] = value
         }
-        self = .dictionary(dictionary)
+        self = .object(dictionary)
     }
 }

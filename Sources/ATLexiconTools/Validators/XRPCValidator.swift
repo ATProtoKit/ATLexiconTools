@@ -24,7 +24,7 @@ extension Validator.XRPC {
     ) throws {
         let parameterValue: [String: PrimitiveValue]
 
-        if case .dictionary(let objectValue) = value {
+        if case .object(let objectValue) = value {
             parameterValue = objectValue
         } else {
             parameterValue = [:]

@@ -41,7 +41,7 @@ public enum LexiconToolsUtilities {
     /// - Parameter value: The primitive value to inspect.
     /// - Returns: `true` if the value is an object value, or `false` if not.
     public static func isObject(_ value: PrimitiveValue) -> Bool {
-        if case .dictionary = value {
+        if case .object = value {
             return true
         }
 
@@ -64,7 +64,7 @@ public enum LexiconToolsUtilities {
     /// - Parameter value: The primitive value to inspect.
     /// - Returns: `true` if a string `$type` field is present, or `false` if it's not.
     public static func isDiscriminatedObject(_ value: PrimitiveValue) -> Bool {
-        guard case .dictionary(let dictionary) = value,
+        guard case .object(let dictionary) = value,
               case .string(let type)? = dictionary["$type"] else {
             return false
         }
