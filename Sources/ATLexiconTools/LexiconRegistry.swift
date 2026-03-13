@@ -103,11 +103,27 @@ public final class LexiconRegistry: Sequence {
 
     /// Validates a record or object definition.
     ///
-    /// - Parameter lexiconURI: The URI of the lexicon to validate.
-    public func validate(lexiconURI: String) throws {
+    /// - Parameters:
+    ///   - lexiconURI: The URI of the lexicon to validate.
+    ///   - value: An `PrimitiveValue` object, representing the actual definition.
+    ///
+    ///   - Throws: An error if the lexicon isn't an object or a record.
+    public func validate(lexiconURI: String, value: PrimitiveValue? = nil) throws {
         let normalizedURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
+        let definition = try self.getDefinition(by: normalizedURI, types: ["record", "object"])
 
-        _ = try self.getDefinition(by: normalizedURI, types: ["record", "object"])
+        guard case .object = value else {
+            throw LexiconRegistryError.notOfType(expected: ["object"], actual: definition.type, uri: normalizedURI)
+        }
+
+        switch definition {
+            case .record:
+                return
+            case .object:
+                return
+            default:
+                throw LexiconRegistryError.notOfType(expected: ["record", "object"], actual: definition.type, uri: normalizedURI)
+        }
     }
 
     /// Validates a string definition.
