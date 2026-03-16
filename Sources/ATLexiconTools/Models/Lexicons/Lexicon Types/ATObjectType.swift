@@ -41,7 +41,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
     ///   Defaults to `nil`.
     ///
     ///   - Throws: An error if a value is violating the lexicon requirements.
-    public init(description: String? = nil, properties: [String : LexiconDefinition], required: [String]? = nil, nullable: [String]? = nil) throws {
+    public init(description: String? = nil, properties: [String: LexiconDefinition], required: [String]? = nil, nullable: [String]? = nil) throws {
         self.description = description
         self.properties = properties
         self.required = required
@@ -54,7 +54,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.properties = try container.decode([String : LexiconDefinition].self, forKey: .properties)
+        self.properties = try container.decode([String: LexiconDefinition].self, forKey: .properties)
         self.required = try container.decodeIfPresent([String].self, forKey: .required)
         self.nullable = try container.decodeIfPresent([String].self, forKey: .nullable)
 
