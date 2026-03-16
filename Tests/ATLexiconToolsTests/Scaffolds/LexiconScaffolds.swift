@@ -8,8 +8,10 @@
 import Foundation
 @testable import ATLexiconTools
 
-let lexicons: [Lexicon] = [
-    Lexicon(
+func generateLexiconScaffolds() throws -> [Lexicon] {
+    var lexicons: [Lexicon] = []
+
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.kitchenSink",
         definitions: [
@@ -52,9 +54,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.query",
         definitions: [
@@ -69,7 +71,7 @@ let lexicons: [Lexicon] = [
                             "string" : .string(ATStringType()),
                             "array" : .array(ATPrimitiveArray(items: .string(ATStringType()))),
                             "def" : .integer(ATIntegerType(defaultValue: 0))
-                    ]),
+                        ]),
                     output: LexiconHTTPBody(
                         encoding: "application/json",
                         schema: ATReferenceType(
@@ -79,9 +81,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.procedure",
         definitions: [
@@ -108,9 +110,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.optional",
         definitions: [
@@ -128,9 +130,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.default",
         definitions: [
@@ -157,9 +159,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.union",
         definitions: [
@@ -192,9 +194,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.unknown",
         definitions: [
@@ -212,9 +214,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.arrayLength",
         definitions: [
@@ -230,9 +232,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.boolConst",
         definitions: [
@@ -246,9 +248,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.integerRange",
         definitions: [
@@ -262,9 +264,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.integerEnum",
         definitions: [
@@ -276,9 +278,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.integerConst",
         definitions: [
@@ -292,9 +294,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.stringLength",
         definitions: [
@@ -308,9 +310,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.stringLengthGrapheme",
         definitions: [
@@ -324,9 +326,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.stringEnum",
         definitions: [
@@ -340,9 +342,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.stringConst",
         definitions: [
@@ -356,9 +358,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.datetime",
         definitions: [
@@ -371,9 +373,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.uri",
         definitions: [
@@ -386,9 +388,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.atUri",
         definitions: [
@@ -401,9 +403,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.did",
         definitions: [
@@ -416,9 +418,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.handle",
         definitions: [
@@ -431,9 +433,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.atIdentifier",
         definitions: [
@@ -446,9 +448,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.nsid",
         definitions: [
@@ -461,9 +463,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.cid",
         definitions: [
@@ -476,9 +478,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.language",
         definitions: [
@@ -492,9 +494,9 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    ),
+    ))
 
-    Lexicon(
+    lexicons.append(try Lexicon(
         lexicon: 1,
         id: "com.example.byteLength",
         definitions: [
@@ -508,5 +510,7 @@ let lexicons: [Lexicon] = [
                 )
             )
         ]
-    )
-]
+    ))
+
+    return lexicons
+}
