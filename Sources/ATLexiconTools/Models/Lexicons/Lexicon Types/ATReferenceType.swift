@@ -39,6 +39,8 @@ public struct ATReferenceType: Codable, Sendable {
 
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.reference = try container.decode(String.self, forKey: .reference)
+
+        try Self.validate(reference: self.reference)
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -50,5 +52,33 @@ public struct ATReferenceType: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case description
         case reference = "ref"
+    }
+
+    // MARK: - Validators
+
+    /// Validates the current level of the lexicon.
+    ///
+    /// - Parameters:
+    ///   - container: A keyed decoding container view into this decoder. Optional. Defaults to `nil`.
+    ///   - reference: A reference to another part of a lexicon.
+    ///
+    /// - Throws: An error if the encountered stored value is not in the "main" definition.
+    private static func validate(
+        container: KeyedDecodingContainer<ATObjectType.CodingKeys>? = nil,
+        reference: String
+    ) throws {
+        do {
+            try Validator.Format.validateURI(path: "", uriValue: reference)
+        } catch {
+            if let container = container {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .required,
+                    in: container,
+                    debugDescription: "The URI '\(reference)' is invalid."
+                )
+            } else {
+                throw LexiconSchemaValidatorError.invalidSchema(reason: "The URI '\(reference)' is invalid.")
+            }
+        }
     }
 }
