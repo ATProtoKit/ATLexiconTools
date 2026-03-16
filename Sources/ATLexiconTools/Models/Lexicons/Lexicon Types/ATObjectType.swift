@@ -125,7 +125,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
     ///   - Throws: An error if a value is violating the lexicon requirements.
     private static func validate(
         container: KeyedDecodingContainer<ATObjectType.CodingKeys>? = nil,
-        properties: [String : LexiconDefinition],
+        properties: [String: LexiconDefinition],
         nullable: [String]? = nil
     ) throws {
         guard let nullable else {
