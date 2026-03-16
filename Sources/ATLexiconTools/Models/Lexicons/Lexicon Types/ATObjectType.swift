@@ -81,13 +81,16 @@ public struct ATObjectType: ATLexiconObjectProtocol {
 
     /// Validates the current level of the lexicon.
     ///
-    /// - Parameter container: A keyed decoding container view into this decoder. Optional. Defaults to `nil`.
+    /// - Parameters:
+    ///   - container: A keyed decoding container view into this decoder. Optional. Defaults to `nil`.
+    ///   - required: An array of properties that are required in the lexicon. Optional. Defaults to `nil`.
+    ///   - properties: A dictionary of properties with their own schemas.
     ///
     /// - Throws: An error if the encountered stored value is not in the "main" definition.
     private static func validate(
         container: KeyedDecodingContainer<ATObjectType.CodingKeys>? = nil,
         required: [String]? = nil,
-        properties: [String : LexiconDefinition]
+        properties: [String: LexiconDefinition]
     ) throws {
         guard let required else {
             return
