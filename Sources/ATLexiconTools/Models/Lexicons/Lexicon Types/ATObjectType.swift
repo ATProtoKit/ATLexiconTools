@@ -97,7 +97,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
         }
 
         for requiredValue in required {
-            if properties[requiredValue] == nil {
+            if properties.index(forKey: requiredValue) == nil {
                 if let container = container {
                     throw DecodingError.dataCorruptedError(
                         forKey: .required,
