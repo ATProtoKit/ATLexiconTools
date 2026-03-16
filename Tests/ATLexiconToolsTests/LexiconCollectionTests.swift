@@ -21,7 +21,7 @@ struct LexiconCollectionTests {
 
     @Test
     func `Registry rejects duplicate lexicons`() throws {
-        let firstLexicon = lexicons[0]
+        let firstLexicon = try generateLexiconScaffolds()[0]
 
         let uri = try LexiconToolsUtilities.toLexiconURI(from: firstLexicon.id)
         #expect(throws: LexiconRegistryError.lexiconAlreadyRegistered(nsid: uri), "\"\(uri)\" should be a duplicate.") {
@@ -31,34 +31,29 @@ struct LexiconCollectionTests {
 
     @Test
     func `Correctly references all definitions`() async throws {
-        try #require(
-            lexiconRegistry.getDefinition(by: "com.example.kitchenSink").type == lexicons[0].definitions["main"]?.type,
-            "\"com.example.kitchenSink\" not found in lexicon registry."
-        )
+        #expect(throws: Never.self, "\"com.example.kitchenSink\" not found in lexicon registry.") {
+            try lexiconRegistry.getDefinition(by: "com.example.kitchenSink").type == generateLexiconScaffolds()[0].definitions["main"]?.type
+        }
 
-        try #require(
-            lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink").type == lexicons[0].definitions["main"]?.type,
-            "\"lex:com.example.kitchenSink\" not found in lexicon registry."
-        )
+        #expect(throws: Never.self, "\"lex:com.example.kitchenSink\" not found in lexicon registry.") {
+            try lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink").type == generateLexiconScaffolds()[0].definitions["main"]?.type
+        }
 
-        try #require(
-            lexiconRegistry.getDefinition(by: "com.example.kitchenSink#main").type == lexicons[0].definitions["main"]?.type,
-            "\"com.example.kitchenSink#main\" not found in lexicon registry."
-        )
+        #expect(throws: Never.self, "\"com.example.kitchenSink#main\" not found in lexicon registry.") {
+            try lexiconRegistry.getDefinition(by: "com.example.kitchenSink#main").type == generateLexiconScaffolds()[0].definitions["main"]?.type
+        }
 
-        try #require(
-            lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink#main").type == lexicons[0].definitions["main"]?.type,
-            "\"lex:com.example.kitchenSink#main\" not found in lexicon registry."
-        )
+        #expect(throws: Never.self, "\"lex:com.example.kitchenSink#main\" not found in lexicon registry.") {
+            try lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink#main").type == generateLexiconScaffolds()[0].definitions["main"]?.type
+        }
 
-        try #require(
-            lexiconRegistry.getDefinition(by: "com.example.kitchenSink#object").type == lexicons[0].definitions["object"]?.type,
-            "\"com.example.kitchenSink#object\" not found in lexicon registry."
-        )
+        #expect(throws: Never.self, "\"com.example.kitchenSink#object\" not found in lexicon registry.") {
+            try lexiconRegistry.getDefinition(by: "com.example.kitchenSink#object").type == generateLexiconScaffolds()[0].definitions["object"]?.type
+        }
 
-        try #require(
-            lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink#object").type == lexicons[0].definitions["object"]?.type,
-            "\"lex:com.example.kitchenSink#object\" not found in lexicon registry."
-        )
+        #expect(throws: Never.self, "\"lex:com.example.kitchenSink#object\" not found in lexicon registry.") {
+            try lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink#object").type == generateLexiconScaffolds()[0].definitions["object"]?.type
+
+        }
     }
 }
