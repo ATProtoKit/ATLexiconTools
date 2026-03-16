@@ -111,4 +111,29 @@ struct `General Validation` {
             _ = try LexiconParser.parseLexicon(schema)
         }
     }
+
+    @Test
+    func `Fails lexicon parsing when URI is invalid`() async throws {
+        let schema = """
+            {
+                "lexicon": 1,
+                "id": "com.example.invalidUri",
+                "defs": {
+                    "main": {
+                        "$type": "object",
+                        "properties": {
+                            "test": {
+                                "$type": "ref",
+                                "ref": "com.example.invalid#test#test"
+                            }
+                        }
+                    }
+                }
+            }
+            """
+
+        #expect(throws: Error.self, "The URI in the schema should be invalid.") {
+            _ = try LexiconParser.parseLexicon(schema)
+        }
+    }
 }
