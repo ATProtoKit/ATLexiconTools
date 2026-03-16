@@ -47,7 +47,8 @@ public struct ATObjectType: ATLexiconObjectProtocol {
         self.required = required
         self.nullable = nullable
 
-        try Self.validate(required: self.required, properties: self.properties)
+//        try Self.validate(required: self.required, properties: self.properties)
+//        try Self.validate(properties: self.properties, nullable: self.nullable)
     }
 
     public init(from decoder: any Decoder) throws {
@@ -59,6 +60,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
         self.nullable = try container.decodeIfPresent([String].self, forKey: .nullable)
 
         try Self.validate(container: container, required: self.required, properties: properties)
+        try Self.validate(container: container, properties: properties, nullable: self.nullable)
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -106,6 +108,40 @@ public struct ATObjectType: ATLexiconObjectProtocol {
                     )
                 } else {
                     throw LexiconSchemaValidatorError.invalidSchema(reason: "The required property '\(requiredValue)' was not found.")
+                }
+            }
+        }
+    }
+
+    /// Validates the current level of the lexicon to make sure that any property that can't be nullable is
+    /// not null.
+    ///
+    /// - Parameters:
+    ///   - container: A keyed decoding container view into this decoder. Optional. Defaults to `nil`.
+    ///   - properties: A dictionary of properties with their own schemas.
+    ///   - nullable: An array of properties that can be receive the value of `nil`. Optional.
+    ///   Defaults to `nil`.
+    ///
+    ///   - Throws: An error if a value is violating the lexicon requirements.
+    private static func validate(
+        container: KeyedDecodingContainer<ATObjectType.CodingKeys>? = nil,
+        properties: [String : LexiconDefinition],
+        nullable: [String]? = nil
+    ) throws {
+        guard let nullable else {
+            return
+        }
+
+        for nullableValue in nullable {
+            if properties[nullableValue] == nil {
+                if let container = container {
+                    throw DecodingError.dataCorruptedError(
+                        forKey: .required,
+                        in: container,
+                        debugDescription: "The required property '\(nullableValue)' was not found."
+                    )
+                } else {
+
                 }
             }
         }
