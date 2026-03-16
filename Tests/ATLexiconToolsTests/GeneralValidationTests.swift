@@ -92,7 +92,7 @@ struct `General Validation` {
     }
 
     @Test
-    func `Allows unknown fields to be present`() async throws {
+    func `Allows unknown fields to be present`() throws {
         let schema = """
             {
                 "lexicon": 1,
@@ -113,7 +113,7 @@ struct `General Validation` {
     }
 
     @Test
-    func `Fails lexicon parsing when URI is invalid`() async throws {
+    func `Fails lexicon parsing when URI is invalid`() throws {
         let schema = """
             {
                 "lexicon": 1,
