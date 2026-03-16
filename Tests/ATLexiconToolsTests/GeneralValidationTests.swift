@@ -86,7 +86,7 @@ struct `General Validation` {
             }
             """
 
-        #expect(throws: Never.self) {
+        #expect(throws: Error.self, "The required property \'foo\' was not found.") {
             _ = try LexiconParser.parseLexicon(schema)
         }
     }

@@ -39,11 +39,15 @@ public struct ATObjectType: ATLexiconObjectProtocol {
     ///   - required: An array of properties that are required in the lexicon. Optional. Defaults to `nil`.
     ///   - nullable: An array of properties that can be receive the value of `nil`. Optional.
     ///   Defaults to `nil`.
-    public init(description: String? = nil, properties: [String : LexiconDefinition], required: [String]? = nil, nullable: [String]? = nil) {
+    ///
+    ///   - Throws: An error if a value is violating the lexicon requirements.
+    public init(description: String? = nil, properties: [String : LexiconDefinition], required: [String]? = nil, nullable: [String]? = nil) throws {
         self.description = description
         self.properties = properties
         self.required = required
         self.nullable = nullable
+
+        try Self.validate(required: self.required, properties: self.properties)
     }
 
     public init(from decoder: any Decoder) throws {
@@ -53,6 +57,8 @@ public struct ATObjectType: ATLexiconObjectProtocol {
         self.properties = try container.decode([String : LexiconDefinition].self, forKey: .properties)
         self.required = try container.decodeIfPresent([String].self, forKey: .required)
         self.nullable = try container.decodeIfPresent([String].self, forKey: .nullable)
+
+        try Self.validate(container: container, required: self.required, properties: properties)
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -70,4 +76,38 @@ public struct ATObjectType: ATLexiconObjectProtocol {
         case required
         case nullable
     }
+
+    // MARK: - Validators
+
+    /// Validates the current level of the lexicon.
+    ///
+    /// - Parameter container: A keyed decoding container view into this decoder. Optional. Defaults to `nil`.
+    ///
+    /// - Throws: An error if the encountered stored value is not in the "main" definition.
+    private static func validate(
+        container: KeyedDecodingContainer<ATObjectType.CodingKeys>? = nil,
+        required: [String]? = nil,
+        properties: [String : LexiconDefinition]
+    ) throws {
+        guard let required else {
+            return
+        }
+
+        for requiredValue in required {
+            print("Required Value: \(requiredValue)")
+            if properties[requiredValue] == nil {
+                if let container = container {
+                    throw DecodingError.dataCorruptedError(
+                        forKey: .required,
+                        in: container,
+                        debugDescription: "The required property '\(requiredValue)' was not found."
+                    )
+                } else {
+                    throw LexiconSchemaValidatorError.invalidSchema(reason: "The required property '\(requiredValue)' was not found.")
+                }
+            }
+        }
+    }
+
+    /// Validates the 
 }
