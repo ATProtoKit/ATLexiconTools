@@ -141,7 +141,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
                         debugDescription: "The required property '\(nullableValue)' was not found."
                     )
                 } else {
-
+                    throw LexiconSchemaValidatorError.invalidSchema(reason: "The required property '\(nullableValue)' was not found.")
                 }
             }
         }
