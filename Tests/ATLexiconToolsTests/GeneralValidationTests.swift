@@ -46,14 +46,14 @@ struct `General Validation` {
                 ]))
         }
 
-        #expect(throws: Error.self) {
+        #expect(throws: Error.self, "Record should be validated.") {
             try self.lexiconRegistry.validate(lexiconURI: "com.example.kitchenSink")
         }
     }
 
     @Test
     func `Validates objects correctly`() throws {
-        #expect(throws: Never.self) {
+        #expect(throws: Never.self, "Object should be validated.") {
             try self.lexiconRegistry.validate(
                 lexiconURI: "com.example.kitchenSink#object",
                 value: ["object" : ["boolean": true],
@@ -86,7 +86,7 @@ struct `General Validation` {
             }
             """
 
-        #expect(throws: Error.self, "The required property \'foo\' was not found.") {
+        #expect(throws: Error.self, "The required property \'foo\' should not be found.") {
             _ = try LexiconParser.parseLexicon(schema)
         }
     }
@@ -107,7 +107,7 @@ struct `General Validation` {
             }
             """
 
-        #expect(throws: Never.self) {
+        #expect(throws: Never.self, "\"foo\" should be allowed to be in the achema.") {
             _ = try LexiconParser.parseLexicon(schema)
         }
     }
