@@ -68,7 +68,7 @@ public struct ATReferenceType: Codable, Sendable {
         reference: String
     ) throws {
         do {
-            try Validator.Format.validateURI(path: "", uriValue: reference)
+            try Validator.Format.validateATURI(path: "", atURIValue: reference)
         } catch {
             if let container = container {
                 throw DecodingError.dataCorruptedError(
