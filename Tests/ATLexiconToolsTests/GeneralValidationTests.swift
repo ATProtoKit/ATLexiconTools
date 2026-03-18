@@ -136,4 +136,36 @@ struct `General Validation` {
             _ = try LexiconParser.parseLexicon(schema)
         }
     }
+
+    @Test
+    func `Fails validation when 'ref' URI has multiple hash segments`() throws {
+        let schema = try Lexicon(
+            lexicon: 1,
+            id: "com.example.invalidUri",
+            definitions: [
+                "main": .object(
+                    ATObjectType(
+                        properties: ["test": .union(
+                            ATUnionType(
+                                references: ["com.example.invalidUri"]
+                            ))],
+                        required: ["test"]
+                    )
+                )
+            ]
+        )
+
+        let lexicons = try LexiconRegistry(lexicons: [schema])
+        #expect(throws: Error.self, "The URI in the \"ref\" key inside the schema should be invalid.") {
+            _ = try lexicons.validate(
+                lexiconURI: "com.example.invalidUri#object",
+                value: [
+                    "test": [
+                        "$type": "com.example.invalidUri#main#main",
+                        "test": 123
+                    ]
+                ]
+            )
+        }
+    }
 }
