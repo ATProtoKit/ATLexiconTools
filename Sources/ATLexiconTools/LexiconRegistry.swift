@@ -117,9 +117,23 @@ public final class LexiconRegistry: Sequence {
         }
 
         switch definition {
-            case .record:
+            case .record(let record):
+                try Validator.Complex.validateObject(
+                    lexicons: self,
+                    path: "Record",
+                    definition: ATObjectType(properties: record.record.properties),
+                    value: value
+                )
+
                 return
-            case .object:
+            case .object(let object):
+                try Validator.Complex.validateObject(
+                    lexicons: self,
+                    path: "Object",
+                    definition: object,
+                    value: value
+                )
+
                 return
             default:
                 throw LexiconRegistryError.notOfType(expected: ["record", "object"], actual: definition.type, uri: normalizedURI)
