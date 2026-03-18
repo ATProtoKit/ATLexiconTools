@@ -100,7 +100,7 @@ extension Validator.Complex {
 
         let requiredProperties = Set(definition.required ?? [])
         let nullableProperties = Set(definition.nullable ?? [])
-        var resultValue = objectValue
+//        var resultValue = objectValue
 
         if let requiredList = definition.required {
             for requiredKey in requiredList {
@@ -130,32 +130,27 @@ extension Validator.Complex {
             }
 
             let propertyPath = "\(path)/\(key)"
-            var isValidationSuccessful: Bool
-            do {
-                try validateOneOf(
-                    lexicons: lexicons,
-                    path: propertyPath,
-                    definition: propertyDefinition,
-                    value: rawPropertyValue
-                )
+//            var isValidationSuccessful: Bool = false
 
-                isValidationSuccessful = true
-            } catch {
-                isValidationSuccessful = false
-            }
+            try validateOneOf(
+                lexicons: lexicons,
+                path: propertyPath,
+                definition: propertyDefinition,
+                value: rawPropertyValue
+            )
 
             let propertyIsUndefined = rawPropertyValue == nil
             if propertyIsUndefined, requiredProperties.contains(key) {
                 throw LexiconValidatorError.objectRequiredPropertyNotFound(path: path, requiredKey: key)
             }
 
-            if !propertyIsUndefined, !isValidationSuccessful {
-                return
+            if !propertyIsUndefined {
+                break
             }
 
-            if isValidationSuccessful {
-                resultValue[key] = rawPropertyValue
-            }
+//            if isValidationSuccessful {
+//                resultValue[key] = rawPropertyValue
+//            }
         }
     }
 
@@ -199,29 +194,25 @@ extension Validator.Complex {
             default:
                 concreteDefinitions = try LexiconToolsUtilities.toConcreteTypes(lexicons: lexicons, definition: definition)
 
-                do {
-                    for concreteDefinition in concreteDefinitions {
-                        switch isObject {
-                            case true:
-                                guard case .object(let aTObjectType) = concreteDefinition else {
-                                    throw LexiconValidatorError.valueIsNotObject(path: path)
-                                }
+                for concreteDefinition in concreteDefinitions {
+                    switch isObject {
+                        case true:
+                            guard case .object(let aTObjectType) = concreteDefinition else {
+                                throw LexiconValidatorError.valueIsNotObject(path: path)
+                            }
 
-                                try Validator.Complex
-                                    .validateObject(
-                                        lexicons: lexicons,
-                                        path: path,
-                                        definition: aTObjectType,
-                                        value: value
-                                    )
-                            case false:
-                                try Validator.Complex.validate(lexicons: lexicons, path: path, definition: concreteDefinition, value: value)
-                        }
-
-                        return
+                            try Validator.Complex
+                                .validateObject(
+                                    lexicons: lexicons,
+                                    path: path,
+                                    definition: aTObjectType,
+                                    value: value
+                                )
+                        case false:
+                            try Validator.Complex.validate(lexicons: lexicons, path: path, definition: concreteDefinition, value: value)
                     }
-                } catch {
-                    throw error
+
+                    return
                 }
         }
     }
