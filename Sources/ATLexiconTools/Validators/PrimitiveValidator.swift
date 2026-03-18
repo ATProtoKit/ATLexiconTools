@@ -120,11 +120,7 @@ extension Validator.Primitive {
         definition: ATStringType,
         value: PrimitiveValue?
     ) throws {
-        guard let value else {
-            throw LexiconValidatorError.invalidType(value: path, expectedType: "string")
-        }
-
-        guard case .string(let stringValue) = value else {
+        guard let value, case .string(let stringValue) = value else {
             throw LexiconValidatorError.invalidType(value: path, expectedType: "string")
         }
 
