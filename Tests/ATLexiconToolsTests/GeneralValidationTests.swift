@@ -156,8 +156,9 @@ struct `General Validation` {
         )
 
         let lexicons = try LexiconRegistry(lexicons: [schema])
+
         #expect(throws: Error.self, "The URI in the \"ref\" key inside the schema should be invalid.") {
-            _ = try lexicons.validate(
+            try lexicons.validate(
                 lexiconURI: "com.example.invalidUri#object",
                 value: [
                     "test": [
@@ -166,6 +167,97 @@ struct `General Validation` {
                     ]
                 ]
             )
+        }
+    }
+
+    @Test
+    func `Union handles both implicit and explicit #main`() throws {
+        let schemas: [Lexicon] = [
+            try Lexicon(
+                lexicon: 1,
+                id: "com.example.implicitMain",
+                definitions: [
+                    "main" : .object(ATObjectType(
+                        properties: [
+                            "test" : .string(ATStringType())
+                        ],
+                        required: ["test"]
+                    ))
+                ]
+            ),
+            try Lexicon(
+                lexicon: 1,
+                id: "com.example.testImplicitMain",
+                definitions: [
+                    "main" : .object(ATObjectType(
+                        properties: [
+                            "union" : .reference(
+                                ATReferenceType(reference: "com.example.implicitMain")
+                            )
+                        ],
+                        required: ["union"]
+                    ))
+                ]
+            ),
+            try Lexicon(
+                lexicon: 1,
+                id: "com.example.testExplicitMain",
+                definitions: [
+                    "main" : .object(ATObjectType(
+                        properties: [
+                            "union" : .reference(
+                                ATReferenceType(reference: "com.example.implicitMain#main")
+                            )
+                        ],
+                        required: ["union"]
+                    ))
+                ])
+        ]
+
+        let lexicons = try LexiconRegistry(lexicons: schemas)
+
+        #expect(throws: LexiconValidatorError.self, "Object/union/test in com.example.implicitMain must be a string.") {
+            try lexicons.validate(
+                lexiconURI: "com.example.testImplicitMain",
+                value: [
+                    "union": [
+                        "$type": "com.example.implicitMain",
+                        "test": 123
+                    ]
+                ])
+        }
+
+        #expect(throws: LexiconValidatorError.self, "Object/union/test in com.example.implicitMain#main must be a string.") {
+            try lexicons.validate(
+                lexiconURI: "com.example.testImplicitMain",
+                value: [
+                    "union": [
+                        "$type": "com.example.implicitMain#main",
+                        "test": 123
+                    ]
+                ])
+        }
+
+        #expect(throws: LexiconValidatorError.self, "Object/union/test in com.example.implicitMain#main must be a string.") {
+            try lexicons.validate(
+                lexiconURI: "com.example.testExplicitMain",
+                value: [
+                    "union": [
+                        "$type": "com.example.implicitMain#main",
+                        "test": 123
+                    ]
+                ])
+        }
+
+        #expect(throws: LexiconValidatorError.self, "Object/union/test in com.example.implicitMain#main must be a string.") {
+            try lexicons.validate(
+                lexiconURI: "com.example.testExplicitMain",
+                value: [
+                    "union": [
+                        "$type": "com.example.implicitMain#main",
+                        "test": 123
+                    ]
+                ])
         }
     }
 }
