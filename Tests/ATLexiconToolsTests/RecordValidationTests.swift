@@ -63,4 +63,18 @@ struct `Record Validation` {
         }
     }
 
+    @Test
+    func `Fails incorrect $type`() throws {
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(by: "com.example.kitchenSink")
+        }
+
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.kitchenSink",
+                value: [
+                    "type": "foo"
+                ])
+        }
+    }
 }
