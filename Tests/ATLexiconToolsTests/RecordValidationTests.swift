@@ -48,9 +48,19 @@ struct `Record Validation` {
         }
     }
 
-//    @Test
-//    func ``() async throws {
-//        <#body#>
-//    }
+    @Test
+    func `Fails invalid input types`() throws {
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(by: "com.example.kitchenSink")
+        }
+
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(by: "com.example.kitchenSink", value: 123)
+        }
+
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(by: "com.example.kitchenSink", value: "string")
+        }
+    }
 
 }
