@@ -39,12 +39,17 @@ extension Validator {
         definition: LexiconDefinition,
         value: PrimitiveValue?
     ) throws {
-        try Validator.Complex.validate(
-            lexicons: lexicons,
-            path: "Record",
-            definition: definition,
-            value: value
-        )
+        switch definition {
+            case .record(let atRecordType):
+                try Validator.Complex.validateObject(
+                    lexicons: lexicons,
+                    path: "Record",
+                    definition: atRecordType.record,
+                    value: value
+                )
+            default:
+                throw LexiconValidatorError.valueIsNotObject(path: "Record")
+        }
     }
 
     /// Validates the specified XRPC query parameters.

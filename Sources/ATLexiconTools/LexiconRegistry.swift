@@ -140,23 +140,30 @@ public final class LexiconRegistry: Sequence {
         }
     }
 
-    /// Validates a string definition.
+    /// Validates a record definition.
     ///
     /// - Parameters:
     ///   - lexiconURI: The URI of the lexicon to validate.
-    ///   - value: An `ATLexiconObjectProtocol` object, representing the actual definition.
-    public func validateRecord(by lexiconURI: String, value: ATLexiconObjectProtocol) throws {
-        guard value.type == "string" else {
+    ///   - value: An `PrimitiveValue` object, representing the actual definition.
+    ///
+    ///   - Throws: An error if the lexicon isn't an object or a record.
+    public func validateRecord(by lexiconURI: String, value: PrimitiveValue) throws {
+        let normalizedURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
+        let definition = try self.getDefinition(by: normalizedURI, types: ["record"])
+
+        guard case .object(let recordValue) = value else {
+            throw LexiconRegistryError.notOfType(expected: ["object"], actual: definition.type, uri: normalizedURI)
+        }
+
+        guard case .string(let rawType)? = recordValue["$type"] else {
             throw LexiconRegistryError.typeIsNotAString
         }
 
-        let normalizedLexiconURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
-
-        guard try LexiconToolsUtilities.toLexiconURI(from: value.type) == normalizedLexiconURI else {
-            throw LexiconRegistryError.invalidType(expectedValue: normalizedLexiconURI, actualValue: value.type)
+        if try LexiconToolsUtilities.toLexiconURI(from: lexiconURI) != normalizedURI {
+            throw LexiconRegistryError.invalidType(expectedValue: normalizedURI, actualValue: rawType)
         }
 
-        _ = try self.getDefinition(by: normalizedLexiconURI, types: ["record"])
+        try Validator.validateRecord(lexicons: self, definition: definition, value: value)
     }
 
     /// Validates XRPC parameters.
