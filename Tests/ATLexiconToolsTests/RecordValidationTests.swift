@@ -77,4 +77,26 @@ struct `Record Validation` {
                 ])
         }
     }
+
+    @Test
+    func `Fails missing 'required' fields`() throws {
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.kitchenSink",
+                value: .object([
+                    "$type" : "com.example.kitchenSink",
+                    "array": ["one", "two"],
+                    "boolean": true,
+                    "integer": 123,
+                    "string": "string",
+                    "datetime" : .string("\(Date.now.ISO8601Format())"),
+                    "atUri" : "at://did:web:example.com/com.example.test/self",
+                    "did": "did:web:example.com",
+                    "cid": "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a",
+                    "bytes": .bytes(Data([0, 1, 2, 3])),
+                    "cidLink": .cid(try CID(string: "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a"))
+                ])
+            )
+        }
+    }
 }
