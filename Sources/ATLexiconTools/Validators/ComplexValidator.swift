@@ -130,7 +130,6 @@ extension Validator.Complex {
             }
 
             let propertyPath = "\(path)/\(key)"
-//            var isValidationSuccessful: Bool = false
 
             try validateOneOf(
                 lexicons: lexicons,
@@ -138,19 +137,6 @@ extension Validator.Complex {
                 definition: propertyDefinition,
                 value: rawPropertyValue
             )
-
-            let propertyIsUndefined = rawPropertyValue == nil
-            if propertyIsUndefined, requiredProperties.contains(key) {
-                throw LexiconValidatorError.objectRequiredPropertyNotFound(path: path, requiredKey: key)
-            }
-
-            if !propertyIsUndefined {
-                break
-            }
-
-//            if isValidationSuccessful {
-//                resultValue[key] = rawPropertyValue
-//            }
         }
     }
 
