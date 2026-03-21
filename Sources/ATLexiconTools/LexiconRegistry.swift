@@ -173,7 +173,9 @@ public final class LexiconRegistry: Sequence {
             throw LexiconRegistryError.typeIsNotAString
         }
 
-        if try LexiconToolsUtilities.toLexiconURI(from: lexiconURI) != normalizedURI {
+        let normalizedRecordType = try LexiconToolsUtilities.toLexiconURI(from: rawType)
+
+        if normalizedRecordType != normalizedURI {
             throw LexiconRegistryError.invalidType(expectedValue: normalizedURI, actualValue: rawType)
         }
 
