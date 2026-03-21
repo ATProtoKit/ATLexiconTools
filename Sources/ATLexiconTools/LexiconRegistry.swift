@@ -219,4 +219,96 @@ public final class LexiconRegistry: Sequence {
 
         return result
     }
+
+    /// Resolves all relative references inside a definition.
+    ///
+    /// - Parameters:
+    ///   - definition: The definition to normalize.
+    ///   - baseURI: The lexicon URI used to resolve relative anchors.
+    ///
+    /// - Returns: A new instance of `LexiconDefinition`, with all relative references normalized.
+    ///
+    /// - Throws: An error if a relative URI can't be resolved.
+    private func resolveReferenceURIs(in definition: LexiconDefinition, baseURI: String) throws -> LexiconDefinition {
+        switch definition {
+            case .reference(let referenceType):
+                return .reference(
+                    ATReferenceType(
+                        reference: try LexiconToolsUtilities.toLexiconURI(
+                            from: referenceType.reference,
+                            resolvedAgainst: baseURI
+                        )
+                    )
+                )
+
+            case .union(let unionType):
+                let resolvedReferences = try unionType.references?.map { reference in
+                    try LexiconToolsUtilities.toLexiconURI(
+                        from: reference,
+                        resolvedAgainst: baseURI
+                    )
+                }
+
+                return .union(
+                    ATUnionType(
+                        references: resolvedReferences,
+                        isClosed: unionType.isClosed
+                    )
+                )
+
+            case .array(let arrayType):
+                let resolvedItems = try self.resolveReferenceURIs(
+                    in: arrayType.items,
+                    baseURI: baseURI
+                )
+
+                return .array(
+                    ATArrayType(
+                        items: resolvedItems,
+                        minimumLength: arrayType.minimumLength,
+                        maximumLength: arrayType.maximumLength
+                    )
+                )
+
+            case .object(let objectType):
+                var resolvedProperties: [String: LexiconDefinition] = [:]
+
+                for (propertyName, propertyDefinition) in objectType.properties {
+                    resolvedProperties[propertyName] = try self.resolveReferenceURIs(
+                        in: propertyDefinition,
+                        baseURI: baseURI
+                    )
+                }
+
+                return .object(
+                    try ATObjectType(
+                        description: objectType.description,
+                        properties: resolvedProperties,
+                        required: objectType.required,
+                        nullable: objectType.nullable
+                    )
+                )
+
+            case .record(let recordType):
+                let resolvedRecordObjectDefinition = try self.resolveReferenceURIs(
+                    in: .object(recordType.record),
+                    baseURI: baseURI
+                )
+
+                guard case .object(let resolvedRecordObject) = resolvedRecordObjectDefinition else {
+                    return definition
+                }
+
+                return .record(
+                    RecordDefinition(
+                        description: recordType.description,
+                        key: recordType.key,
+                        record: resolvedRecordObject
+                    )
+                )
+
+            default:
+                return definition
+        }
+    }
 }
