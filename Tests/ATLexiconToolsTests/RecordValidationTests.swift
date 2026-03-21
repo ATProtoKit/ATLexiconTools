@@ -250,4 +250,16 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Handles optional properties correctly`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.optional",
+                value: .object([
+                    "$type": "com.example.optional"
+                ])
+            )
+        }
+    }
 }
