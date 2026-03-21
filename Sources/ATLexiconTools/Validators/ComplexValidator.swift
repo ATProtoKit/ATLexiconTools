@@ -168,7 +168,7 @@ extension Validator.Complex {
                     throw LexiconValidatorError.objectMustInclude$typeProperty(path: path)
                       }
 
-                if try !LexiconToolsUtilities.refencesContainType(references: unionTypeReference, type: definition.type) {
+                if try !LexiconToolsUtilities.refencesContainType(references: unionTypeReference, type: type) {
                     if unionType.isClosed == true {
                         throw LexiconValidatorError.unionObject$typeValueNotFound(path: path, references: unionTypeReference.joined(separator: ", "))
                     }
