@@ -37,18 +37,32 @@ public final class LexiconRegistry: Sequence {
     ///
     /// - Throws: An error if the lexicon has already been registered or if the URI resolution fails.
     public func add(lexicon: Lexicon) throws {
-        let uri = try LexiconToolsUtilities.toLexiconURI(from: lexicon.id)
+        let normalizedBaseURI = try LexiconToolsUtilities.toLexiconURI(from: lexicon.id)
 
-        guard self.lexicons[uri] == nil else {
-            throw LexiconRegistryError.lexiconAlreadyRegistered(nsid: uri)
+        // There shouldn't be any duplicates in the collection.
+        guard self.lexicons[normalizedBaseURI] == nil else {
+            throw LexiconRegistryError.lexiconAlreadyRegistered(nsid: normalizedBaseURI)
         }
 
-        self.lexicons[uri] = lexicon
+        var resolvedDefinitions: [String: LexiconDefinition] = [:]
 
-        if !lexicon.definitions.isEmpty {
-            for (key, value) in self.iterateDefinitions(for: lexicon) {
-                self.definitions[key] = value
-            }
+        for (definitionName, definitionValue) in lexicon.definitions {
+            resolvedDefinitions[definitionName] = try self.resolveReferenceURIs(
+                in: definitionValue,
+                baseURI: normalizedBaseURI
+            )
+        }
+
+        let resolvedLexicon = try Lexicon(
+            lexicon: lexicon.lexicon,
+            id: lexicon.id,
+            definitions: resolvedDefinitions
+        )
+
+        self.lexicons[normalizedBaseURI] = resolvedLexicon
+
+        for (definitionKey, definitionValue) in self.iterateDefinitions(for: resolvedLexicon) {
+            self.definitions[definitionKey] = definitionValue
         }
     }
 
