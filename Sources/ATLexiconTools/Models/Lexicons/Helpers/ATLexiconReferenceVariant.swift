@@ -8,7 +8,7 @@
 import Foundation
 
 /// A group of reference variants.
-public enum ATLexiconReferenceVariant: Codable, Sendable {
+public enum ATLexiconReferenceVariant: Codable, Sendable, Equatable {
 
     /// The reference variant is a normal reference.
     case reference(ATReferenceType)

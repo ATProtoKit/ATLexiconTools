@@ -8,7 +8,7 @@
 import Foundation
 
 /// An error type.
-public struct ATErrorsType: Codable, Sendable {
+public struct ATErrorsType: Codable, Sendable, Equatable {
 
     /// The type value of the object.
     ///

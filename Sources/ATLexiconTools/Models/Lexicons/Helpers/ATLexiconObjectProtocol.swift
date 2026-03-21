@@ -6,7 +6,7 @@
 //
 
 /// A protocol representing a lexicon object.
-public protocol ATLexiconObjectProtocol: Codable, Sendable {
+public protocol ATLexiconObjectProtocol: Codable, Sendable, Equatable {
 
     /// The type value of the lexicon object.
     var type: String { get }

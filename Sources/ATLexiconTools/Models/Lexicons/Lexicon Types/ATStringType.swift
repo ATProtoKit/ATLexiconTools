@@ -131,7 +131,7 @@ public struct ATStringType: ATLexiconObjectProtocol {
     }
 
     /// The string format restriction.
-    public enum Format: String, Codable, Sendable {
+    public enum Format: String, Codable, Sendable, Equatable {
 
         /// Indicates the format is either a decentralized identifier (DID) or
         /// user account handle.

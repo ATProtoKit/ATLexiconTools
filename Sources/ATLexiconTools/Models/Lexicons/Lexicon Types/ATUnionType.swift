@@ -10,7 +10,7 @@ import Foundation
 /// A `union` type.
 ///
 /// In Swift, this would be the equivalent to the `Any` type.
-public struct ATUnionType: Codable, Sendable {
+public struct ATUnionType: Codable, Sendable, Equatable {
 
     /// The type value of the object.
     ///

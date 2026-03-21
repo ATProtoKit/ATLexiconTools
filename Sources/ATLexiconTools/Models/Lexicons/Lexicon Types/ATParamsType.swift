@@ -10,7 +10,7 @@ import Foundation
 /// A `params` type.
 ///
 /// In Swift, this would be the equivalent to the `Dictionary` type.
-public struct ATParamsType: Codable, Sendable {
+public struct ATParamsType: Codable, Sendable, Equatable {
 
     /// The type value of the object.
     ///
@@ -59,7 +59,7 @@ public struct ATParamsType: Codable, Sendable {
     }
 
     /// A specific property.
-    public enum Property: Codable, Sendable {
+    public enum Property: Codable, Sendable, Equatable {
 
         /// A `boolean` property.
         case boolean(ATBooleanType)

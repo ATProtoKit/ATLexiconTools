@@ -8,7 +8,7 @@
 import Foundation
 
 /// A request and response body typically used for ``QueryDefinition`` and ``ProcedureDefinition``.
-public struct LexiconHTTPBody: Codable, Sendable {
+public struct LexiconHTTPBody: Codable, Sendable, Equatable {
 
     /// A short description about the input or output. Optional.
     public let description: String?

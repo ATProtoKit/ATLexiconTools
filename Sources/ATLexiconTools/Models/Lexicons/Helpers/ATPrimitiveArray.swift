@@ -8,7 +8,7 @@
 import Foundation
 
 /// An `array` type that contain item primitives.
-public struct ATPrimitiveArray: Codable, Sendable {
+public struct ATPrimitiveArray: Codable, Sendable, Equatable {
 
     /// The type value of the object.
     ///
