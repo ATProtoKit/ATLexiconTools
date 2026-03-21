@@ -99,4 +99,155 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Fails incorrect types`() throws {
+        #expect(throws: LexiconValidatorError.self, "Record/object/object/boolean must be a boolean.") {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.kitchenSink",
+                value: .object([
+                    "$type": "com.example.kitchenSink",
+                    "object": [
+                        "object": ["boolean": "1234"],
+                        "array": ["one", "two"],
+                        "boolean": true,
+                        "integer": 123,
+                        "string": "string"
+                    ],
+                    "array": ["one", "two"],
+                    "boolean": true,
+                    "integer": 123,
+                    "string": "string",
+                    "bytes": .bytes(Data([0, 1, 2, 3])),
+                    "cidLink": .cid(try CID(string: "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a"))
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self, "Record/object must be an object.") {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.kitchenSink",
+                value: .object([
+                    "$type": "com.example.kitchenSink",
+                    "object": true,
+                    "array": ["one", "two"],
+                    "boolean": true,
+                    "integer": 123,
+                    "string": "string",
+                    "bytes": .bytes(Data([0, 1, 2, 3])),
+                    "cidLink": .cid(try CID(string: "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a"))
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self, "Record/array must be an array.") {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.kitchenSink",
+                value: .object([
+                    "$type": "com.example.kitchenSink",
+                    "object": [
+                        "object": ["boolean": true],
+                        "array": ["one", "two"],
+                        "boolean": true,
+                        "integer": 123,
+                        "string": "string"
+                    ],
+                    "array": 1234,
+                    "boolean": true,
+                    "integer": 123,
+                    "string": "string",
+                    "bytes": .bytes(Data([0, 1, 2, 3])),
+                    "cidLink": .cid(try CID(string: "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a"))
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self, "Record/integer must be an integer.") {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.kitchenSink",
+                value: .object([
+                    "$type": "com.example.kitchenSink",
+                    "object": [
+                        "object": ["boolean": true],
+                        "array": ["one", "two"],
+                        "boolean": true,
+                        "integer": 123,
+                        "string": "string"
+                    ],
+                    "array": ["one", "two"],
+                    "boolean": true,
+                    "integer": true,
+                    "string": "string",
+                    "bytes": .bytes(Data([0, 1, 2, 3])),
+                    "cidLink": .cid(try CID(string: "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a"))
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self, "Record/string must be a string.") {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.kitchenSink",
+                value: .object([
+                    "$type": "com.example.kitchenSink",
+                    "object": [
+                        "object": ["boolean": true],
+                        "array": ["one", "two"],
+                        "boolean": true,
+                        "integer": 123,
+                        "string": "string"
+                    ],
+                    "array": ["one", "two"],
+                    "boolean": true,
+                    "integer": 123,
+                    "string": ["test": 1234],
+                    "bytes": .bytes(Data([0, 1, 2, 3])),
+                    "cidLink": .cid(try CID(string: "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a"))
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self, "Record/bytes must be a byte array.") {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.kitchenSink",
+                value: .object([
+                    "$type": "com.example.kitchenSink",
+                    "object": [
+                        "object": ["boolean": true],
+                        "array": ["one", "two"],
+                        "boolean": true,
+                        "integer": 123,
+                        "string": "string"
+                    ],
+                    "array": ["one", "two"],
+                    "boolean": true,
+                    "integer": 123,
+                    "string": "string",
+                    "bytes": 1234,
+                    "cidLink": .cid(try CID(string: "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a"))
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self, "Record/cidLink must be a CID.") {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.kitchenSink",
+                value: .object([
+                    "$type": "com.example.kitchenSink",
+                    "object": [
+                        "object": ["boolean": true],
+                        "array": ["one", "two"],
+                        "boolean": true,
+                        "integer": 123,
+                        "string": "string"
+                    ],
+                    "array": ["one", "two"],
+                    "boolean": true,
+                    "integer": 123,
+                    "string": "string",
+                    "bytes": .bytes(Data([0, 1, 2, 3])),
+                    "cidLink": "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a"
+                ])
+            )
+        }
+    }
 }
