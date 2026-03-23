@@ -21,11 +21,11 @@ public enum LexiconToolsUtilities {
             throw LexiconToolsError.multipleHashSegmentsInURI
         }
 
-        if string.starts(with: "lex:") {
+        if string.hasPrefix("lex:") {
             return string
         }
 
-        if string.starts(with: "#") {
+        if string.hasPrefix("#") {
             guard let baseURI = baseURI else {
                 throw LexiconToolsError.uriResolutionFailedDueToLackOfAnchor(anchor: string)
             }
