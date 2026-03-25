@@ -10,12 +10,12 @@ import Testing
 import MultiformatsKit
 @testable import ATLexiconTools
 
-@Suite("Lexicon Collection")
-struct LexiconCollectionTests {
+@Suite
+struct `Lexicon Collection` {
 
     public var lexiconRegistry: LexiconRegistry
 
-    public init() async throws {
+    public init() throws {
         self.lexiconRegistry = try makeLexicons()
     }
 
@@ -30,7 +30,7 @@ struct LexiconCollectionTests {
     }
 
     @Test
-    func `Correctly references all definitions`() async throws {
+    func `Correctly references all definitions`() throws {
         #expect(throws: Never.self, "\"com.example.kitchenSink\" not found in lexicon registry.") {
             try lexiconRegistry
                 .getDefinition(by: "com.example.kitchenSink", shouldNormalizeURI: true).type == generateLexiconScaffolds()[0]
