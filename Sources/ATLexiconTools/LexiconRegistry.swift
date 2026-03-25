@@ -98,17 +98,24 @@ public final class LexiconRegistry: Sequence {
     ///   - uri: The lexicon's URI.
     ///   - allowedTypes: An array of strings used for filtering the objwct types the definition has.
     ///   Optional. Defaults to `nil`.
+    ///   - shouldNormalizeURI: Determines whether the method should normalize the URI. Defaults to `false`.
     ///   - Returns: A `LwxiconDefinition` object.
-    public func getDefinition(by uri: String, types allowedTypes: [String]? = nil) throws -> LexiconDefinition {
-        let uri = try LexiconToolsUtilities.toLexiconURI(from: uri)
+    public func getDefinition(by uri: String, types allowedTypes: [String]? = nil, shouldNormalizeURI: Bool = false) throws -> LexiconDefinition {
+        let normalizedURI: String
+        switch shouldNormalizeURI {
+            case true:
+                normalizedURI = try LexiconToolsUtilities.toLexiconURI(from: uri)
+            case false:
+                normalizedURI = uri
+        }
 
-        guard let definition = self.definitions[uri] else {
-            throw LexiconRegistryError.lexiconNotFound(uri: uri)
+        guard let definition = self.definitions[normalizedURI] else {
+            throw LexiconRegistryError.lexiconNotFound(uri: normalizedURI)
         }
 
         if let allowed = allowedTypes, !allowed.isEmpty {
             if !allowed.contains(definition.type) {
-                throw LexiconRegistryError.notOfType(expected: allowed, actual: definition.type, uri: uri)
+                throw LexiconRegistryError.notOfType(expected: allowed, actual: definition.type, uri: normalizedURI)
             }
         }
 
