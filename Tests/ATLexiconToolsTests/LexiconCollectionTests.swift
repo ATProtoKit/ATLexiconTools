@@ -32,7 +32,9 @@ struct LexiconCollectionTests {
     @Test
     func `Correctly references all definitions`() async throws {
         #expect(throws: Never.self, "\"com.example.kitchenSink\" not found in lexicon registry.") {
-            try lexiconRegistry.getDefinition(by: "com.example.kitchenSink").type == generateLexiconScaffolds()[0].definitions["main"]?.type
+            try lexiconRegistry
+                .getDefinition(by: "com.example.kitchenSink", shouldNormalizeURI: true).type == generateLexiconScaffolds()[0]
+                .definitions["main"]?.type
         }
 
         #expect(throws: Never.self, "\"lex:com.example.kitchenSink\" not found in lexicon registry.") {
@@ -40,7 +42,7 @@ struct LexiconCollectionTests {
         }
 
         #expect(throws: Never.self, "\"com.example.kitchenSink#main\" not found in lexicon registry.") {
-            try lexiconRegistry.getDefinition(by: "com.example.kitchenSink#main").type == generateLexiconScaffolds()[0].definitions["main"]?.type
+            try lexiconRegistry.getDefinition(by: "com.example.kitchenSink#main", shouldNormalizeURI: true).type == generateLexiconScaffolds()[0].definitions["main"]?.type
         }
 
         #expect(throws: Never.self, "\"lex:com.example.kitchenSink#main\" not found in lexicon registry.") {
@@ -48,12 +50,11 @@ struct LexiconCollectionTests {
         }
 
         #expect(throws: Never.self, "\"com.example.kitchenSink#object\" not found in lexicon registry.") {
-            try lexiconRegistry.getDefinition(by: "com.example.kitchenSink#object").type == generateLexiconScaffolds()[0].definitions["object"]?.type
+            try lexiconRegistry.getDefinition(by: "com.example.kitchenSink#object", shouldNormalizeURI: true).type == generateLexiconScaffolds()[0].definitions["object"]?.type
         }
 
         #expect(throws: Never.self, "\"lex:com.example.kitchenSink#object\" not found in lexicon registry.") {
             try lexiconRegistry.getDefinition(by: "lex:com.example.kitchenSink#object").type == generateLexiconScaffolds()[0].definitions["object"]?.type
-
         }
     }
 }
