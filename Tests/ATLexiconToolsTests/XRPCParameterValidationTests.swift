@@ -67,4 +67,36 @@ struct `XRPC Parameter Validation` {
             "def": 1
         ]))
     }
+
+    @Test
+    func `Handles required parameters correctly`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateXRPCParameters(
+                by: "com.example.query",
+                value: .object([
+                    "boolean": true,
+                    "integer": 123
+                ])
+            )
+        }
+
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateXRPCParameters(
+                by: "com.example.query",
+                value: .object([
+                    "boolean": true
+                ])
+            )
+        }
+
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateXRPCParameters(
+                by: "com.example.query",
+                value: .object([
+                    "boolean": true,
+                    "integer": nil
+                ])
+            )
+        }
+    }
 }
