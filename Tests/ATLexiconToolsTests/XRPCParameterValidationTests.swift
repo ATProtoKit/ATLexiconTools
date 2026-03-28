@@ -162,4 +162,21 @@ struct `XRPC Parameter Validation` {
             )
         }
     }
+
+    @Test
+    func `Passes valid outputs`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateXRPCOutput(
+                by: "com.example.query",
+                value: makePassingObject()
+            )
+        }
+
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateXRPCOutput(
+                by: "com.example.procedure",
+                value: makePassingObject()
+            )
+        }
+    }
 }
