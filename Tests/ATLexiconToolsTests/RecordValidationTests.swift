@@ -824,4 +824,36 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test(arguments: [
+        "did:web:example.com",
+        "did:plc:12345678abcdefghijklmnop"
+    ])
+    func `Applies DID formatting constraint (valid)`(value: String) throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.did",
+                value: .object([
+                    "$type": "com.example.did",
+                    "did": .string(value)
+                ])
+            )
+        }
+    }
+
+    @Test(arguments: [
+        "bad did",
+        "did:short"
+    ])
+    func `Applies DID formatting constraint (invalid)`(value: String) throws {
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.did",
+                value: .object([
+                    "$type": "com.example.did",
+                    "did": .string(value)
+                ])
+            )
+        }
+    }
 }
