@@ -709,4 +709,27 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies string constant constraint`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.stringConst",
+                value: .object([
+                    "$type": "com.example.stringConst",
+                    "string": "a"
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.stringConst",
+                value: .object([
+                    "$type": "com.example.stringConst",
+                    "string": "b"
+                ])
+            )
+        }
+    }
 }
