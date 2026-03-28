@@ -975,4 +975,27 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies language formatting constraint`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.language",
+                value: .object([
+                    "$type": "com.example.language",
+                    "language": "en-US-boont"
+                ])
+            )
+        }
+
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.language",
+                value: .object([
+                    "$type": "com.example.language",
+                    "language": "not-a-language-"
+                ])
+            )
+        }
+    }
 }
