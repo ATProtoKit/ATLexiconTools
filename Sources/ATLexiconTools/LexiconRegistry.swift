@@ -194,7 +194,7 @@ public final class LexiconRegistry: Sequence {
     ///
     /// - Parameters:
     ///   - lexiconURI: The URI of the lexicon to validate.
-    ///  - value: An `PrimitiveValue` object, representing the actual definition. Optional.
+    ///   - value: An `PrimitiveValue` object, representing the actual definition. Optional.
     ///   Defaults to `nil`.
     /// - Returns: The validated `PrimitiveValue` object.
     ///
