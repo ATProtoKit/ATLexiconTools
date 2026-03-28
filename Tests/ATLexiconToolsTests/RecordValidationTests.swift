@@ -489,4 +489,26 @@ struct `Record Validation` {
         }
     }
 
+    @Test
+    func `Applies integer enum constraint`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.integerEnum",
+                value: .object([
+                    "$type": "com.example.integerEnum",
+                    "integer": 2
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.integerEnum",
+                value: .object([
+                    "$type": "com.example.integerEnum",
+                    "integer": 0
+                ])
+            )
+        }
+    }
 }
