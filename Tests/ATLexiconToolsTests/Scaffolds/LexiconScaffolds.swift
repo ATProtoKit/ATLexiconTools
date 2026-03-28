@@ -304,7 +304,23 @@ func generateLexiconScaffolds() throws -> [Lexicon] {
                 RecordDefinition(
                     record: ATObjectType(
                         properties: [
-                            "string" : .string(ATStringType(minimumLength: 2, maximumGraphemes: 4))
+                            "string" : .string(ATStringType(maximumLength: 4, minimumLength: 2))
+                        ]
+                    )
+                )
+            )
+        ]
+    ))
+
+    lexicons.append(try Lexicon(
+        lexicon: 1,
+        id: "com.example.stringLengthNoMinLength",
+        definitions: [
+            "main" : .record(
+                RecordDefinition(
+                    record: ATObjectType(
+                        properties: [
+                            "string" : .string(ATStringType(maximumLength: 4))
                         ]
                     )
                 )
@@ -320,7 +336,7 @@ func generateLexiconScaffolds() throws -> [Lexicon] {
                 RecordDefinition(
                     record: ATObjectType(
                         properties: [
-                            "string" : .string(ATStringType(minimumLength: 2, maximumGraphemes: 4))
+                            "string" : .string(ATStringType(maximumGraphemes: 4, minimumGraphemes: 2))
                         ]
                     )
                 )
