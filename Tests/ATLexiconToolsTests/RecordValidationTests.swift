@@ -801,4 +801,27 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies AT-URI formatting constraint`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.atUri",
+                value: .object([
+                    "$type": "com.example.atUri",
+                    "atUri": "at://did:web:example.com/com.example.test/self"
+                ])
+            )
+        }
+
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.atUri",
+                value: .object([
+                    "$type": "com.example.atUri",
+                    "atUri": "http://not-atproto.com"
+                ])
+            )
+        }
+    }
 }
