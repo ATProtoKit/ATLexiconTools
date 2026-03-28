@@ -126,4 +126,14 @@ struct `XRPC Parameter Validation` {
             )
         }
     }
+
+    @Test
+    func `Passes valid inputs`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateXRPCInput(
+                by: "com.example.procedure",
+                value: makePassingObject()
+            )
+        }
+    }
 }
