@@ -376,4 +376,37 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies array length constraints`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.arrayLength",
+                value: .object([
+                    "$type": "com.example.arrayLength",
+                    "array": [1, 2, 3]
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.arrayLength",
+                value: .object([
+                    "$type": "com.example.arrayLength",
+                    "array": [1]
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.arrayLength",
+                value: .object([
+                    "$type": "com.example.arrayLength",
+                    "array": [1, 2, 3, 4, 5]
+                ])
+            )
+        }
+    }
 }
