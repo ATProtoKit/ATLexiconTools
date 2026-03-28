@@ -511,4 +511,27 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies integer constant constraint`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.integerConst",
+                value: .object([
+                    "$type": "com.example.integerConst",
+                    "integer": 0
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.integerConst",
+                value: .object([
+                    "$type": "com.example.integerConst",
+                    "integer": 1
+                ])
+            )
+        }
+    }
 }
