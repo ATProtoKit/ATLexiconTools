@@ -102,6 +102,7 @@ public final class LexiconRegistry: Sequence {
     /// - Returns: A `LwxiconDefinition` object.
     public func getDefinition(by uri: String, types allowedTypes: [String]? = nil, shouldNormalizeURI: Bool = false) throws -> LexiconDefinition {
         let normalizedURI: String
+
         switch shouldNormalizeURI {
             case true:
                 normalizedURI = try LexiconToolsUtilities.toLexiconURI(from: uri)
@@ -126,10 +127,12 @@ public final class LexiconRegistry: Sequence {
     ///
     /// - Parameters:
     ///   - lexiconURI: The URI of the lexicon to validate.
-    ///   - value: An `PrimitiveValue` object, representing the actual definition.
+    ///   - value: An `PrimitiveValue` object, representing the actual definition. Optional.
+    ///   Defaults to `nil`.
+    /// - Returns: The validated `PrimitiveValue` object.
     ///
     /// - Throws: An error if the lexicon isn't an object or a record.
-    public func validate(lexiconURI: String, value: PrimitiveValue? = nil) throws {
+    public func validate(lexiconURI: String, value: PrimitiveValue? = nil) throws -> PrimitiveValue {
         let normalizedURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
         let definition = try self.getDefinition(by: normalizedURI, types: ["record", "object"])
 
@@ -139,23 +142,19 @@ public final class LexiconRegistry: Sequence {
 
         switch definition {
             case .record(let record):
-                try Validator.Complex.validateObject(
+                return try Validator.Complex.validateObject(
                     lexicons: self,
                     path: "Record",
                     definition: ATObjectType(properties: record.record.properties),
                     value: value
                 )
-
-                return
             case .object(let object):
-                try Validator.Complex.validateObject(
+                return try Validator.Complex.validateObject(
                     lexicons: self,
                     path: "Object",
                     definition: object,
                     value: value
                 )
-
-                return
             default:
                 throw LexiconRegistryError.notOfType(expected: ["record", "object"], actual: definition.type, uri: normalizedURI)
         }
@@ -165,10 +164,12 @@ public final class LexiconRegistry: Sequence {
     ///
     /// - Parameters:
     ///   - lexiconURI: The URI of the lexicon to validate.
-    ///   - value: An `PrimitiveValue` object, representing the actual definition. Optional. Defaults to `nil`.
+    ///   - value: An `PrimitiveValue` object, representing the actual definition. Optional.
+    ///   Defaults to `nil`.
+    /// - Returns: The validated `PrimitiveValue` object.
     ///
     /// - Throws: An error if the lexicon isn't an object or a record.
-    public func validateRecord(by lexiconURI: String, value: PrimitiveValue? = nil) throws {
+    public func validateRecord(by lexiconURI: String, value: PrimitiveValue? = nil) throws -> PrimitiveValue {
         let normalizedURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
         let definition = try self.getDefinition(by: normalizedURI, types: ["record"])
 
@@ -186,34 +187,115 @@ public final class LexiconRegistry: Sequence {
             throw LexiconRegistryError.invalidType(expectedValue: normalizedURI, actualValue: rawType)
         }
 
-        try Validator.validateRecord(lexicons: self, definition: definition, value: value)
+        return try Validator.validateRecord(lexicons: self, definition: definition, value: value)
     }
 
     /// Validates XRPC parameters.
     ///
-    /// - Parameter lexiconURI: The URI of the lexicon to validate.
-    public func validateXRPCParameters(by lexiconURI: String) throws {
+    /// - Parameters:
+    ///   - lexiconURI: The URI of the lexicon to validate.
+    ///  - value: An `PrimitiveValue` object, representing the actual definition. Optional.
+    ///   Defaults to `nil`.
+    /// - Returns: The validated `PrimitiveValue` object.
+    ///
+    /// - Throws: An error if the parameters aren't valid.
+    public func validateXRPCParameters(by lexiconURI: String, value: PrimitiveValue? = nil) throws -> PrimitiveValue {
         let normalizedLexiconURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
+        let definition = try self.getDefinition(by: normalizedLexiconURI, types: ["query", "procedure", "subscription"])
+        let parameters: ATParamsType?
 
-        _ = try self.getDefinition(by: normalizedLexiconURI, types: ["query,", "procedure", "subscription"])
+        switch definition {
+            case .query(let queryDefinition):
+                parameters = queryDefinition.parameters
+            case .procedure(let procedureDefinition):
+                parameters = procedureDefinition.parameters
+            case .subscription(let subscriptionDefinition):
+                parameters = subscriptionDefinition.parameters
+            default:
+                parameters = nil
+        }
+
+        guard let parameters else {
+            return value ?? .object([:])
+        }
+
+        return try Validator.Complex.validateObject(
+            lexicons: self,
+            path: "Params",
+            definition: try LexiconToolsUtilities.objectDefinition(from: parameters),
+            value: value ?? .object([:])
+        )
     }
 
     /// Validates an XRPC input body.
     ///
-    /// - Parameter lexiconURI: The URI of the lexicon to validate.
-    public func validateXRPCInput(by lexiconURI: String) throws {
+    /// - Parameters:
+    ///   - lexiconURI: The URI of the lexicon to validate.
+    ///   - value: An `PrimitiveValue` object, representing the actual definition. Optional.
+    ///   Defaults to `nil`.
+    /// - Returns: The validated `PrimitiveValue` object.
+    ///
+    /// - Throws: An error if the inputs aren't valid.
+    public func validateXRPCInput(by lexiconURI: String, value: PrimitiveValue? = nil) throws -> PrimitiveValue {
         let normalizedLexiconURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
+        let definition = try self.getDefinition(by: normalizedLexiconURI, types: ["procedure"])
+        let schema: ATReferenceType?
 
-        _ = try self.getDefinition(by: normalizedLexiconURI, types: ["procedure"])
+        switch definition {
+            case .procedure(let procedureDefinition):
+                schema = procedureDefinition.input?.schema
+            default:
+                schema = nil
+        }
+
+        guard let schema else {
+            return value ?? .object([:])
+        }
+
+        return try Validator.Complex.validateOneOf(
+            lexicons: self,
+            path: "Input",
+            definition: .reference(schema),
+            value: value ?? .object([:]),
+            isObject: true
+        )
     }
 
     /// Validates an XRPC output body.
     ///
-    /// - Parameter lexiconURI: The URI of the lexicon to validate.
-    public func validateXRPCOutput(by lexiconURI: String) throws {
+    /// - Parameters:
+    ///   - lexiconURI: The URI of the lexicon to validate.
+    ///   - value: An `PrimitiveValue` object, representing the actual definition. Optional.
+    ///   Defaults to `nil`.
+    /// - Returns: The validated `PrimitiveValue` object.
+    ///
+    /// - Throws: An error if the outputs aren't valid.
+    public func validateXRPCOutput(by lexiconURI: String, value: PrimitiveValue? = nil) throws -> PrimitiveValue {
         let normalizedLexiconURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
-        
-        _ = try self.getDefinition(by: normalizedLexiconURI, types: ["query", "procedure"])
+
+        let definition = try self.getDefinition(by: normalizedLexiconURI, types: ["query", "procedure"])
+        let schema: ATReferenceType?
+
+        switch definition {
+            case .query(let queryDefinition):
+                schema = queryDefinition.output?.schema
+            case .procedure(let procedureDefinition):
+                schema = procedureDefinition.output?.schema
+            default:
+                schema = nil
+        }
+
+        guard let schema else {
+            return value ?? .object([:])
+        }
+
+        return try Validator.Complex.validateOneOf(
+            lexicons: self,
+            path: "Output",
+            definition: .reference(schema),
+            value: value ?? .object([:]),
+            isObject: true
+        )
     }
 
     /// Validates an XRPC subscription message.
