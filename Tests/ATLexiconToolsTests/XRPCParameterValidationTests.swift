@@ -179,4 +179,30 @@ struct `XRPC Parameter Validation` {
             )
         }
     }
+
+    @Test
+    func `Validates the output`() throws {
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateXRPCOutput(
+                by: "com.example.query",
+                value: .object([
+                    "object": [
+                        "boolean": "string"
+                    ],
+                    "array": ["one", "two"],
+                    "boolean": true,
+                    "float": 123.45,
+                    "integer": 123,
+                    "string": "string"
+                ])
+            )
+        }
+
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateXRPCOutput(
+                by: "com.example.procedure",
+                value: .object([:])
+            )
+        }
+    }
 }
