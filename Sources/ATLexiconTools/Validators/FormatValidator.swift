@@ -164,15 +164,13 @@ extension Validator.Format {
     ///
     /// - Throws: An error if the BCP 47 language tag is not conforming to the AT Protocol specifications.
     public static func validateLanguage(path: String, languageValue: String) throws {
-        let regex = #"""
-^((?P<grandfathered>(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((?P<language>([A-Za-z]{2,3}(-(?P<extlang>[A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-(?P<script>[A-Za-z]{4}))?(-(?P<region>[A-Za-z]{2}|[0-9]{3}))?(-(?P<variant>[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-(?P<extension>[0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(?P<privateUseA>x(-[A-Za-z0-9]{1,8})+))?)|(?P<privateUseB>x(-[A-Za-z0-9]{1,8})+))$
-"""#
+        let regex = #"^(?:[A-Za-z]{2,3}(?:-[A-Za-z]{3}){0,2}|[A-Za-z]{4}|[A-Za-z]{5,8})(?:-[A-Za-z0-9]{2,8})*$|^x(?:-[A-Za-z0-9]{1,8})+$"#
 
         let languageRegex = try NSRegularExpression(pattern: regex)
         let range = NSRange(languageValue.startIndex..<languageValue.endIndex, in: languageValue)
 
         guard languageRegex.firstMatch(in: languageValue, options: [], range: range) != nil else {
-            throw LexiconValidatorError.notAValidATURI(path: path)
+            throw LexiconValidatorError.notAValidBCP47LanguageTag(path: path)
         }
     }
 
