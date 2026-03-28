@@ -262,4 +262,28 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Handles default properties correctly`() throws {
+        let validatedRecord = try lexiconRegistry.validateRecord(
+            by: "com.example.default",
+            value: .object([
+                "$type": "com.example.default",
+                "object": [:]
+            ])
+        )
+
+        #expect(validatedRecord == .object([
+            "$type": "com.example.default",
+            "boolean": false,
+            "integer": 0,
+            "string": "",
+            "object": [
+                "boolean": true,
+                "integer": 1,
+                "string": "x"
+            ]
+        ]))
+    }
+
 }
