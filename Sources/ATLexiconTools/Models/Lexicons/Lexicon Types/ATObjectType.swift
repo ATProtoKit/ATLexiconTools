@@ -40,7 +40,7 @@ public struct ATObjectType: ATLexiconObjectProtocol {
     ///   - nullable: An array of properties that can be receive the value of `nil`. Optional.
     ///   Defaults to `nil`.
     ///
-    ///   - Throws: An error if a value is violating the lexicon requirements.
+    /// - Throws: An error if a value is violating the lexicon requirements.
     public init(description: String? = nil, properties: [String: LexiconDefinition], required: [String]? = nil, nullable: [String]? = nil) throws {
         self.description = description
         self.properties = properties

@@ -114,6 +114,8 @@ public struct BlobReference: Codable, Sendable {
     ///   - reference: The `CID` of the blob.
     ///   - mimeType: The MIME type of the blob.
     ///   - size: The size of the blob, in bytes.
+    ///   - originalJSONReference: Original JSON blob representation used to preserve source
+    ///   encoding details. Optional. Defaults to `nil`.
     public init(reference: CID, mimeType: String, size: Int, originalJSONReference: JSONBlobReference? = nil) {
         self.reference = reference
         self.mimeType = mimeType

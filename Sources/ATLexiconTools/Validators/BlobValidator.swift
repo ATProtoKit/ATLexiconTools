@@ -16,7 +16,7 @@ extension Validator.Blob {
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
     ///
-    ///   - Throws: An error if the blob reference is invalid.
+    /// - Throws: An error if the blob reference is invalid.
     public static func validateBlob(
         in lexicons: LexiconRegistry,
         at path: String,

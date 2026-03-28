@@ -42,7 +42,7 @@ public struct Lexicon: Codable, Sendable {
     ///   - description: A short description of the lexicon. Optional. Defaults to `nil`.
     ///   - definitions: A dictionary of definitions within the lexicon.
     ///
-    ///   - Throws: An error if a value is violating the lexicon requirements.
+    /// - Throws: An error if a value is violating the lexicon requirements.
     public init(lexicon: Int, id: String, revision: Int? = nil, description: String? = nil, definitions: [String : LexiconDefinition]) throws {
         self.lexicon = lexicon
         self.id = id

@@ -96,7 +96,6 @@ extension Validator.Format {
     /// - Parameters:
     ///   - path: The object the handle is coming from.
     ///   - handleValue: The actual handle value.
-    /// - Returns: A valid value.
     ///
     /// - Throws: An error if the handle is not conforming to the AT Protocol specifications.
     public static func validateHandle(path: String, handleValue: String) throws {

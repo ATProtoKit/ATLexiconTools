@@ -99,7 +99,7 @@ public final class LexiconRegistry: Sequence {
     ///   - allowedTypes: An array of strings used for filtering the objwct types the definition has.
     ///   Optional. Defaults to `nil`.
     ///   - shouldNormalizeURI: Determines whether the method should normalize the URI. Defaults to `false`.
-    ///   - Returns: A `LwxiconDefinition` object.
+    /// - Returns: A `LwxiconDefinition` object.
     public func getDefinition(by uri: String, types allowedTypes: [String]? = nil, shouldNormalizeURI: Bool = false) throws -> LexiconDefinition {
         let normalizedURI: String
         switch shouldNormalizeURI {
@@ -128,7 +128,7 @@ public final class LexiconRegistry: Sequence {
     ///   - lexiconURI: The URI of the lexicon to validate.
     ///   - value: An `PrimitiveValue` object, representing the actual definition.
     ///
-    ///   - Throws: An error if the lexicon isn't an object or a record.
+    /// - Throws: An error if the lexicon isn't an object or a record.
     public func validate(lexiconURI: String, value: PrimitiveValue? = nil) throws {
         let normalizedURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
         let definition = try self.getDefinition(by: normalizedURI, types: ["record", "object"])
@@ -167,7 +167,7 @@ public final class LexiconRegistry: Sequence {
     ///   - lexiconURI: The URI of the lexicon to validate.
     ///   - value: An `PrimitiveValue` object, representing the actual definition. Optional. Defaults to `nil`.
     ///
-    ///   - Throws: An error if the lexicon isn't an object or a record.
+    /// - Throws: An error if the lexicon isn't an object or a record.
     public func validateRecord(by lexiconURI: String, value: PrimitiveValue? = nil) throws {
         let normalizedURI = try LexiconToolsUtilities.toLexiconURI(from: lexiconURI)
         let definition = try self.getDefinition(by: normalizedURI, types: ["record"])
