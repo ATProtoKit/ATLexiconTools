@@ -769,4 +769,36 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test(arguments: [
+        "https://example.com",
+        "https://example.com/with/path",
+        "https://example.com/with/path?and=query",
+        "at://bsky.social",
+        "did:example:test"
+    ])
+    func `Applies URI formatting constraint (valid)`(value: String) throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.uri",
+                value: .object([
+                    "$type": "com.example.uri",
+                    "uri": .string(value)
+                ])
+            )
+        }
+    }
+
+    @Test
+    func `Applies URI formatting constraint (invalid)`() throws {
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.uri",
+                value: .object([
+                    "$type": "com.example.uri",
+                    "uri": "not a uri"
+                ])
+            )
+        }
+    }
 }
