@@ -643,4 +643,47 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test(arguments: [
+        "ab",
+        "a\u{0301}b",
+        "a\u{0301}b\u{0301}",
+        "😀😀",
+        "12👨‍👩‍👧‍👧",
+        "abcd",
+        "a\u{0301}b\u{0301}c\u{0301}d\u{0301}"
+    ])
+    func `Applies grapheme string length constraint (valid)`(value: String) throws {
+        _ = try lexiconRegistry.validateRecord(
+            by: "com.example.stringLengthGrapheme",
+            value: .object([
+                "$type": "com.example.stringLengthGrapheme",
+                "string": .string(value)
+            ])
+        )
+    }
+
+    @Test(arguments: [
+        "",
+        "\u{0301}\u{0301}\u{0301}",
+        "a",
+        "a\u{0301}\u{0301}\u{0301}\u{0301}",
+        "5\u{FE0F}",
+        "👨‍👩‍👧‍👧",
+        "abcde",
+        "a\u{0301}b\u{0301}c\u{0301}d\u{0301}e\u{0301}",
+        "😀😀😀😀😀",
+        "ab😀de"
+    ])
+    func `Applies grapheme string length constraint (invalid)`(value: String) throws {
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.stringLengthGrapheme",
+                value: .object([
+                    "$type": "com.example.stringLengthGrapheme",
+                    "string": .string(value)
+                ])
+            )
+        }
+    }
 }
