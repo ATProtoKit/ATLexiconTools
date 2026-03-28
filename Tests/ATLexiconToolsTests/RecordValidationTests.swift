@@ -952,4 +952,27 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies CID formatting constraint`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.cid",
+                value: .object([
+                    "$type": "com.example.cid",
+                    "cid": "bafyreidfayvfuwqa7qlnopdjiqrxzs6blmoeu4rujcjtnci5beludirz2a"
+                ])
+            )
+        }
+
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.cid",
+                value: .object([
+                    "$type": "com.example.cid",
+                    "cid": "abapsdofiuwrpoiasdfuaspdfoiu"
+                ])
+            )
+        }
+    }
 }
