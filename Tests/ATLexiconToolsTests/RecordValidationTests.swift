@@ -856,4 +856,36 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test(arguments: [
+        "test.bsky.social",
+        "bsky.test"
+    ])
+    func `Applies handle formatting constraint (valid)`(value: String) throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.handle",
+                value: .object([
+                    "$type": "com.example.handle",
+                    "handle": .string(value)
+                ])
+            )
+        }
+    }
+
+    @Test(arguments: [
+        "bad handle",
+        "-bad-.test"
+    ])
+    func `Applies handle formatting constraint (invalid)`(value: String) throws {
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.handle",
+                value: .object([
+                    "$type": "com.example.handle",
+                    "handle": .string(value)
+                ])
+            )
+        }
+    }
 }
