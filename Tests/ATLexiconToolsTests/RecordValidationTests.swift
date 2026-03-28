@@ -432,4 +432,61 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies boolean constant constraint`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.boolConst",
+                value: .object([
+                    "$type": "com.example.boolConst",
+                    "boolean": false
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.boolConst",
+                value: .object([
+                    "$type": "com.example.boolConst",
+                    "boolean": true
+                ])
+            )
+        }
+    }
+
+    @Test
+    func `Applies integer range constraint`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.integerRange",
+                value: .object([
+                    "$type": "com.example.integerRange",
+                    "integer": 2
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.integerRange",
+                value: .object([
+                    "$type": "com.example.integerRange",
+                    "integer": 1
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.integerRange",
+                value: .object([
+                    "$type": "com.example.integerRange",
+                    "integer": 5
+                ])
+            )
+        }
+    }
+
 }
