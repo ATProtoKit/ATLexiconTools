@@ -1,5 +1,5 @@
 //
-//  XRPCParameterValidationTests.swift
+//  XRPCValidationTests.swift
 //  ATLexiconTools
 //
 //  Created by Christopher Jr Riley on 2026-03-28.
@@ -10,7 +10,7 @@ import Testing
 @testable import ATLexiconTools
 
 @Suite
-struct `XRPC Parameter Validation` {
+struct `XRPC Validation` {
 
     public var lexiconRegistry: LexiconRegistry
 
