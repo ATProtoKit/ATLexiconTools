@@ -534,4 +534,17 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies integer whole-number constraint`() throws {
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.integerRange",
+                value: .object([
+                    "$type": "com.example.integerRange",
+                    "integer": 2.5
+                ])
+            )
+        }
+    }
 }
