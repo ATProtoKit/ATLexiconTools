@@ -12,197 +12,245 @@ import Testing
 @Suite
 struct `XRPC Validation` {
 
-    public var lexiconRegistry: LexiconRegistry
+    @Suite
+    struct `XRPC Parameters` {
 
-    public init() throws {
-        self.lexiconRegistry = try makeLexicons()
-    }
+        public var lexiconRegistry: LexiconRegistry
 
-    private func makePassingObject() -> PrimitiveValue {
-        return .object([
-            "object": [
-                "boolean": true
-            ],
-            "array": ["one", "two"],
-            "boolean": true,
-            "integer": 123,
-            "string": "string"
-        ])
-    }
+        public init() throws {
+            self.lexiconRegistry = try makeLexicons()
+        }
 
-    @Test
-    func `Passes valid parameters`() throws {
-        let queryResult = try lexiconRegistry.validateXRPCParameters(
-            by: "com.example.query",
-            value: .object([
+        private func makePassingObject() -> PrimitiveValue {
+            return .object([
+                "object": [
+                    "boolean": true
+                ],
+                "array": ["one", "two"],
+                "boolean": true,
+                "integer": 123,
+                "string": "string"
+            ])
+        }
+
+        @Test
+        func `Passes valid parameters`() throws {
+            let queryResult = try lexiconRegistry.validateXRPCParameters(
+                by: "com.example.query",
+                value: .object([
+                    "boolean": true,
+                    "integer": 123,
+                    "string": "string",
+                    "array": ["x", "y"]
+                ])
+            )
+            #expect(queryResult == .object([
                 "boolean": true,
                 "integer": 123,
                 "string": "string",
-                "array": ["x", "y"]
-            ])
-        )
-        #expect(queryResult == .object([
-            "boolean": true,
-            "integer": 123,
-            "string": "string",
-            "array": ["x", "y"],
-            "def": 0
-        ]))
+                "array": ["x", "y"],
+                "def": 0
+            ]))
 
-        let procedureResult = try lexiconRegistry.validateXRPCParameters(
-            by: "com.example.procedure",
-            value: .object([
+            let procedureResult = try lexiconRegistry.validateXRPCParameters(
+                by: "com.example.procedure",
+                value: .object([
+                    "boolean": true,
+                    "integer": 123,
+                    "string": "string",
+                    "array": ["x", "y"],
+                    "def": 1
+                ])
+            )
+            #expect(procedureResult == .object([
                 "boolean": true,
                 "integer": 123,
                 "string": "string",
                 "array": ["x", "y"],
                 "def": 1
-            ])
-        )
-        #expect(procedureResult == .object([
-            "boolean": true,
-            "integer": 123,
-            "string": "string",
-            "array": ["x", "y"],
-            "def": 1
-        ]))
-    }
-
-    @Test
-    func `Handles required parameters correctly`() throws {
-        #expect(throws: Never.self) {
-            try lexiconRegistry.validateXRPCParameters(
-                by: "com.example.query",
-                value: .object([
-                    "boolean": true,
-                    "integer": 123
-                ])
-            )
+            ]))
         }
 
-        #expect(throws: Error.self) {
-            try lexiconRegistry.validateXRPCParameters(
-                by: "com.example.query",
-                value: .object([
+        @Test
+        func `Handles required parameters correctly`() throws {
+            #expect(throws: Never.self) {
+                try lexiconRegistry.validateXRPCParameters(
+                    by: "com.example.query",
+                    value: .object([
+                        "boolean": true,
+                        "integer": 123
+                    ])
+                )
+            }
+
+            #expect(throws: Error.self) {
+                try lexiconRegistry.validateXRPCParameters(
+                    by: "com.example.query",
+                    value: .object([
+                        "boolean": true
+                    ])
+                )
+            }
+
+            #expect(throws: Error.self) {
+                try lexiconRegistry.validateXRPCParameters(
+                    by: "com.example.query",
+                    value: .object([
+                        "boolean": true,
+                        "integer": nil
+                    ])
+                )
+            }
+        }
+
+        @Test
+        func `Validates parameter types`() throws {
+            #expect(throws: Error.self) {
+                try lexiconRegistry.validateXRPCParameters(
+                    by: "com.example.query",
+                    value: .object([
+                        "boolean": "string",
+                        "integer": 123,
+                        "string": "string"
+                    ])
+                )
+            }
+
+            #expect(throws: Error.self) {
+                try lexiconRegistry.validateXRPCParameters(
+                    by: "com.example.query",
+                    value: .object([
+                        "boolean": true,
+                        "float": 123.45,
+                        "integer": 123,
+                        "string": "string",
+                        "array": "x"
+                    ])
+                )
+            }
+        }
+    }
+
+    @Suite
+    struct `XRPC Input` {
+
+        public var lexiconRegistry: LexiconRegistry
+
+        public init() throws {
+            self.lexiconRegistry = try makeLexicons()
+        }
+
+        private func makePassingObject() -> PrimitiveValue {
+            return .object([
+                "object": [
                     "boolean": true
-                ])
-            )
+                ],
+                "array": ["one", "two"],
+                "boolean": true,
+                "integer": 123,
+                "string": "string"
+            ])
         }
 
-        #expect(throws: Error.self) {
-            try lexiconRegistry.validateXRPCParameters(
-                by: "com.example.query",
-                value: .object([
-                    "boolean": true,
-                    "integer": nil
-                ])
-            )
-        }
-    }
-
-    @Test
-    func `Validates parameter types`() throws {
-        #expect(throws: Error.self) {
-            try lexiconRegistry.validateXRPCParameters(
-                by: "com.example.query",
-                value: .object([
-                    "boolean": "string",
-                    "integer": 123,
-                    "string": "string"
-                ])
-            )
+        @Test
+        func `Passes valid inputs`() throws {
+            #expect(throws: Never.self) {
+                try lexiconRegistry.validateXRPCInput(
+                    by: "com.example.procedure",
+                    value: makePassingObject()
+                )
+            }
         }
 
-        #expect(throws: Error.self) {
-            try lexiconRegistry.validateXRPCParameters(
-                by: "com.example.query",
-                value: .object([
-                    "boolean": true,
-                    "float": 123.45,
-                    "integer": 123,
-                    "string": "string",
-                    "array": "x"
-                ])
-            )
-        }
-    }
+        @Test
+        func `Validates the input`() throws {
+            #expect(throws: Error.self) {
+                try lexiconRegistry.validateXRPCInput(
+                    by: "com.example.procedure",
+                    value: .object([
+                        "object": [
+                            "boolean": "string"
+                        ],
+                        "array": ["one", "two"],
+                        "boolean": true,
+                        "float": 123.45,
+                        "integer": 123,
+                        "string": "string"
+                    ])
+                )
+            }
 
-    @Test
-    func `Passes valid inputs`() throws {
-        #expect(throws: Never.self) {
-            try lexiconRegistry.validateXRPCInput(
-                by: "com.example.procedure",
-                value: makePassingObject()
-            )
+            #expect(throws: Error.self) {
+                try lexiconRegistry.validateXRPCInput(
+                    by: "com.example.procedure",
+                    value: .object([:])
+                )
+            }
         }
     }
 
-    @Test
-    func `Validates the input`() throws {
-        #expect(throws: Error.self) {
-            try lexiconRegistry.validateXRPCInput(
-                by: "com.example.procedure",
-                value: .object([
-                    "object": [
-                        "boolean": "string"
-                    ],
-                    "array": ["one", "two"],
-                    "boolean": true,
-                    "float": 123.45,
-                    "integer": 123,
-                    "string": "string"
-                ])
-            )
+    @Suite
+    struct `XRPC Output` {
+
+        public var lexiconRegistry: LexiconRegistry
+
+        public init() throws {
+            self.lexiconRegistry = try makeLexicons()
         }
 
-        #expect(throws: Error.self) {
-            try lexiconRegistry.validateXRPCInput(
-                by: "com.example.procedure",
-                value: .object([:])
-            )
-        }
-    }
-
-    @Test
-    func `Passes valid outputs`() throws {
-        #expect(throws: Never.self) {
-            try lexiconRegistry.validateXRPCOutput(
-                by: "com.example.query",
-                value: makePassingObject()
-            )
+        private func makePassingObject() -> PrimitiveValue {
+            return .object([
+                "object": [
+                    "boolean": true
+                ],
+                "array": ["one", "two"],
+                "boolean": true,
+                "integer": 123,
+                "string": "string"
+            ])
         }
 
-        #expect(throws: Never.self) {
-            try lexiconRegistry.validateXRPCOutput(
-                by: "com.example.procedure",
-                value: makePassingObject()
-            )
-        }
-    }
+        @Test
+        func `Passes valid outputs`() throws {
+            #expect(throws: Never.self) {
+                try lexiconRegistry.validateXRPCOutput(
+                    by: "com.example.query",
+                    value: makePassingObject()
+                )
+            }
 
-    @Test
-    func `Validates the output`() throws {
-        #expect(throws: Error.self) {
-            try lexiconRegistry.validateXRPCOutput(
-                by: "com.example.query",
-                value: .object([
-                    "object": [
-                        "boolean": "string"
-                    ],
-                    "array": ["one", "two"],
-                    "boolean": true,
-                    "float": 123.45,
-                    "integer": 123,
-                    "string": "string"
-                ])
-            )
+            #expect(throws: Never.self) {
+                try lexiconRegistry.validateXRPCOutput(
+                    by: "com.example.procedure",
+                    value: makePassingObject()
+                )
+            }
         }
 
-        #expect(throws: Error.self) {
-            try lexiconRegistry.validateXRPCOutput(
-                by: "com.example.procedure",
-                value: .object([:])
-            )
+        @Test
+        func `Validates the output`() throws {
+            #expect(throws: Error.self) {
+                try lexiconRegistry.validateXRPCOutput(
+                    by: "com.example.query",
+                    value: .object([
+                        "object": [
+                            "boolean": "string"
+                        ],
+                        "array": ["one", "two"],
+                        "boolean": true,
+                        "float": 123.45,
+                        "integer": 123,
+                        "string": "string"
+                    ])
+                )
+            }
+
+            #expect(throws: Error.self) {
+                try lexiconRegistry.validateXRPCOutput(
+                    by: "com.example.procedure",
+                    value: .object([:])
+                )
+            }
         }
     }
 }
