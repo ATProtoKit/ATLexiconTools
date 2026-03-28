@@ -998,4 +998,37 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies bytes length constraints`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.byteLength",
+                value: .object([
+                    "$type": "com.example.byteLength",
+                    "bytes": .bytes(Data([1, 2, 3]))
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.byteLength",
+                value: .object([
+                    "$type": "com.example.byteLength",
+                    "bytes": .bytes(Data([1]))
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.byteLength",
+                value: .object([
+                    "$type": "com.example.byteLength",
+                    "bytes": .bytes(Data([1, 2, 3, 4, 5]))
+                ])
+            )
+        }
+    }
 }
