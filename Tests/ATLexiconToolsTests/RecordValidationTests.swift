@@ -352,4 +352,28 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Handles unknowns correctly`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.unknown",
+                value: .object([
+                    "$type": "com.example.unknown",
+                    "unknown": [
+                        "foo": "bar"
+                    ]
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.unknown",
+                value: .object([
+                    "$type": "com.example.unknown"
+                ])
+            )
+        }
+    }
 }
