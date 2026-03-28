@@ -547,4 +547,52 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test(arguments: [
+        "ab",
+        "\u{0301}",
+        "a\u{0301}",
+        "aé",
+        "abc",
+        "一",
+        "�",
+        "abcd",
+        "éé",
+        "aaé",
+        "👋"
+    ])
+    func `Applies string length constraint (valid)`(value: String) throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.stringLength",
+                value: .object([
+                    "$type": "com.example.stringLength",
+                    "string": .string(value)
+                ])
+            )
+        }
+    }
+
+    @Test(arguments: [
+        "",
+        "a",
+        "abcde",
+        "a\u{0301}\u{0301}",
+        "��",
+        "ééé",
+        "👋a",
+        "👨👨",
+        "👨‍👩‍👧‍👧"
+    ])
+    func `Applies string length constraint (invalid)`(value: String) throws {
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.stringLength",
+                value: .object([
+                    "$type": "com.example.stringLength",
+                    "string": .string(value)
+                ])
+            )
+        }
+    }
 }
