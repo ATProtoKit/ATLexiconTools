@@ -95,8 +95,7 @@ public enum LexiconToolsUtilities {
         return references.contains("\(lexiconURI)#main")
     }
 
-    /// Converts a polymorphic or protocol-oriented type into one or more concrete Swift types using the
-    /// provided lexicons and optional context.
+    /// Converts a definition type into one or more concrete Swift types using the provided lexicons.
     ///
     /// - Parameters:
     ///   - lexicons: An ordered collection of type lexicons or symbol tables used to resolve names
@@ -110,20 +109,27 @@ public enum LexiconToolsUtilities {
     internal static func toConcreteTypes(lexicons: LexiconRegistry, definition: LexiconDefinition) throws -> [LexiconDefinition] {
         switch definition {
             case .reference(let reference):
-                let resolved = try lexicons.getDefinition(by: reference.reference)
-                return [resolved]
+                let resolved = try lexicons.getDefinition(
+                    by: self.toLexiconURI(from: reference.reference),
+                    shouldNormalizeURI: false
+                )
 
+                return [resolved]
             case .union(let unionReference):
                 var results: [LexiconDefinition] = []
                 guard let references = unionReference.references, !references.isEmpty else {
                     return results
                 }
+
                 for reference in references {
-                    let resolved = try lexicons.getDefinition(by: reference)
+                    let resolved = try lexicons.getDefinition(
+                        by: self.toLexiconURI(from: reference),
+                        shouldNormalizeURI: false
+                    )
                     results.append(resolved)
                 }
-                return results
 
+                return results
             default:
                 return [definition]
         }
@@ -148,6 +154,90 @@ public enum LexiconToolsUtilities {
             default:
                 return false
         }
+    }
+
+    /// Converts the `LexiconDefinition` value to the corresponding `PrimitiveValue` object.
+    ///
+    /// The primitive types that the method will look for are booleans, integers, and strings.
+    ///
+    /// - Parameter definition: The lexicon definition to convert.
+    /// - Returns: The converted `PrimitiveValue` object, or `nil` if no value exists.
+    internal static func primitiveDefaultValue(for definition: LexiconDefinition) -> PrimitiveValue? {
+        switch definition {
+            case .boolean(let booleanDefinition):
+                guard let defaultValue = booleanDefinition.defaultValue else {
+                    return nil
+                }
+
+                return .bool(defaultValue)
+            case .integer(let integerDefinition):
+                guard let defaultValue = integerDefinition.defaultValue else {
+                    return nil
+                }
+
+                return .int(defaultValue)
+            case .string(let stringDefinition):
+                guard let defaultValue = stringDefinition.defaultValue else {
+                    return nil
+                }
+
+                return .string(defaultValue)
+            default:
+                return nil
+        }
+    }
+
+    /// Converts a primitive item to a standard lexicon definition.
+    ///
+    /// - Parameter primitive: The primitive item to convert.
+    /// - Returns: The corresponding `LexiconDefinition`.
+    internal static func lexiconDefinition(from primitive: ATLexiconPrimitive?) -> LexiconDefinition {
+        switch primitive {
+            case .boolean(let booleanType):
+                return .boolean(booleanType)
+            case .integer(let integerType):
+                return .integer(integerType)
+            case .string(let stringType):
+                return .string(stringType)
+            case .unknown(let unknownType):
+                return .unknown(unknownType)
+            case nil:
+                return .unknown(ATUnknownType())
+        }
+    }
+
+    /// Converts a parameters type into an object definition for validation.
+    ///
+    /// - Parameter parameters: The parameters definition to convert.
+    /// - Returns: The converted `ATObjectType` value.
+    ///
+    /// - Throws: An error if validating the `ATObjectType` object fails.
+    internal static func objectDefinition(from parameters: ATParamsType) throws -> ATObjectType {
+        let properties = parameters.properties.mapValues { property in
+            switch property {
+                case .boolean(let booleanType):
+                    return LexiconDefinition.boolean(booleanType)
+                case .integer(let integerType):
+                    return LexiconDefinition.integer(integerType)
+                case .string(let stringType):
+                    return LexiconDefinition.string(stringType)
+                case .unknown(let unknownType):
+                    return LexiconDefinition.unknown(unknownType)
+                case .array(let arrayType):
+                    return .array(
+                        ATArrayType(
+                            items: self.lexiconDefinition(from: arrayType.items),
+                            minimumLength: arrayType.minimumLength,
+                            maximumLength: arrayType.maximumLength
+                        )
+                    )
+            }
+        }
+
+        return try ATObjectType(
+            properties: properties,
+            required: parameters.required
+        )
     }
 
     /// Enforces a preconditioned requirement check.
