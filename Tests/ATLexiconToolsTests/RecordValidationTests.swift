@@ -286,4 +286,70 @@ struct `Record Validation` {
         ]))
     }
 
+    @Test
+    func `Handles unions correctly`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.union",
+                value: .object([
+                    "$type": "com.example.union",
+                    "unionOpen": [
+                        "$type": "com.example.kitchenSink#object",
+                        "object": ["boolean": true],
+                        "array": ["one", "two"],
+                        "boolean": true,
+                        "integer": 123,
+                        "string": "string"
+                    ],
+                    "unionClosed": [
+                        "$type": "com.example.kitchenSink#subobject",
+                        "boolean": true
+                    ]
+                ])
+            )
+        }
+
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.union",
+                value: .object([
+                    "$type": "com.example.union",
+                    "unionOpen": [
+                        "$type": "com.example.other"
+                    ],
+                    "unionClosed": [
+                        "$type": "com.example.kitchenSink#subobject",
+                        "boolean": true
+                    ]
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.union",
+                value: .object([
+                    "$type": "com.example.union",
+                    "unionOpen": [:],
+                    "unionClosed": [:]
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.union",
+                value: .object([
+                    "$type": "com.example.union",
+                    "unionOpen": [
+                        "$type": "com.example.other"
+                    ],
+                    "unionClosed": [
+                        "$type": "com.example.other",
+                        "boolean": true
+                    ]
+                ])
+            )
+        }
+    }
 }
