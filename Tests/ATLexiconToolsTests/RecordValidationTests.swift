@@ -888,4 +888,36 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test(arguments: [
+        "bsky.test",
+        "did:plc:12345678abcdefghijklmnop"
+    ])
+    func `Applies AT-identifier formatting constraint (valid)`(value: String) throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.atIdentifier",
+                value: .object([
+                    "$type": "com.example.atIdentifier",
+                    "atIdentifier": .string(value)
+                ])
+            )
+        }
+    }
+
+    @Test(arguments: [
+        "bad id",
+        "-bad-.test"
+    ])
+    func `Applies AT-identifier formatting constraint (invalid)`(value: String) throws {
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.atIdentifier",
+                value: .object([
+                    "$type": "com.example.atIdentifier",
+                    "atIdentifier": .string(value)
+                ])
+            )
+        }
+    }
 }
