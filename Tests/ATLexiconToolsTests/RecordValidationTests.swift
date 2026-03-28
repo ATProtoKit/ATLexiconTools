@@ -686,4 +686,27 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test
+    func `Applies string enum constraint`() throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.stringEnum",
+                value: .object([
+                    "$type": "com.example.stringEnum",
+                    "string": "a"
+                ])
+            )
+        }
+
+        #expect(throws: LexiconValidatorError.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.stringEnum",
+                value: .object([
+                    "$type": "com.example.stringEnum",
+                    "string": "c"
+                ])
+            )
+        }
+    }
 }
