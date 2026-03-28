@@ -920,4 +920,36 @@ struct `Record Validation` {
             )
         }
     }
+
+    @Test(arguments: [
+        "com.atproto.test",
+        "app.bsky.nested.test"
+    ])
+    func `Applies NSID formatting constraint (valid)`(value: String) throws {
+        #expect(throws: Never.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.nsid",
+                value: .object([
+                    "$type": "com.example.nsid",
+                    "nsid": .string(value)
+                ])
+            )
+        }
+    }
+
+    @Test(arguments: [
+        "bad nsid",
+        "com.bad-.foo"
+    ])
+    func `Applies NSID formatting constraint (invalid)`(value: String) throws {
+        #expect(throws: Error.self) {
+            try lexiconRegistry.validateRecord(
+                by: "com.example.nsid",
+                value: .object([
+                    "$type": "com.example.nsid",
+                    "nsid": .string(value)
+                ])
+            )
+        }
+    }
 }
