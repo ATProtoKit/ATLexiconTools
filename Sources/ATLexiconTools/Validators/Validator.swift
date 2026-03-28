@@ -32,16 +32,17 @@ extension Validator {
     ///   - lexicons: A registry containing an array of lexicons.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
+    /// - Returns: The validated `PrimitiveValue` object.
     ///
     /// - Throws: An error if the record is invalid.
     public static func validateRecord(
         lexicons: LexiconRegistry,
         definition: LexiconDefinition,
         value: PrimitiveValue?
-    ) throws {
+    ) throws -> PrimitiveValue {
         switch definition {
             case .record(let atRecordType):
-                try Validator.Complex.validateObject(
+                return try Validator.Complex.validateObject(
                     lexicons: lexicons,
                     path: "Record",
                     definition: atRecordType.record,
@@ -129,7 +130,7 @@ extension Validator {
 //            return
 //        }
 
-        try Validator.Complex.validateOneOf(
+        _ = try Validator.Complex.validateOneOf(
             lexicons: lexicons,
             path: "Input",
             definition: definition,
@@ -157,7 +158,7 @@ extension Validator {
 
 //        let schema = subscriptionDefinition.message?.schema
 
-        try Validator.Complex.validateOneOf(
+        _ = try Validator.Complex.validateOneOf(
             lexicons: lexicons,
             path: "Message",
             definition: definition,

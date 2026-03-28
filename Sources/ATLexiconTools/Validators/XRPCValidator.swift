@@ -62,7 +62,7 @@ extension Validator.XRPC {
                 case .array(_):
                     continue
                 default:
-                    try Validator.Primitive.validate(path: key, definition: propertyDefinition, value: rawPropertyValue)
+                    _ = try Validator.Primitive.validate(path: key, definition: propertyDefinition, value: rawPropertyValue)
             }
 
             let isPropertyUndefined = rawPropertyValue == nil

@@ -14,6 +14,7 @@ extension Validator.Complex {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
+    /// - Returns: The validated `PrimitiveValue` object.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match the constant value.
     public static func validate(
@@ -21,16 +22,17 @@ extension Validator.Complex {
         path: String,
         definition: LexiconDefinition,
         value: PrimitiveValue?
-    ) throws {
+    ) throws -> PrimitiveValue {
         switch definition {
             case .object(let atObject):
-                try Validator.Complex.validateObject(lexicons: lexicons, path: path, definition: atObject, value: value)
+                return try Validator.Complex.validateObject(lexicons: lexicons, path: path, definition: atObject, value: value)
             case .array(let atArray):
-                try Validator.Complex.validateArray(lexicons: lexicons, path: path, definition: atArray, value: value)
+                return try Validator.Complex.validateArray(lexicons: lexicons, path: path, definition: atArray, value: value)
             case .blob(_):
                 try Validator.Blob.validateBlob(in: lexicons, at: path, definition: definition, value: value)
+                return value ?? .nil
             case .boolean, .integer, .string, .bytes, .cidLink, .unknown:
-                try Validator.Primitive.validate(path: path, definition: definition, value: value)
+                return try Validator.Primitive.validate(path: path, definition: definition, value: value)
             default:
                 throw LexiconValidatorError.unexpectedLexiconType(type: definition.type)
         }
@@ -43,6 +45,7 @@ extension Validator.Complex {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
+    /// - Returns: The validated `PrimitiveValue` object.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match the constant value.
     internal static func validateArray(
@@ -50,7 +53,7 @@ extension Validator.Complex {
         path: String,
         definition: ATArrayType,
         value: PrimitiveValue?
-    ) throws {
+    ) throws -> PrimitiveValue {
         guard let value, case .array(let arrayValue) = value else {
             throw LexiconValidatorError.valueIsNotArray(path: path)
         }
@@ -64,18 +67,24 @@ extension Validator.Complex {
         }
 
         if let minimumLength = definition.minimumLength, arrayValue.count < minimumLength {
-            throw LexiconValidatorError.arrayElementsGreaterThanMaximumLength(path: path, arrayElementNumber: minimumLength)
+            throw LexiconValidatorError.arrayElementsFewerThanMinimumLength(path: path, arrayElementNumber: minimumLength)
         }
+
+        var normalizedValues: [PrimitiveValue] = []
 
         for (index, itemValue) in arrayValue.enumerated() {
             let itemPath = "\(path)/\(index)"
-            try validateOneOf(
+            let normalizedValue = try validateOneOf(
                 lexicons: lexicons,
                 path: itemPath,
                 definition: definition.items,
                 value: itemValue
             )
+
+            normalizedValues.append(normalizedValue)
         }
+
+        return .array(normalizedValues)
     }
 
     /// Validates object values.
@@ -85,6 +94,7 @@ extension Validator.Complex {
     ///   - path: The name of the path.
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
+    /// - Returns: The validated `PrimitiveValue` object.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match the constant value.
     internal static func validateObject(
@@ -92,7 +102,7 @@ extension Validator.Complex {
         path: String,
         definition: ATObjectType,
         value: PrimitiveValue?
-    ) throws {
+    ) throws -> PrimitiveValue {
         guard let value,
               case .object(let objectValue) = value else {
             throw LexiconValidatorError.valueIsNotObject(path: path)
@@ -100,14 +110,14 @@ extension Validator.Complex {
 
         let requiredProperties = Set(definition.required ?? [])
         let nullableProperties = Set(definition.nullable ?? [])
-//        var resultValue = objectValue
+        var resultValue = objectValue
 
         if let requiredList = definition.required {
             for requiredKey in requiredList {
                 let rawRequiredValue = objectValue[requiredKey]
 
                 if rawRequiredValue == nil, let propertyDefinition = definition.properties[requiredKey] {
-                    if LexiconToolsUtilities.hasPrimitiveDefault(propertyDefinition) {
+                    if LexiconToolsUtilities.primitiveDefaultValue(for: propertyDefinition) != nil {
                         continue
                     }
 
@@ -124,20 +134,24 @@ extension Validator.Complex {
             }
 
             if rawPropertyValue == nil, !requiredProperties.contains(key) {
-                if !LexiconToolsUtilities.hasPrimitiveDefault(propertyDefinition) {
+                if LexiconToolsUtilities.primitiveDefaultValue(for: propertyDefinition) == nil {
                     continue
                 }
             }
 
             let propertyPath = "\(path)/\(key)"
 
-            try validateOneOf(
+            let normalizedValue = try validateOneOf(
                 lexicons: lexicons,
                 path: propertyPath,
                 definition: propertyDefinition,
                 value: rawPropertyValue
             )
+
+            resultValue[key] = normalizedValue
         }
+
+        return .object(resultValue)
     }
 
     /// Validates a value against one or more schema variants.
@@ -148,6 +162,7 @@ extension Validator.Complex {
     ///   - definition: The definition container.
     ///   - value: The specific value to validate. Optional.
     ///   - isObject: Determines whether the value is an object. Defaults to `false`.
+    /// - Returns: The validated `PrimitiveValue` object.
     ///
     /// - Throws: An error if the value isn't available, or if the value doesn't match the constant value.
     internal static func validateOneOf(
@@ -156,7 +171,7 @@ extension Validator.Complex {
         definition: LexiconDefinition,
         value: PrimitiveValue?,
         isObject: Bool = false
-    ) throws {
+    ) throws -> PrimitiveValue {
         let concreteDefinitions: [LexiconDefinition]
 
         switch definition {
@@ -173,33 +188,37 @@ extension Validator.Complex {
                         throw LexiconValidatorError.unionObject$typeValueNotFound(path: path, references: unionTypeReference.joined(separator: ", "))
                     }
 
-                    return
+                    return value
                 }
 
                 concreteDefinitions = try LexiconToolsUtilities.toConcreteTypes(lexicons: lexicons, definition: .reference(ATReferenceType(reference: type)))
             default:
                 concreteDefinitions = try LexiconToolsUtilities.toConcreteTypes(lexicons: lexicons, definition: definition)
+        }
 
-                for concreteDefinition in concreteDefinitions {
-                    switch isObject {
-                        case true:
-                            guard case .object(let aTObjectType) = concreteDefinition else {
-                                throw LexiconValidatorError.valueIsNotObject(path: path)
-                            }
-
-                            try Validator.Complex
-                                .validateObject(
-                                    lexicons: lexicons,
-                                    path: path,
-                                    definition: aTObjectType,
-                                    value: value
-                                )
-                        case false:
-                            try Validator.Complex.validate(lexicons: lexicons, path: path, definition: concreteDefinition, value: value)
+        for concreteDefinition in concreteDefinitions {
+            switch isObject {
+                case true:
+                    guard case .object(let aTObjectType) = concreteDefinition else {
+                        throw LexiconValidatorError.valueIsNotObject(path: path)
                     }
 
-                    return
-                }
+                    return try Validator.Complex.validateObject(
+                        lexicons: lexicons,
+                        path: path,
+                        definition: aTObjectType,
+                        value: value
+                    )
+                case false:
+                    return try Validator.Complex.validate(
+                        lexicons: lexicons,
+                        path: path,
+                        definition: concreteDefinition,
+                        value: value
+                    )
+            }
         }
+
+        return value ?? .nil
     }
 }
