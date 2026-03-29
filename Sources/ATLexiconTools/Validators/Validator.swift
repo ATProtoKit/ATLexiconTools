@@ -126,10 +126,6 @@ extension Validator {
         definition: LexiconDefinition,
         value: PrimitiveValue?
     ) throws {
-//        guard case .subscription(let subscriptionDefinition) = definition else {
-//            return
-//        }
-
         _ = try Validator.Complex.validateOneOf(
             lexicons: lexicons,
             path: "Input",
@@ -155,8 +151,6 @@ extension Validator {
         guard case .subscription(_) = definition else {
             return
         }
-
-//        let schema = subscriptionDefinition.message?.schema
 
         _ = try Validator.Complex.validateOneOf(
             lexicons: lexicons,
@@ -240,11 +234,6 @@ extension Validator {
         definition: LexiconDefinition?,
         value: PrimitiveValue?
     ) throws {
-//        guard case .subscription(let subscriptionDefinition) = definition else {
-//            return
-//        }
-//
-//        guard let parameters = subscriptionDefinition.parameters
         guard let definition else {
             return
         }
