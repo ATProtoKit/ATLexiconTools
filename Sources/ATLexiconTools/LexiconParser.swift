@@ -40,8 +40,7 @@ public enum LexiconParser {
     ///   JSON keys. Defaults to `.useDefaultKeys`.
     /// - Returns: An array of `Lexicon` models.
     ///
-    /// - Throws: An error if the decoding fails, such as if the Namespaced Identifier (NSID) is invalid,
-    /// the JSON is not structured correctly, or the lexicon is somehow violating any lexicon requirements.
+    /// - Throws: An error if the decoding fails.
     public static func parseMultipleLexicons(
         _ lexicons: [String],
         keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
