@@ -56,12 +56,13 @@ struct `General Validation` {
         #expect(throws: Never.self, "Object should be validated.") {
             try self.lexiconRegistry.validate(
                 lexiconURI: "com.example.kitchenSink#object",
-                value: ["object" : ["boolean": true],
-                        "array": ["one", "two"],
-                        "boolean": true,
-                        "integer": 123,
-                        "string": "string"
-                       ]
+                value: [
+                    "object" : ["boolean": true],
+                    "array": ["one", "two"],
+                    "boolean": true,
+                    "integer": 123,
+                    "string": "string"
+                ]
             )
         }
 
@@ -86,7 +87,7 @@ struct `General Validation` {
             }
             """
 
-        #expect(throws: Error.self, "The required property \'foo\' should not be found.") {
+        #expect(throws: Error.self, "The required property 'foo' should not be found.") {
             _ = try LexiconParser.parseLexicon(schema)
         }
     }
