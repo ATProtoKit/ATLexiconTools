@@ -47,6 +47,26 @@ public enum LexiconToolsError: Error, LocalizedError, CustomStringConvertible {
     }
 }
 
+/// Errors that can occur when a lexicon declaration is invalid.
+public enum InvalidLexiconDeclarationError: Error, LocalizedError, CustomStringConvertible {
+
+    /// The provided value was the incorrect type.
+    ///
+    /// - Parameter message: The message to display.
+    case unexpectedType(message: String)
+
+    public var errorDescription: String? {
+        switch self {
+            case .unexpectedType(let message):
+                return message
+        }
+    }
+
+    public var description: String {
+        return errorDescription ?? String(describing: self)
+    }
+}
+
 /// Errors that can occur with blob reference conversions.
 public enum BlobReferenceConversionError: Error, LocalizedError, CustomStringConvertible {
 
