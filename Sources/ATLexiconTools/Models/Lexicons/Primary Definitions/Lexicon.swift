@@ -87,17 +87,17 @@ public struct Lexicon: Codable, Sendable {
     private func validate(_ container: KeyedDecodingContainer<Lexicon.CodingKeys>? = nil) throws {
         for (key, definition) in definitions {
             switch definition {
-                case .record, .query, .procedure, .subscription:
+                case .record, .query, .procedure, .subscription, .permissionSet:
                     if key != "main" {
                         if let container = container {
                             throw DecodingError.dataCorruptedError(
                                 forKey: .definitions,
                                 in: container,
-                                debugDescription: "Records, procedures, queries, and subscriptions must be in the 'main' definition (found '\(key)' instead)."
+                                debugDescription: "Records, procedures, queries, subscriptions, and permission sets must be in the 'main' definition (found '\(key)' instead)."
                             )
                         } else {
                             throw LexiconSchemaValidatorError.invalidSchema(
-                                reason: "Records, procedures, queries, and subscriptions must be in the 'main' definition (found '\(key)' instead).")
+                                reason: "Records, procedures, queries, subscriptions, and permission sets must be in the 'main' definition (found '\(key)' instead).")
                         }
 
                     }
