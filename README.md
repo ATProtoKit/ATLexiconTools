@@ -12,9 +12,34 @@ ATLexiconTools is a Swift library for parsing, modeling, and validating AT Proto
 
 This Swift package mainly focuses on the syntax validation side of the AT Protocol. This is based on the [`lexicon`](https://github.com/bluesky-social/atproto/tree/main/packages/lexicon) package from the official [`atproto`](https://github.com/bluesky-social/atproto) TypeScript repository.
 
-## Quick Examples
+## Quick Example
 
+```swift
+import ATLexiconTools
 
+do {
+    let schema = """
+            {
+                "lexicon": 1,
+                "id": "com.example.kitchenSink",
+                "defs": {
+                    // ...
+                }
+            }
+            """
+
+    let lexicon = try LexiconParser.parseLexicon(schema)
+    let registry = try LexiconRegistry(lexicons: [lexicon])
+    
+    _ = try registry.validateRecord(by: "com.example.profile", value: .object(["$type": "com.example.profile", ...])
+    _ = try registry.validateXRPCParameters(by: "com.example.query", value: ...)
+    _ = try registry.validateXRPCInput(by: "com.example.procedure", value: ...)
+    _ = try registry.validateXRPCOutput(by: "com.example.query", value: ...)
+)
+} catch {
+    print(error)
+}
+```
 
 ## Requirements
 
