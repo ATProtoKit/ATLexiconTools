@@ -6,6 +6,48 @@
 //
 
 /// A registry for storing entire lexicon objects alongside their individual definitions.
+///
+/// ## Examples
+/// ### Registering lexicons and validating a record
+/// ```swift
+/// let feedLexicon: Lexicon = ... // contains definitions like "main", "post", etc.
+/// let graphLexicon: Lexicon = ...
+///
+/// // Create a registry and add lexicons.
+/// let registry = try LexiconRegistry(lexicons: [feedLexicon, graphLexicon])
+///
+/// // Or add later:
+/// // try registry.add(lexicon: anotherLexicon)
+///
+/// // Prepare a record value (as a PrimitiveValue object) to validate.
+/// // The record must include a "$type" key matching its lexicon URI.
+/// let record: PrimitiveValue = .object([
+///     "$type": .string("lex:app.bsky.feed.post"),
+///     "text": .string("Hello world"),
+///     "createdAt": .string("2025-08-09T12:34:56Z")
+/// ])
+///
+/// // Validate the record against the registered definition.
+/// let validated = try registry.validateRecord(by: "app.bsky.feed.post", value: record)
+/// print(validated)
+/// ```
+///
+/// ### Validating XRPC parameters and output
+/// ```swift
+/// // Validate parameters for a query/procedure/subscription endpoint.
+/// let params: PrimitiveValue = .object([
+///     "limit": .number(25),
+///     "cursor": .string("abc123")
+/// ])
+/// let validParams = try registry.validateXRPCParameters(by: "app.bsky.feed.getTimeline", value: params)
+///
+/// // Validate output for a query/procedure response body.
+/// let output: PrimitiveValue = .object([
+///     "feed": .array([.object(["uri": .string("at://..."), "cid": .string("...")])])
+/// ])
+/// let validOutput = try registry.validateXRPCOutput(by: "app.bsky.feed.getTimeline", value: output)
+/// print(validParams, validOutput)
+/// ```
 public final class LexiconRegistry: Sequence {
 
     /// A private property for dictionary representing the lexicon storage.

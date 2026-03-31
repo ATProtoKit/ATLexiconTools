@@ -7,7 +7,35 @@
 
 import Foundation
 
-/// A namespace group of methods for parsing lexicon models to their `Lexicon` representations.
+/// A collection of utility methods for converting lexicon JSON into their `Lexicon` representations.
+///
+/// Use `parseLexicon(_:keyDecodingStrategy:)` to decode a single lexicon JSON string into a `Lexicon`.
+/// If there are multiple lexicon JSON strings, use `parseMultipleLexicons(_:keyDecodingStrategy:)` to
+/// decode them all in order. To quickly check if a lexicon JSON is structurally valid without needing the
+/// decoded result, use `isLexiconValid(_:)`.
+///
+/// Decoding behavior can be customized via `JSONDecoder.KeyDecodingStrategy`. By default, the parser
+/// uses `.useDefaultKeys`, which expects the JSON keys to match the `Lexicon` model’s coding keys exactly.
+/// If your JSON uses a different key style (e.g., snake case), pass an appropriate strategy.
+///
+/// ## Example
+/// ```swift
+/// let json = "{ ... }"
+///
+/// do {
+///     let lexicon = try LexiconParser.parseLexicon(json)
+///     print(lexicon)
+/// } catch {
+///     print(error)
+/// }
+/// ```
+///
+/// Validation-only
+/// ```swift
+/// if LexiconParser.isLexiconValid(json) {
+///     // Proceed
+/// }
+/// ```
 public enum LexiconParser {
 
     /// Parses a single lexicon JSON.
