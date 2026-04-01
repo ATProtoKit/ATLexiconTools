@@ -30,7 +30,7 @@ import Foundation
 /// }
 /// ```
 ///
-/// Validation-only
+/// ## Validation-only
 /// ```swift
 /// if LexiconParser.isLexiconValid(json) {
 ///     // Proceed
