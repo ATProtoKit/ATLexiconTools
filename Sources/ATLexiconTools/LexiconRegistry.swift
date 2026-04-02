@@ -15,8 +15,8 @@
 /// ## Examples
 /// ### Registering lexicons and validating a record
 /// ```swift
-/// let feedLexicon: Lexicon = ... // contains definitions like "main", "post", etc.
-/// let graphLexicon: Lexicon = ...
+/// let feedLexicon: Lexicon = "{ ... }"
+/// let graphLexicon: Lexicon = "{ ... }"
 ///
 /// // Create a registry and add lexicons.
 /// let registry = try LexiconRegistry(lexicons: [feedLexicon, graphLexicon])
