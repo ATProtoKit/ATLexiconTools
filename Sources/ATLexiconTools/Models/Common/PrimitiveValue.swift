@@ -148,7 +148,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
             self = .object(value)
         } else {
             throw DecodingError.typeMismatch(
-                CodableValue.self,
+                PrimitiveValue.self,
                 DecodingError.Context(
                     codingPath: container.codingPath,
                     debugDescription: "Unsupported value"))
