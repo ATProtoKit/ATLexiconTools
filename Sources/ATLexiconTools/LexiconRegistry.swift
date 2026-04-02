@@ -7,6 +7,11 @@
 
 /// A registry for storing entire lexicon objects alongside their individual definitions.
 ///
+/// `LexiconRegistry` stores complete `Lexicon` objects and provides fast lookup
+/// of their individual `LexiconDefinition`s by URI (for example, `lex:com.example.text#facets`).
+/// It also offers helpers to validate records, objects, and XRPC shapes (params,
+/// input, output) against the registered definitions.
+///
 /// ## Examples
 /// ### Registering lexicons and validating a record
 /// ```swift
