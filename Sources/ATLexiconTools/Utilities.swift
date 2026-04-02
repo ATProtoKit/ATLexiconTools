@@ -13,8 +13,8 @@ public enum LexiconToolsUtilities {
     /// Converts a `String` object to a lexicon URI.
     ///
     /// - Parameters:
-    ///   - string: *to be added*
-    ///   - baseURI: The URI of the *to be completed*. Optional. Defaults to `nil`.
+    ///   - string: The lexicon name to convert.
+    ///   - baseURI: The base URI of the resolved agent. Optional. Defaults to `nil`.
     /// - Returns: A `String` object
     public static func toLexiconURI(from string: String, resolvedAgainst baseURI: String? = nil) throws -> String {
         guard string.split(separator: "#").count <= 2 else {
