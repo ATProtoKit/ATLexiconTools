@@ -1,18 +1,18 @@
 # ``ATLexiconTools``
 
-Validate lexicon schemas and data in the AT Protocol.
-
-A Swift package for handling the validation of lexicon schemas and data.
+Parse, model, and validate AT Protocol Lexicons in Swift.
 
 ## Overview
 
-ATLexiconTools is a set of libraries that handles everything related to lexicons. A lexicon is a schema definition language used to specify objects, such as records, HTTP endpoints, and event stream messages. This is similar to schema languages such as [JSON Schema](http://json-schema.org/) or [OpenAPI](https://en.wikipedia.org/wiki/OpenAPI_Specification).
+AT Protocol uses [Lexicon](https://atproto.com/specs/lexicon) as its schema language for repository records, XRPC endpoints, and subscription messages. ``ATLexiconTools`` brings that model into Swift so you can:
 
-This package lets you easily validate and 
+- Parse Lexicon JSON into strongly-typed Swift models.
+- Build schema definitions directly in code.
+- Register schemas and resolve references across a collection of Lexicons.
+- Validate records, objects, query parameters, request bodies, and response bodies.
+- Work with AT Protocol-specific values such as blobs, CIDs, and IPLD-backed data.
 
-At this time, the only library available in this package is the titular library of the same name. This library is based on the "[lexicon](https://github.com/bluesky-social/atproto/tree/main/packages/lexicon)" TypeScript package within the official [atproto](https://github.com/bluesky-social/atproto) TypeScript repository. In the future, other libraries will join this library that are related to lexicons. These include libraries such as:
-- [lexicon-resolver](https://github.com/bluesky-social/atproto/tree/main/packages/lexicon-resolver)
-- The [lex](https://github.com/bluesky-social/atproto/tree/main/packages/lex) section of TypeScript packages (once they're each out of preview).
+If you are new to Lexicon itself, the official [Intro to Lexicon](https://atproto.com/guides/lexicon) guide is a good companion to these docs, and the [Lexicon specification](https://atproto.com/specs/lexicon) defines the full schema language used by this package.
 
 ## Topics
 
