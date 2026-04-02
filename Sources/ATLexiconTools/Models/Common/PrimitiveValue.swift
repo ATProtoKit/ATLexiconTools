@@ -46,6 +46,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         guard case .object(let value) = self else {
             return nil
         }
+
         return value
     }
 
@@ -54,6 +55,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         guard case .array(let value) = self else {
             return nil
         }
+
         return value
     }
 
@@ -62,6 +64,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         guard case .string(let value) = self else {
             return nil
         }
+
         return value
     }
 
@@ -70,6 +73,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         guard case .int(let value) = self else {
             return nil
         }
+
         return value
     }
 
@@ -78,6 +82,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         guard case .bool(let value) = self else {
             return nil
         }
+
         return value
     }
 
@@ -86,6 +91,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         guard case .bytes(let value) = self else {
             return nil
         }
+
         return value
     }
 
@@ -94,6 +100,16 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         guard case .cid(let value) = self else {
             return nil
         }
+
+        return value
+    }
+
+    /// Returns the wrapped double value.
+    public var doubleValue: Double? {
+        guard case .double(let value) = self else {
+            return nil
+        }
+
         return value
     }
 
@@ -102,6 +118,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         guard case .blob(let value) = self else {
             return nil
         }
+
         return value
     }
 
@@ -110,6 +127,7 @@ public enum PrimitiveValue: Codable, Sendable, Equatable {
         if case .nil = self {
             return true
         }
+
         return false
     }
 
