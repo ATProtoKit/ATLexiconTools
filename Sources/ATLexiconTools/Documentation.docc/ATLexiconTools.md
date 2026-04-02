@@ -16,6 +16,69 @@ If you are new to Lexicon itself, the official [Intro to Lexicon](https://atprot
 
 ## Topics
 
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
+### Essentials
 
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+- <doc:Getting-Started>
+- <doc:Parsing-and-Registering-Lexicons>
+- ``LexiconParser``
+- ``LexiconRegistry``
+- ``Lexicon``
+- ``PrimitiveValue``
+- ``LexiconValue``
+
+### Primary Lexicon Definitions
+
+- ``LexiconDefinition``
+- ``RecordDefinition``
+- ``QueryDefinition``
+- ``ProcedureDefinition``
+- ``SubscriptionDefinition``
+- ``PermissionSetDefinition``
+- ``LexiconHTTPBody``
+
+### Schema and Field Types
+
+- ``ATArrayType``
+- ``ATBlobType``
+- ``ATBooleanType``
+- ``ATBytesType``
+- ``ATCIDLinkType``
+- ``ATErrorsType``
+- ``ATIntegerType``
+- ``ATObjectType``
+- ``ATParamsType``
+- ``ATReferenceType``
+- ``ATStringType``
+- ``ATTokenType``
+- ``ATUnionType``
+- ``ATUnknownType``
+- ``ATPermissionType``
+
+### Serialization
+
+- ``BlobReference``
+- ``JSONBlobReference``
+- ``TypedJSONBlobReference``
+- ``UntypedJSONBlobReference``
+- ``EncodableBlobReference``
+- ``BlobLink``
+- ``RepositoryRecord``
+- ``ATLexiconPrimitive``
+- ``ATPrimitiveArray``
+- ``ATLexiconIPLDType``
+- ``ATLexiconReferenceVariant``
+- ``ATLexiconSubscriptionMessage``
+
+### Validation
+
+- ``Validator``
+- ``LexiconToolsUtilities``
+- ``ATLexiconObjectProtocol``
+
+### Errors
+
+- ``LexiconToolsError``
+- ``LexiconRegistryError``
+- ``LexiconValidatorError``
+- ``LexiconSchemaValidatorError``
+- ``BlobReferenceConversionError``
