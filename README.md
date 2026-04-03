@@ -8,7 +8,7 @@
 
 <div align="center">
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/ATProtoKit/ATLexiconTools?style=flat&logo=github)](https://github.com/ATProtoKit/ATLexiconTools)
+[![GitHub Repo stars](https://img.shields.io/github/stars/ATProtoKit/ATLexiconTools?style=flat&logo=GitHub)](https://github.com/ATProtoKit/ATLexiconTools)
 
 </div>
 <div align="center">
