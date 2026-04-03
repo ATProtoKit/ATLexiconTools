@@ -59,6 +59,6 @@ Several entry points support these transitions:
 - ``LexiconValue/toIPLD(from:)`` prepares values for repository storage.
 - ``LexiconValue/toJSONValue(from:)`` produces transport-safe JSON-compatible output.
 - ``LexiconValue/stringify(_:)`` generates stable string representations.
-``LexiconValue/toLexiconValue(from:)-(IPLD.IPLDValue)`` reconstructs structured values from IPLD data.
+- ``LexiconValue/toLexiconValue(from:)-(IPLD.IPLDValue)`` reconstructs structured values from IPLD data.
 
 `LexiconValue` effectively sits between validator output and repository serialization, allowing conversions to happen without flattening structured protocol values into ordinary JSON dictionaries.
