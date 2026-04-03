@@ -69,14 +69,14 @@ Several entry points support these transitions:
 
 ## Topics
 
-### Blob Reference Types
+### Blob References
 
 - ``BlobReference``
 - ``JSONBlobReference``
 - ``TypedJSONBlobReference``
 - ``UntypedJSONBlobReference``
 
-### IPLD Support Types
+### IPLD Support
 
 - ``EncodableBlobReference``
 - ``BlobLink``
