@@ -62,3 +62,17 @@ Several entry points support these transitions:
 - ``LexiconValue/toLexiconValue(from:)-(IPLD.IPLDValue)`` reconstructs structured values from IPLD data.
 
 `LexiconValue` effectively sits between validator output and repository serialization, allowing conversions to happen without flattening structured protocol values into ordinary JSON dictionaries.
+
+## Topics
+
+### Blob Reference Types
+
+- ``BlobReference``
+- ``JSONBlobReference``
+- ``TypedJSONBlobReference``
+- ``UntypedJSONBlobReference``
+
+### IPLD Support Types
+
+- ``EncodableBlobReference``
+- ``BlobLink``
