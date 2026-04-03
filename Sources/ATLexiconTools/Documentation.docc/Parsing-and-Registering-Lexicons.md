@@ -1,5 +1,7 @@
 # Parsing and Registering Lexicons
 
+Discover how to parse multiple AT Protocol Lexicon JSON schemas, register them into a shared registry, and resolve definitions and references consistently for validation, tooling, and runtime use.
+
 ## Overview
 
 AT Protocol applications rarely work with a single schema in isolation. A realistic deployment usually has a family of record types, XRPC endpoints, and shared definitions connected by references. ``LexiconParser`` and ``LexiconRegistry`` are the main tools for bringing those documents into memory and validating them as a set.
