@@ -53,6 +53,26 @@ do {
 }
 ```
 
+## Installation
+You can use the Swift Package Manager to download and import the library into your project:
+```swift
+dependencies: [
+    .package(url: "https://github.com/ATProtoKit/ATLexiconTools.git", from: "0.1.0")
+]
+```
+
+Then under `targets`:
+```swift
+targets: [
+    .target(
+        // name: "[name of target]",
+        dependencies: [
+            .product(name: "ATLexiconTools", package: "atlexicontools")
+        ]
+    )
+]
+```
+
 ## Requirements
 
 To use ATLexiconTools in your apps, your app should target the specific version numbers:
