@@ -65,14 +65,6 @@ On Linux, the minimum requirements include:
 - **Red Hat UBI** 9
 - **Ubuntu** 20.04
 
-For Windows, you'll need Swift 6.1 or later. On Windows, the minimum requirements include:
-
-- **Windows** 10 or later
-- **Windows Server** 2022 or later.
-
-> [!WARNING]
-> Direct support for Windows 11 on ARM is not supported. x86 builds may not fully work on Windows on ARM, either.
-
 For Android, you'll need Swift 6.1 or later. On Android, the minimum requirements include:
 - **Android** 10 or later.
 - **Android SDK** version 29 or later.
