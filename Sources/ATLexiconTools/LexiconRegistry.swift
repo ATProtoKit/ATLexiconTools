@@ -78,7 +78,7 @@ public final class LexiconRegistry: Sequence {
         return self.lexicons.values.makeIterator()
     }
 
-    /// Adds a `Lexicon` object to the `LexiconRegistery` instance.
+    /// Adds a ``Lexicon`` object to the `LexiconRegistery` instance.
     ///
     /// - Parameter lexicon: The `Lexicon` ibject to add.
     ///
@@ -171,6 +171,17 @@ public final class LexiconRegistry: Sequence {
     }
 
     /// Validates a record or object definition.
+    ///
+    /// Use this if you need to validate an object definition rather than a top-level record:
+    ///
+    /// ```swift
+    /// let normalizedObject = try registry.validate(
+    ///     lexiconURI: "com.example.profile#view",
+    ///     value: .object([
+    ///         "displayName": "Lucy"
+    ///     ])
+    /// )
+    /// ```
     ///
     /// - Parameters:
     ///   - lexiconURI: The URI of the lexicon to validate.
