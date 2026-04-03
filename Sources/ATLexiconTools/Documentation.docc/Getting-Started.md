@@ -1,5 +1,9 @@
 # Getting Started With ATLexiconTools
 
+@Metadata {
+    @TitleHeading("Article")
+}
+
 Learn how to parse, register, and validate AT Protocol Lexicon schemas using ATLexiconTools.
 
 ## Overview

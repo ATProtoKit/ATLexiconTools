@@ -1,5 +1,9 @@
 # Parsing and Registering Lexicons
 
+@Metadata {
+    @TitleHeading("Article")
+}
+
 Discover how to parse multiple AT Protocol Lexicon JSON schemas, register them into a shared registry, and resolve definitions and references consistently for validation, tooling, and runtime use.
 
 ## Overview

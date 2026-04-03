@@ -1,5 +1,9 @@
 # Working with Blob References and Lexicon Values
 
+@Metadata {
+    @TitleHeading("Article")
+}
+
 Work with blob references and lexicon values to convert AT Protocol data between JSON transport, validation, and IPLD repository storage.
 
 ## Overview
