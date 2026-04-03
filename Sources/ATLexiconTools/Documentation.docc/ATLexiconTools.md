@@ -57,12 +57,6 @@ If you are new to Lexicon itself, the official [Intro to Lexicon](https://atprot
 ### Serialization
 
 - <doc:Working-with-Blob-References-and-Lexicon-Values>
-- ``BlobReference``
-- ``JSONBlobReference``
-- ``TypedJSONBlobReference``
-- ``UntypedJSONBlobReference``
-- ``EncodableBlobReference``
-- ``BlobLink``
 - ``RepositoryRecord``
 - ``ATLexiconPrimitive``
 - ``ATPrimitiveArray``
@@ -70,7 +64,7 @@ If you are new to Lexicon itself, the official [Intro to Lexicon](https://atprot
 - ``ATLexiconReferenceVariant``
 - ``ATLexiconSubscriptionMessage``
 
-### Validation
+### Validation and Support
 
 - ``Validator``
 - ``LexiconToolsUtilities``
