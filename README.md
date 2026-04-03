@@ -12,7 +12,9 @@
 
 </div>
 
-ATLexiconTools is a Swift package for parsing, modeling, and validating AT Protocol Lexicons. It helps you work with repository records, XRPC endpoints, and subscription messages using strongly typed Swift structures instead of raw JSON. The package is designed to make schema-aware development easier by letting you define Lexicons in code, register and resolve schema references, and validat erecords, query parameters, and request or response payloads against the AT Protocol specifications.
+ATLexiconTools is a Swift package for parsing, modeling, and validating AT Protocol Lexicons. It helps you work with repository records, XRPC endpoints, and subscription messages using strongly typed Swift structures instead of raw JSON.
+
+The package is designed to make schema-aware development easier by letting you define Lexicons in code, register and resolve schema references, and validat erecords, query parameters, and request or response payloads against the AT Protocol specifications.
 
 This Swift package mainly focuses on the syntax validation side of the AT Protocol. This is based on the [`lexicon`](https://github.com/bluesky-social/atproto/tree/main/packages/lexicon) package from the official [`atproto`](https://github.com/bluesky-social/atproto) TypeScript repository.
 
