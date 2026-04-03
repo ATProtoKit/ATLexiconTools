@@ -1,5 +1,13 @@
 # ``ATLexiconTools``
 
+@Metadata {
+    @PageImage(
+               purpose: icon, 
+               source: "atlexicontools_icon", 
+               alt: "A technology icon representing the ATLexiconTools framework.")
+    @PageColor(blue)
+}
+
 Parse, model, and validate AT Protocol Lexicons in Swift.
 
 ## Overview

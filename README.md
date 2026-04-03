@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/ATProtoKit/ATLexiconTools/blob/main/Sources/ATLexiconTools/Documentation.docc/Resources/atlexicontools_icon.png" height="128" alt="An icon for ATLexiconTools, which contains three stacks of rounded rectangles in an isometric top view. At the top stack, there's an at symbol in a thick weight, with a pointed arrow at the tip. [Insert more of the description here.] The three stacks are, from top to bottom, [Insert the colours here.].">
+  <img src="https://github.com/ATProtoKit/ATLexiconTools/blob/main/Sources/ATLexiconTools/Documentation.docc/Resources/atlexicontools_icon.png" height="128" alt="An icon for ATLexiconTools, which contains three stacks of rounded rectangles in an isometric top view. At the top stack, there's an at symbol in a thick weight, with a pointed arrow at the tip. The at symbol is inside of an orange puzzle piece, which is on top of a red background. The three stacks are, from top to bottom, red, orange, and blue.">
 </p>
 
 <h1 align="center">ATLexiconTools</h1>
