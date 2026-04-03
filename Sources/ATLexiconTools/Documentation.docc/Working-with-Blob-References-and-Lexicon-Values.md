@@ -43,7 +43,7 @@ Because it conforms to Swift literal protocols, values can be constructed inline
 ```swift
 let value: PrimitiveValue = .object([
     "$type": "com.example.profile",
-    "displayName": "Alice",
+    "displayName": "Lucy",
     "tags": ["swift", "atproto"]
 ])
 ```
