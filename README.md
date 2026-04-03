@@ -43,11 +43,10 @@ do {
     let lexicon = try LexiconParser.parseLexicon(schema)
     let registry = try LexiconRegistry(lexicons: [lexicon])
     
-    _ = try registry.validateRecord(by: "com.example.profile", value: .object(["$type": "com.example.profile", ...])
+    _ = try registry.validateRecord(by: "com.example.profile", value: .object(["$type": "com.example.profile", ...]))
     _ = try registry.validateXRPCParameters(by: "com.example.query", value: ...)
     _ = try registry.validateXRPCInput(by: "com.example.procedure", value: ...)
     _ = try registry.validateXRPCOutput(by: "com.example.query", value: ...)
-)
 } catch {
     print(error)
 }
