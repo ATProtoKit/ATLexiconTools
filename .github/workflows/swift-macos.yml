@@ -1,4 +1,7 @@
 name: Build and Test in Swift 6.2 on macOS
+permissions:
+  contents: read
+  pull-requests: write
 
 on:
   push:
